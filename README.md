@@ -32,7 +32,7 @@ Add the `-h` flag on any command to see how you can use it. For example, `bower 
 For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
 
 
-## Building for production
+## Building for production 
 
 To optimize the whatscover application for production, run:
 
@@ -109,3 +109,7 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [Protractor]: https://angular.github.io/protractor/
 [Leaflet]: http://leafletjs.com/
 [DefinitelyTyped]: http://definitelytyped.org/
+
+## Contributors
+Toni (toni.liem@djavafactory.com)
+<name> <email>

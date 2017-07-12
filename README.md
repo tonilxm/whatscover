@@ -112,4 +112,5 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 
 ## Contributors
 Toni (toni.liem@djavafactory.com)
+Fauzan (fauzan.abdi@djavafactory.com)
 <name> <email>

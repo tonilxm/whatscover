@@ -28,7 +28,7 @@ spring:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://localhost:3306/whatscover?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
-        password: flfp4z1E
+        password: 1234
         hikari:
             data-source-properties:
                 cachePrepStmts: true

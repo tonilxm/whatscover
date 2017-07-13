@@ -1,0 +1,83 @@
+<div>
+    <h2 data-translate="whatscoverApp.insuaranceAgency.home.title">Insuarance Agencies</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="insuarance-agency.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs-down"  data-translate="whatscoverApp.insuaranceAgency.home.createLabel">
+                        Create new Insuarance Agency
+                    </span>
+                </button>
+            </div>
+            <div class="col-xs-8 no-padding-right">
+                <form name="searchForm" class="form-inline">
+                    <div class="input-group pull-right" >
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'whatscoverApp.insuaranceAgency.home.search' | translate }}">
+                        <span  class="input-group-btn width-min" >
+                            <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
+                            <button class="btn btn-info" ng-click="vm.clear()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="code"><span data-translate="whatscoverApp.insuaranceAgency.code">Code</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="insuarance_company_id"><span data-translate="whatscoverApp.insuaranceAgency.insuarance_company_id">Insuarance Company Id</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="whatscoverApp.insuaranceAgency.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="address_1"><span data-translate="whatscoverApp.insuaranceAgency.address_1">Address 1</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="address_2"><span data-translate="whatscoverApp.insuaranceAgency.address_2">Address 2</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="address_3"><span data-translate="whatscoverApp.insuaranceAgency.address_3">Address 3</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+                <tr ng-repeat="insuaranceAgency in vm.insuaranceAgencies track by insuaranceAgency.id">
+                    <td><a ui-sref="insuarance-agency-detail({id:insuaranceAgency.id})">{{insuaranceAgency.id}}</a></td>
+                    <td>{{insuaranceAgency.code}}</td>
+                    <td>{{insuaranceAgency.insuarance_company_id}}</td>
+                    <td>{{insuaranceAgency.name}}</td>
+                    <td>{{insuaranceAgency.address_1}}</td>
+                    <td>{{insuaranceAgency.address_2}}</td>
+                    <td>{{insuaranceAgency.address_3}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="insuarance-agency-detail({id:insuaranceAgency.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="insuarance-agency.edit({id:insuaranceAgency.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="insuarance-agency.delete({id:insuaranceAgency.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

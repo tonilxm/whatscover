@@ -1,0 +1,27 @@
+{
+    "whatscoverApp": {
+        "insuaranceAgency" : {
+            "home": {
+                "title": "Insuarance Agencies",
+                "createLabel": "Create a new Insuarance Agency",
+                "createOrEditLabel": "Create or edit a Insuarance Agency",
+                "search": "Search for Insuarance Agency"
+            },
+            "created": "A new Insuarance Agency is created with identifier {{ param }}",
+            "updated": "A Insuarance Agency is updated with identifier {{ param }}",
+            "deleted": "A Insuarance Agency is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Insuarance Agency {{ id }}?"
+            },
+            "detail": {
+                "title": "Insuarance Agency"
+            },
+            "code": "Code",
+            "insuarance_company_id": "Insuarance Company Id",
+            "name": "Name",
+            "address_1": "Address 1",
+            "address_2": "Address 2",
+            "address_3": "Address 3"
+        }
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "whatscoverApp": {
+        "insuranceProduct" : {
+            "home": {
+                "title": "Insurance Products",
+                "createLabel": "Thêm mới một Insurance Product",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Insurance Product",
+                "search": "Tìm Insurance Product"
+            },
+            "created": "Một Insurance Product mới được tạo với định danh {{ param }}",
+            "updated": "Một Insurance Product cập nhật với định danh {{ param }}",
+            "deleted": "Một Insurance Product đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Insurance Product {{ id }}?"
+            },
+            "detail": {
+                "title": "Insurance Product"
+            },
+            "code": "Code",
+            "name": "Name",
+            "entryAgeLastBday": "Entry Age Last Bday",
+            "gender": "Gender",
+            "premiumTerm": "Premium Term",
+            "policyTerm": "Policy Term",
+            "premiumRate": "Premium Rate",
+            "sumAssuredDeath": "Sum Assured Death",
+            "sumAssuredTPD": "Sum Assured TPD",
+            "sumAssuredADD": "Sum Assured ADD",
+            "sumAssuredHospIncome": "Sum Assured Hosp Income",
+            "sumAssuredCI": "Sum Assured CI",
+            "sumAssuredMedic": "Sum Assured Medic",
+            "sumAssuredCancer": "Sum Assured Cancer",
+            "productWeightDeath": "Product Weight Death",
+            "productWeightPA": "Product Weight PA",
+            "productWeightHospIncome": "Product Weight Hosp Income",
+            "productWeightCI": "Product Weight CI",
+            "productWeightMedic": "Product Weight Medic",
+            "productWeightCancer": "Product Weight Cancer",
+            "insuranceCompany": "Insurance Company"
+        }
+    }
+}

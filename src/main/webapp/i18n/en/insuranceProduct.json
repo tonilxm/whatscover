@@ -1,0 +1,42 @@
+{
+    "whatscoverApp": {
+        "insuranceProduct" : {
+            "home": {
+                "title": "Insurance Products",
+                "createLabel": "Create a new Insurance Product",
+                "createOrEditLabel": "Create or edit a Insurance Product",
+                "search": "Search for Insurance Product"
+            },
+            "created": "A new Insurance Product is created with identifier {{ param }}",
+            "updated": "A Insurance Product is updated with identifier {{ param }}",
+            "deleted": "A Insurance Product is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Insurance Product {{ id }}?"
+            },
+            "detail": {
+                "title": "Insurance Product"
+            },
+            "code": "Code",
+            "name": "Name",
+            "entryAgeLastBday": "Entry Age Last Bday",
+            "gender": "Gender",
+            "premiumTerm": "Premium Term",
+            "policyTerm": "Policy Term",
+            "premiumRate": "Premium Rate",
+            "sumAssuredDeath": "Sum Assured Death",
+            "sumAssuredTPD": "Sum Assured TPD",
+            "sumAssuredADD": "Sum Assured ADD",
+            "sumAssuredHospIncome": "Sum Assured Hosp Income",
+            "sumAssuredCI": "Sum Assured CI",
+            "sumAssuredMedic": "Sum Assured Medic",
+            "sumAssuredCancer": "Sum Assured Cancer",
+            "productWeightDeath": "Product Weight Death",
+            "productWeightPA": "Product Weight PA",
+            "productWeightHospIncome": "Product Weight Hosp Income",
+            "productWeightCI": "Product Weight CI",
+            "productWeightMedic": "Product Weight Medic",
+            "productWeightCancer": "Product Weight Cancer",
+            "insuranceCompany": "Insurance Company"
+        }
+    }
+}

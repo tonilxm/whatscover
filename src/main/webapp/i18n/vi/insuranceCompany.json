@@ -1,0 +1,32 @@
+{
+    "whatscoverApp": {
+        "insuranceCompany" : {
+            "home": {
+                "title": "Insurance Companies",
+                "createLabel": "Thêm mới một Insurance Company",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Insurance Company",
+                "search": "Tìm Insurance Company"
+            },
+            "created": "Một Insurance Company mới được tạo với định danh {{ param }}",
+            "updated": "Một Insurance Company cập nhật với định danh {{ param }}",
+            "deleted": "Một Insurance Company đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Insurance Company {{ id }}?"
+            },
+            "detail": {
+                "title": "Insurance Company"
+            },
+            "code": "Code",
+            "name": "Name",
+            "description": "Description",
+            "address_1": "Address 1",
+            "address_2": "Address 2",
+            "address_3": "Address 3",
+            "messages": {
+            	"error": {
+                	"companycodeexists": "Company Code is already in use!, Please choose another one."
+            	}
+            }
+        }
+    }
+}

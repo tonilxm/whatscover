@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity InsuranceProduct.
+    -->
+    <changeSet id="20170714103724-1" author="jhipster">
+        <createTable tableName="insurance_product">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="name" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="entry_age_last_bday" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="gender" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="premium_term" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="policy_term" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="premium_rate" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sum_assured_death" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sum_assured_tpd" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sum_assured_add" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sum_assured_hosp_income" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sum_assured_ci" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sum_assured_medic" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sum_assured_cancer" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="product_weight_death" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="product_weight_pa" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="product_weight_hosp_income" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="product_weight_ci" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="product_weight_medic" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="product_weight_cancer" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="insurance_company_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        
+    </changeSet>
+</databaseChangeLog>

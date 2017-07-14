@@ -1,15 +1,13 @@
 package com.whatscover.web.rest;
 
 import com.whatscover.WhatscoverApp;
-
 import com.whatscover.domain.InsuranceCompany;
 import com.whatscover.repository.InsuranceCompanyRepository;
-import com.whatscover.service.InsuranceCompanyService;
 import com.whatscover.repository.search.InsuranceCompanySearchRepository;
+import com.whatscover.service.InsuranceCompanyService;
 import com.whatscover.service.dto.InsuranceCompanyDTO;
 import com.whatscover.service.mapper.InsuranceCompanyMapper;
 import com.whatscover.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -90,7 +88,7 @@ public class InsuranceCompanyResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        InsuranceCompanyResource insuranceCompanyResource = new InsuranceCompanyResource(insuranceCompanyService);
+        InsuranceCompanyResource insuranceCompanyResource = new InsuranceCompanyResource(insuranceCompanyService, insuranceCompanyRepository);
         this.restInsuranceCompanyMockMvc = MockMvcBuilders.standaloneSetup(insuranceCompanyResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

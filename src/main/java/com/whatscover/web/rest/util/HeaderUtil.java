@@ -41,4 +41,19 @@ public final class HeaderUtil {
         headers.add("X-whatscoverApp-params", entityName);
         return headers;
     }
+    
+    /**
+     * create message alert
+     * @param entityName
+     * @param errorKey
+     * @param defaultMessage
+     * @return
+     */
+    public static HttpHeaders createMessageAlert(String entityName, String errorKey, String defaultMessage) {
+        log.error("Entity processing failed, {}", defaultMessage);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-whatscoverApp-error", "whatscoverApp." + entityName + "." + errorKey);
+        headers.add("X-whatscoverApp-params", entityName);
+        return headers;
+    }
 }

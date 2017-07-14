@@ -8,6 +8,7 @@
             "entities": {
                 "main": "Entities",
                 "insuranceCompany": "Insurance Company",
+                "insuranceProduct": "Insurance Product",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

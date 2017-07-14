@@ -1,0 +1,112 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "insuranceCompany",
+            "otherEntityName": "insuranceCompany",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "code",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "100"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "200"
+        },
+        {
+            "fieldName": "entryAgeLastBday",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "gender",
+            "fieldType": "Gender",
+            "fieldValues": "MALE,FEMALE"
+        },
+        {
+            "fieldName": "premiumTerm",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "policyTerm",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "premiumRate",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "sumAssuredDeath",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "sumAssuredTPD",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "sumAssuredADD",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "sumAssuredHospIncome",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "sumAssuredCI",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "sumAssuredMedic",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "sumAssuredCancer",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "productWeightDeath",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "productWeightPA",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "productWeightHospIncome",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "productWeightCI",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "productWeightMedic",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "productWeightCancer",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20170714103724",
+    "dto": "mapstruct",
+    "service": "serviceImpl",
+    "entityTableName": "insurance_product",
+    "pagination": "pagination"
+}

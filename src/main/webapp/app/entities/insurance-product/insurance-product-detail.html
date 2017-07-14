@@ -1,0 +1,103 @@
+
+<div>
+    <h2><span data-translate="whatscoverApp.insuranceProduct.detail.title">Insurance Product</span> {{vm.insuranceProduct.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="whatscoverApp.insuranceProduct.code">Code</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.code}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.name">Name</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.name}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.entryAgeLastBday">Entry Age Last Bday</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.entryAgeLastBday}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.gender">Gender</span></dt>
+        <dd>
+            <span data-translate="{{'whatscoverApp.Gender.' + vm.insuranceProduct.gender}}">{{vm.insuranceProduct.gender}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.premiumTerm">Premium Term</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.premiumTerm}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.policyTerm">Policy Term</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.policyTerm}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.premiumRate">Premium Rate</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.premiumRate}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.sumAssuredDeath">Sum Assured Death</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.sumAssuredDeath}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.sumAssuredTPD">Sum Assured TPD</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.sumAssuredTPD}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.sumAssuredADD">Sum Assured ADD</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.sumAssuredADD}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.sumAssuredHospIncome">Sum Assured Hosp Income</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.sumAssuredHospIncome}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.sumAssuredCI">Sum Assured CI</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.sumAssuredCI}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.sumAssuredMedic">Sum Assured Medic</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.sumAssuredMedic}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.sumAssuredCancer">Sum Assured Cancer</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.sumAssuredCancer}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.productWeightDeath">Product Weight Death</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.productWeightDeath}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.productWeightPA">Product Weight PA</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.productWeightPA}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.productWeightHospIncome">Product Weight Hosp Income</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.productWeightHospIncome}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.productWeightCI">Product Weight CI</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.productWeightCI}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.productWeightMedic">Product Weight Medic</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.productWeightMedic}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.productWeightCancer">Product Weight Cancer</span></dt>
+        <dd>
+            <span>{{vm.insuranceProduct.productWeightCancer}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.insuranceProduct.insuranceCompany">Insurance Company</span></dt>
+        <dd>
+            <a ui-sref="insurance-company-detail({id:vm.insuranceProduct.insuranceCompanyId})">{{vm.insuranceProduct.insuranceCompanyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="insurance-product-detail.edit({id:vm.insuranceProduct.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

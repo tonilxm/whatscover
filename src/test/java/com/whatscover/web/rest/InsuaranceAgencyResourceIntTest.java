@@ -26,6 +26,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -55,7 +56,7 @@ public class InsuaranceAgencyResourceIntTest {
 
     private static final String DEFAULT_ADDRESS_3 = "AAAAAAAAAA";
     private static final String UPDATED_ADDRESS_3 = "BBBBBBBBBB";
-
+    
     @Autowired
     private InsuaranceAgencyRepository insuaranceAgencyRepository;
 
@@ -135,7 +136,7 @@ public class InsuaranceAgencyResourceIntTest {
 
         // Validate the InsuaranceAgency in Elasticsearch
         InsuaranceAgency insuaranceAgencyEs = insuaranceAgencySearchRepository.findOne(testInsuaranceAgency.getId());
-        assertThat(insuaranceAgencyEs).isEqualToComparingFieldByField(testInsuaranceAgency);
+        assertTrue(insuaranceAgencyEs.equals(testInsuaranceAgency));
     }
 
     @Test
@@ -275,7 +276,7 @@ public class InsuaranceAgencyResourceIntTest {
 
         // Validate the InsuaranceAgency in Elasticsearch
         InsuaranceAgency insuaranceAgencyEs = insuaranceAgencySearchRepository.findOne(testInsuaranceAgency.getId());
-        assertThat(insuaranceAgencyEs).isEqualToComparingFieldByField(testInsuaranceAgency);
+        assertTrue(insuaranceAgencyEs.equals(testInsuaranceAgency));
     }
 
     @Test

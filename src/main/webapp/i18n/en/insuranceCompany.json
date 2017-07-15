@@ -21,7 +21,12 @@
             "description": "Description",
             "address_1": "Address 1",
             "address_2": "Address 2",
-            "address_3": "Address 3"
+            "address_3": "Address 3",
+            "messages": {
+            	"error": {
+                	"companycodeexists": "Company Code is already in use!, Please choose another one."
+            	}
+            }
         }
     }
 }

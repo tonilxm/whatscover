@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity AgentProfile.
+    -->
+    <changeSet id="20170715022321-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="agent_profile"
+                                 constraintName="fk_agent_profile_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="insurance_company_id"
+                                 baseTableName="agent_profile"
+                                 constraintName="fk_agent_profile_insurance_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="insurance_company"/>
+
+    </changeSet>
+</databaseChangeLog>

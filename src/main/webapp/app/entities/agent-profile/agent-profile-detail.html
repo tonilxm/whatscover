@@ -1,0 +1,55 @@
+
+<div>
+    <h2><span data-translate="whatscoverApp.agentProfile.detail.title">Agent Profile</span> {{vm.agentProfile.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="whatscoverApp.agentProfile.agent_code">Agent Code</span></dt>
+        <dd>
+            <span>{{vm.agentProfile.agent_code}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.agentProfile.first_name">First Name</span></dt>
+        <dd>
+            <span>{{vm.agentProfile.first_name}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.agentProfile.middle_name">Middle Name</span></dt>
+        <dd>
+            <span>{{vm.agentProfile.middle_name}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.agentProfile.last_name">Last Name</span></dt>
+        <dd>
+            <span>{{vm.agentProfile.last_name}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.agentProfile.gender">Gender</span></dt>
+        <dd>
+            <span data-translate="{{'whatscoverApp.Gender.' + vm.agentProfile.gender}}">{{vm.agentProfile.gender}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.agentProfile.email">Email</span></dt>
+        <dd>
+            <span>{{vm.agentProfile.email}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.agentProfile.dob">Dob</span></dt>
+        <dd>
+            <span>{{vm.agentProfile.dob | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.agentProfile.user">User</span></dt>
+        <dd>
+            {{vm.agentProfile.userLogin}}
+        </dd>
+        <dt><span data-translate="whatscoverApp.agentProfile.insuranceCompany">Insurance Company</span></dt>
+        <dd>
+            <a ui-sref="insurance-company-detail({id:vm.agentProfile.insuranceCompanyId})">{{vm.agentProfile.insuranceCompanyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="agent-profile-detail.edit({id:vm.agentProfile.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

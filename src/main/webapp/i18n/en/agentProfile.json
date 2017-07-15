@@ -1,0 +1,30 @@
+{
+    "whatscoverApp": {
+        "agentProfile" : {
+            "home": {
+                "title": "Agent Profiles",
+                "createLabel": "Create a new Agent Profile",
+                "createOrEditLabel": "Create or edit a Agent Profile",
+                "search": "Search for Agent Profile"
+            },
+            "created": "A new Agent Profile is created with identifier {{ param }}",
+            "updated": "A Agent Profile is updated with identifier {{ param }}",
+            "deleted": "A Agent Profile is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Agent Profile {{ id }}?"
+            },
+            "detail": {
+                "title": "Agent Profile"
+            },
+            "agent_code": "Agent Code",
+            "first_name": "First Name",
+            "middle_name": "Middle Name",
+            "last_name": "Last Name",
+            "gender": "Gender",
+            "email": "Email",
+            "dob": "Dob",
+            "user": "User",
+            "insuranceCompany": "Insurance Company"
+        }
+    }
+}

@@ -1,0 +1,123 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myAgentProfileLabel" data-translate="whatscoverApp.agentProfile.home.createOrEditLabel">Create or edit a Agent Profile</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.agentProfile.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.agentProfile.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.agent_code" for="field_agent_code">Agent Code</label>
+            <input type="text" class="form-control" name="agent_code" id="field_agent_code"
+                    ng-model="vm.agentProfile.agent_code"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.agent_code.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.agent_code.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.agent_code.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.first_name" for="field_first_name">First Name</label>
+            <input type="text" class="form-control" name="first_name" id="field_first_name"
+                    ng-model="vm.agentProfile.first_name"
+                    ng-maxlength="100"/>
+            <div ng-show="editForm.first_name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.first_name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.middle_name" for="field_middle_name">Middle Name</label>
+            <input type="text" class="form-control" name="middle_name" id="field_middle_name"
+                    ng-model="vm.agentProfile.middle_name"
+                    ng-maxlength="100"/>
+            <div ng-show="editForm.middle_name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.middle_name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.last_name" for="field_last_name">Last Name</label>
+            <input type="text" class="form-control" name="last_name" id="field_last_name"
+                    ng-model="vm.agentProfile.last_name"
+                    ng-maxlength="100"/>
+            <div ng-show="editForm.last_name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.last_name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.gender" for="field_gender">Gender</label>
+            <select class="form-control" name="gender" ng-model="vm.agentProfile.gender" id="field_gender">
+                <option value="MALE" data-translate="whatscoverApp.Gender.MALE">MALE</option>
+                <option value="FEMALE" data-translate="whatscoverApp.Gender.FEMALE">FEMALE</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.email" for="field_email">Email</label>
+            <input type="text" class="form-control" name="email" id="field_email"
+                    ng-model="vm.agentProfile.email"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.email.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.email.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.email.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.dob" for="field_dob">Dob</label>
+                <div class="input-group">
+                    <input id="field_dob" type="text" class="form-control" name="dob" uib-datepicker-popup="{{dateformat}}" ng-model="vm.agentProfile.dob" is-open="vm.datePickerOpenStatus.dob"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dob')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="whatscoverApp.agentProfile.user" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" ng-model="vm.agentProfile.userId" ng-options="user.id as user.login for user in vm.users"            >
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="whatscoverApp.agentProfile.insuranceCompany" for="field_insuranceCompany">Insurance Company</label>
+            <select class="form-control" id="field_insuranceCompany" name="insuranceCompany" ng-model="vm.agentProfile.insuranceCompanyId" ng-options="insuranceCompany.id as insuranceCompany.id for insuranceCompany in vm.insurancecompanies"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

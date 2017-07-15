@@ -1,0 +1,30 @@
+{
+    "whatscoverApp": {
+        "agentProfile" : {
+            "home": {
+                "title": "Agent Profiles",
+                "createLabel": "Thêm mới một Agent Profile",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Agent Profile",
+                "search": "Tìm Agent Profile"
+            },
+            "created": "Một Agent Profile mới được tạo với định danh {{ param }}",
+            "updated": "Một Agent Profile cập nhật với định danh {{ param }}",
+            "deleted": "Một Agent Profile đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Agent Profile {{ id }}?"
+            },
+            "detail": {
+                "title": "Agent Profile"
+            },
+            "agent_code": "Agent Code",
+            "first_name": "First Name",
+            "middle_name": "Middle Name",
+            "last_name": "Last Name",
+            "gender": "Gender",
+            "email": "Email",
+            "dob": "Dob",
+            "user": "User",
+            "insuranceCompany": "Insurance Company"
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "whatscoverApp": {
+        "insuranceAgency" : {
+            "home": {
+                "title": "Insurance Agencies",
+                "createLabel": "Create a new Insurance Agency",
+                "createOrEditLabel": "Create or edit a Insurance Agency",
+                "search": "Search for Insurance Agency"
+            },
+            "created": "A new Insurance Agency is created with identifier {{ param }}",
+            "updated": "A Insurance Agency is updated with identifier {{ param }}",
+            "deleted": "A Insurance Agency is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Insurance Agency {{ id }}?"
+            },
+            "detail": {
+                "title": "Insurance Agency"
+            },
+            "code": "Code",
+            "name": "Name",
+            "address_1": "Address 1",
+            "address_2": "Address 2",
+            "address_3": "Address 3",
+            "insuranceCompany": "Insurance Company"
+        }
+    }
+}

@@ -10,13 +10,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A InsuaranceAgency.
+ * A InsuranceAgency.
  */
 @Entity
-@Table(name = "insuarance_agency")
+@Table(name = "insurance_agency")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "insuaranceagency")
-public class InsuaranceAgency extends AbstractAuditingEntity implements Serializable {
+@Document(indexName = "insuranceagency")
+public class InsuranceAgency implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,10 +28,6 @@ public class InsuaranceAgency extends AbstractAuditingEntity implements Serializ
     @Size(max = 100)
     @Column(name = "code", length = 100, nullable = false)
     private String code;
-
-    @NotNull
-    @Column(name = "insuarance_company_id", nullable = false)
-    private Integer insuarance_company_id;
 
     @Size(max = 200)
     @Column(name = "name", length = 200)
@@ -49,6 +45,9 @@ public class InsuaranceAgency extends AbstractAuditingEntity implements Serializ
     @Column(name = "address_3", length = 200)
     private String address_3;
 
+    @ManyToOne
+    private InsuranceCompany insuranceCompany;
+
     public Long getId() {
         return id;
     }
@@ -61,7 +60,7 @@ public class InsuaranceAgency extends AbstractAuditingEntity implements Serializ
         return code;
     }
 
-    public InsuaranceAgency code(String code) {
+    public InsuranceAgency code(String code) {
         this.code = code;
         return this;
     }
@@ -70,24 +69,11 @@ public class InsuaranceAgency extends AbstractAuditingEntity implements Serializ
         this.code = code;
     }
 
-    public Integer getInsuarance_company_id() {
-        return insuarance_company_id;
-    }
-
-    public InsuaranceAgency insuarance_company_id(Integer insuarance_company_id) {
-        this.insuarance_company_id = insuarance_company_id;
-        return this;
-    }
-
-    public void setInsuarance_company_id(Integer insuarance_company_id) {
-        this.insuarance_company_id = insuarance_company_id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public InsuaranceAgency name(String name) {
+    public InsuranceAgency name(String name) {
         this.name = name;
         return this;
     }
@@ -100,7 +86,7 @@ public class InsuaranceAgency extends AbstractAuditingEntity implements Serializ
         return address_1;
     }
 
-    public InsuaranceAgency address_1(String address_1) {
+    public InsuranceAgency address_1(String address_1) {
         this.address_1 = address_1;
         return this;
     }
@@ -113,7 +99,7 @@ public class InsuaranceAgency extends AbstractAuditingEntity implements Serializ
         return address_2;
     }
 
-    public InsuaranceAgency address_2(String address_2) {
+    public InsuranceAgency address_2(String address_2) {
         this.address_2 = address_2;
         return this;
     }
@@ -126,13 +112,26 @@ public class InsuaranceAgency extends AbstractAuditingEntity implements Serializ
         return address_3;
     }
 
-    public InsuaranceAgency address_3(String address_3) {
+    public InsuranceAgency address_3(String address_3) {
         this.address_3 = address_3;
         return this;
     }
 
     public void setAddress_3(String address_3) {
         this.address_3 = address_3;
+    }
+
+    public InsuranceCompany getInsuranceCompany() {
+        return insuranceCompany;
+    }
+
+    public InsuranceAgency insuranceCompany(InsuranceCompany insuranceCompany) {
+        this.insuranceCompany = insuranceCompany;
+        return this;
+    }
+
+    public void setInsuranceCompany(InsuranceCompany insuranceCompany) {
+        this.insuranceCompany = insuranceCompany;
     }
 
     @Override
@@ -143,11 +142,11 @@ public class InsuaranceAgency extends AbstractAuditingEntity implements Serializ
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InsuaranceAgency insuaranceAgency = (InsuaranceAgency) o;
-        if (insuaranceAgency.getId() == null || getId() == null) {
+        InsuranceAgency insuranceAgency = (InsuranceAgency) o;
+        if (insuranceAgency.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), insuaranceAgency.getId());
+        return Objects.equals(getId(), insuranceAgency.getId());
     }
 
     @Override
@@ -157,10 +156,9 @@ public class InsuaranceAgency extends AbstractAuditingEntity implements Serializ
 
     @Override
     public String toString() {
-        return "InsuaranceAgency{" +
+        return "InsuranceAgency{" +
             "id=" + getId() +
             ", code='" + getCode() + "'" +
-            ", insuarance_company_id='" + getInsuarance_company_id() + "'" +
             ", name='" + getName() + "'" +
             ", address_1='" + getAddress_1() + "'" +
             ", address_2='" + getAddress_2() + "'" +

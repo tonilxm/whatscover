@@ -8,8 +8,10 @@
     <include file="classpath:config/liquibase/changelog/20170713231811_added_entity_InsuranceCompany.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170714103724_added_entity_InsuranceProduct.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170715022321_added_entity_AgentProfile.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170713152048_added_entity_InsuaranceAgency.xml" relativeToChangelogFile="false"/>    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="classpath:config/liquibase/changelog/20170715025935_added_entity_InsuranceAgency.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170714103724_added_entity_constraints_InsuranceProduct.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170715022321_added_entity_constraints_AgentProfile.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170715025935_added_entity_constraints_InsuranceAgency.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

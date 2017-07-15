@@ -1,6 +1,13 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "insuranceCompany",
+            "otherEntityName": "insuranceCompany",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
     "fields": [
         {
             "fieldName": "code",
@@ -10,13 +17,6 @@
                 "maxlength"
             ],
             "fieldValidateRulesMaxlength": "100"
-        },
-        {
-            "fieldName": "insuarance_company_id",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required"
-            ]
         },
         {
             "fieldName": "name",
@@ -51,9 +51,9 @@
             "fieldValidateRulesMaxlength": "200"
         }
     ],
-    "changelogDate": "20170713152048",
-    "dto": "no",
+    "changelogDate": "20170715025935",
+    "dto": "mapstruct",
     "service": "no",
-    "entityTableName": "insuarance_agency",
+    "entityTableName": "insurance_agency",
     "pagination": "infinite-scroll"
 }

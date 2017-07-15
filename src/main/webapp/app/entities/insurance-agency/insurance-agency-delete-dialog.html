@@ -1,4 +1,4 @@
-<form name="deleteForm" ng-submit="vm.confirmDelete(vm.insuaranceAgency.id)">
+<form name="deleteForm" ng-submit="vm.confirmDelete(vm.insuranceAgency.id)">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
@@ -6,7 +6,7 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <p data-translate="whatscoverApp.insuaranceAgency.delete.question" translate-values="{id: '{{vm.insuaranceAgency.id}}'}">Are you sure you want to delete this Insuarance Agency?</p>
+        <p data-translate="whatscoverApp.insuranceAgency.delete.question" translate-values="{id: '{{vm.insuranceAgency.id}}'}">Are you sure you want to delete this Insurance Agency?</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

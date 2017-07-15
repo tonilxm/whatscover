@@ -3,14 +3,14 @@
 
     angular
         .module('whatscoverApp')
-        .controller('InsuaranceAgencyDeleteController',InsuaranceAgencyDeleteController);
+        .controller('InsuranceAgencyDeleteController',InsuranceAgencyDeleteController);
 
-    InsuaranceAgencyDeleteController.$inject = ['$uibModalInstance', 'entity', 'InsuaranceAgency'];
+    InsuranceAgencyDeleteController.$inject = ['$uibModalInstance', 'entity', 'InsuranceAgency'];
 
-    function InsuaranceAgencyDeleteController($uibModalInstance, entity, InsuaranceAgency) {
+    function InsuranceAgencyDeleteController($uibModalInstance, entity, InsuranceAgency) {
         var vm = this;
 
-        vm.insuaranceAgency = entity;
+        vm.insuranceAgency = entity;
         vm.clear = clear;
         vm.confirmDelete = confirmDelete;
 
@@ -19,7 +19,7 @@
         }
 
         function confirmDelete (id) {
-            InsuaranceAgency.delete({id: id},
+            InsuranceAgency.delete({id: id},
                 function () {
                     $uibModalInstance.close(true);
                 });

@@ -10,7 +10,8 @@
                 "insuranceCompany": "Insurance Company",
                 "insuranceProduct": "Insurance Product",
                 "agentProfile": "Agent Profile",
-                "insuaranceAgency": "Insuarance Agency",                "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+                "insuranceAgency": "Insurance Agency",
+                "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
                 "main": "Account",

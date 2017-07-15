@@ -2,12 +2,12 @@
     'use strict';
     angular
         .module('whatscoverApp')
-        .factory('InsuaranceAgency', InsuaranceAgency);
+        .factory('InsuranceAgency', InsuranceAgency);
 
-    InsuaranceAgency.$inject = ['$resource'];
+    InsuranceAgency.$inject = ['$resource'];
 
-    function InsuaranceAgency ($resource) {
-        var resourceUrl =  'api/insuarance-agencies/:id';
+    function InsuranceAgency ($resource) {
+        var resourceUrl =  'api/insurance-agencies/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

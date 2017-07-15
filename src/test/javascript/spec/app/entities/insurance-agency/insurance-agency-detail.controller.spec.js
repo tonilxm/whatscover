@@ -2,9 +2,9 @@
 
 describe('Controller Tests', function() {
 
-    describe('InsuaranceAgency Management Detail Controller', function() {
+    describe('InsuranceAgency Management Detail Controller', function() {
         var $scope, $rootScope;
-        var MockEntity, MockPreviousState, MockInsuaranceAgency;
+        var MockEntity, MockPreviousState, MockInsuranceAgency, MockInsuranceCompany;
         var createController;
 
         beforeEach(inject(function($injector) {
@@ -12,7 +12,8 @@ describe('Controller Tests', function() {
             $scope = $rootScope.$new();
             MockEntity = jasmine.createSpy('MockEntity');
             MockPreviousState = jasmine.createSpy('MockPreviousState');
-            MockInsuaranceAgency = jasmine.createSpy('MockInsuaranceAgency');
+            MockInsuranceAgency = jasmine.createSpy('MockInsuranceAgency');
+            MockInsuranceCompany = jasmine.createSpy('MockInsuranceCompany');
             
 
             var locals = {
@@ -20,17 +21,18 @@ describe('Controller Tests', function() {
                 '$rootScope': $rootScope,
                 'entity': MockEntity,
                 'previousState': MockPreviousState,
-                'InsuaranceAgency': MockInsuaranceAgency
+                'InsuranceAgency': MockInsuranceAgency,
+                'InsuranceCompany': MockInsuranceCompany
             };
             createController = function() {
-                $injector.get('$controller')("InsuaranceAgencyDetailController", locals);
+                $injector.get('$controller')("InsuranceAgencyDetailController", locals);
             };
         }));
 
 
         describe('Root Scope Listening', function() {
             it('Unregisters root scope listener upon scope destruction', function() {
-                var eventType = 'whatscoverApp:insuaranceAgencyUpdate';
+                var eventType = 'whatscoverApp:insuranceAgencyUpdate';
 
                 createController();
                 expect($rootScope.$$listenerCount[eventType]).toEqual(1);

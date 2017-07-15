@@ -3,15 +3,15 @@
 
     angular
         .module('whatscoverApp')
-        .controller('InsuaranceAgencyController', InsuaranceAgencyController);
+        .controller('InsuranceAgencyController', InsuranceAgencyController);
 
-    InsuaranceAgencyController.$inject = ['InsuaranceAgency', 'InsuaranceAgencySearch', 'ParseLinks', 'AlertService', 'paginationConstants'];
+    InsuranceAgencyController.$inject = ['InsuranceAgency', 'InsuranceAgencySearch', 'ParseLinks', 'AlertService', 'paginationConstants'];
 
-    function InsuaranceAgencyController(InsuaranceAgency, InsuaranceAgencySearch, ParseLinks, AlertService, paginationConstants) {
+    function InsuranceAgencyController(InsuranceAgency, InsuranceAgencySearch, ParseLinks, AlertService, paginationConstants) {
 
         var vm = this;
 
-        vm.insuaranceAgencies = [];
+        vm.insuranceAgencies = [];
         vm.loadPage = loadPage;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.page = 0;
@@ -29,14 +29,14 @@
 
         function loadAll () {
             if (vm.currentSearch) {
-                InsuaranceAgencySearch.query({
+                InsuranceAgencySearch.query({
                     query: vm.currentSearch,
                     page: vm.page,
                     size: vm.itemsPerPage,
                     sort: sort()
                 }, onSuccess, onError);
             } else {
-                InsuaranceAgency.query({
+                InsuranceAgency.query({
                     page: vm.page,
                     size: vm.itemsPerPage,
                     sort: sort()
@@ -54,7 +54,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
-                    vm.insuaranceAgencies.push(data[i]);
+                    vm.insuranceAgencies.push(data[i]);
                 }
             }
 
@@ -65,7 +65,7 @@
 
         function reset () {
             vm.page = 0;
-            vm.insuaranceAgencies = [];
+            vm.insuranceAgencies = [];
             loadAll();
         }
 
@@ -75,7 +75,7 @@
         }
 
         function clear () {
-            vm.insuaranceAgencies = [];
+            vm.insuranceAgencies = [];
             vm.links = {
                 last: 0
             };
@@ -91,7 +91,7 @@
             if (!searchQuery){
                 return vm.clear();
             }
-            vm.insuaranceAgencies = [];
+            vm.insuranceAgencies = [];
             vm.links = {
                 last: 0
             };

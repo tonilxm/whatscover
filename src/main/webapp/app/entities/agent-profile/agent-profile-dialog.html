@@ -111,6 +111,12 @@
                 <option value=""></option>
             </select>
         </div>
+        <div class="form-group">
+            <label data-translate="whatscoverApp.agentProfile.insuranceAgency" for="field_insuranceAgency">Insurance Agency</label>
+            <select class="form-control" id="field_insuranceAgency" name="insuranceAgency" ng-model="vm.agentProfile.insuranceAgencyId" ng-options="insuranceAgency.id as insuranceAgency.id for insuranceAgency in vm.insuranceagencies"            >
+                <option value=""></option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

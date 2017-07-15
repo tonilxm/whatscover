@@ -43,6 +43,8 @@ public class AgentProfileDTO implements Serializable {
 
     private Long insuranceCompanyId;
 
+    private Long insuranceAgencyId;
+
     public Long getId() {
         return id;
     }
@@ -129,6 +131,14 @@ public class AgentProfileDTO implements Serializable {
 
     public void setInsuranceCompanyId(Long insuranceCompanyId) {
         this.insuranceCompanyId = insuranceCompanyId;
+    }
+
+    public Long getInsuranceAgencyId() {
+        return insuranceAgencyId;
+    }
+
+    public void setInsuranceAgencyId(Long insuranceAgencyId) {
+        this.insuranceAgencyId = insuranceAgencyId;
     }
 
     @Override

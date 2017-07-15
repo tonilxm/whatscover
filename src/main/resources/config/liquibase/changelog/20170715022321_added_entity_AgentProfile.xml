@@ -23,7 +23,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="agent_code" type="varchar(100)">
-                <constraints unique="true" nullable="false" />
+                <constraints  unique="true" nullable="false" />
             </column>
 
             <column name="first_name" type="varchar(100)">
@@ -43,7 +43,7 @@
             </column>
 
             <column name="email" type="varchar(100)">
-                <constraints unique="true" nullable="false" />
+                <constraints  unique="true" nullable="false" />
             </column>
 
             <column name="dob" type="date">
@@ -55,6 +55,11 @@
             <column name="insurance_company_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+
+            <column name="insurance_agency_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>

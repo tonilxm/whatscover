@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('AgentProfileDetailController', AgentProfileDetailController);
 
-    AgentProfileDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'AgentProfile', 'User', 'InsuranceCompany'];
+    AgentProfileDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency'];
 
-    function AgentProfileDetailController($scope, $rootScope, $stateParams, previousState, entity, AgentProfile, User, InsuranceCompany) {
+    function AgentProfileDetailController($scope, $rootScope, $stateParams, previousState, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency) {
         var vm = this;
 
         vm.agentProfile = entity;

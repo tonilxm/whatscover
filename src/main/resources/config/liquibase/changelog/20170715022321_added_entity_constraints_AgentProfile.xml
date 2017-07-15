@@ -20,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="insurance_company"/>
 
+        <addForeignKeyConstraint baseColumnNames="insurance_agency_id"
+                                 baseTableName="agent_profile"
+                                 constraintName="fk_agent_profile_insurance_agency_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="insurance_agency"/>
+
     </changeSet>
 </databaseChangeLog>

@@ -63,6 +63,9 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
     @ManyToOne
     private InsuranceCompany insuranceCompany;
 
+    @ManyToOne
+    private InsuranceAgency insuranceAgency;
+
     public Long getId() {
         return id;
     }
@@ -186,6 +189,19 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
 
     public void setInsuranceCompany(InsuranceCompany insuranceCompany) {
         this.insuranceCompany = insuranceCompany;
+    }
+
+    public InsuranceAgency getInsuranceAgency() {
+        return insuranceAgency;
+    }
+
+    public AgentProfile insuranceAgency(InsuranceAgency insuranceAgency) {
+        this.insuranceAgency = insuranceAgency;
+        return this;
+    }
+
+    public void setInsuranceAgency(InsuranceAgency insuranceAgency) {
+        this.insuranceAgency = insuranceAgency;
     }
 
     @Override

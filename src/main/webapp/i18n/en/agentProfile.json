@@ -24,7 +24,8 @@
             "email": "Email",
             "dob": "Dob",
             "user": "User",
-            "insuranceCompany": "Insurance Company"
+            "insuranceCompany": "Insurance Company",
+            "insuranceAgency": "Insurance Agency"
         }
     }
 }

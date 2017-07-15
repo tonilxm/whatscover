@@ -45,6 +45,7 @@
                     <th jh-sort-by="dob"><span data-translate="whatscoverApp.agentProfile.dob">Dob</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="userLogin"><span data-translate="whatscoverApp.agentProfile.user">User</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="insuranceCompanyId"><span data-translate="whatscoverApp.agentProfile.insuranceCompany">Insurance Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="insuranceAgencyId"><span data-translate="whatscoverApp.agentProfile.insuranceAgency">Insurance Agency</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -63,6 +64,9 @@
                     </td>
                     <td>
                         <a ui-sref="insurance-company-detail({id:agentProfile.insuranceCompanyId})">{{agentProfile.insuranceCompanyId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="insurance-agency-detail({id:agentProfile.insuranceAgencyId})">{{agentProfile.insuranceAgencyId}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('AgentProfileDialogController', AgentProfileDialogController);
 
-    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany'];
+    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency'];
 
-    function AgentProfileDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, AgentProfile, User, InsuranceCompany) {
+    function AgentProfileDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency) {
         var vm = this;
 
         vm.agentProfile = entity;
@@ -17,6 +17,7 @@
         vm.save = save;
         vm.users = User.query();
         vm.insurancecompanies = InsuranceCompany.query();
+        vm.insuranceagencies = InsuranceAgency.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

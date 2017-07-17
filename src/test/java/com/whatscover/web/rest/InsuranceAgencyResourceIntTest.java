@@ -5,6 +5,7 @@ import com.whatscover.WhatscoverApp;
 import com.whatscover.domain.InsuranceAgency;
 import com.whatscover.repository.InsuranceAgencyRepository;
 import com.whatscover.repository.search.InsuranceAgencySearchRepository;
+import com.whatscover.service.InsuranceAgencyService;
 import com.whatscover.service.dto.InsuranceAgencyDTO;
 import com.whatscover.service.mapper.InsuranceAgencyMapper;
 import com.whatscover.web.rest.errors.ExceptionTranslator;
@@ -56,6 +57,9 @@ public class InsuranceAgencyResourceIntTest {
     private static final String UPDATED_ADDRESS_3 = "BBBBBBBBBB";
 
     @Autowired
+    private InsuranceAgencyService insuranceAgencyService;
+    
+    @Autowired
     private InsuranceAgencyRepository insuranceAgencyRepository;
 
     @Autowired
@@ -83,7 +87,8 @@ public class InsuranceAgencyResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        InsuranceAgencyResource insuranceAgencyResource = new InsuranceAgencyResource(insuranceAgencyRepository, insuranceAgencyMapper, insuranceAgencySearchRepository);
+        InsuranceAgencyResource insuranceAgencyResource = new InsuranceAgencyResource(
+        		insuranceAgencyService, insuranceAgencyRepository);
         this.restInsuranceAgencyMockMvc = MockMvcBuilders.standaloneSetup(insuranceAgencyResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

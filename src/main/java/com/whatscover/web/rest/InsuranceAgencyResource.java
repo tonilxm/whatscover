@@ -2,11 +2,12 @@ package com.whatscover.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.whatscover.domain.InsuranceAgency;
-
+import com.whatscover.domain.InsuranceCompany;
 import com.whatscover.repository.InsuranceAgencyRepository;
 import com.whatscover.repository.search.InsuranceAgencySearchRepository;
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
+import com.whatscover.service.InsuranceAgencyService;
 import com.whatscover.service.dto.InsuranceAgencyDTO;
 import com.whatscover.service.mapper.InsuranceAgencyMapper;
 import io.swagger.annotations.ApiParam;
@@ -26,10 +27,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing InsuranceAgency.
@@ -42,16 +39,14 @@ public class InsuranceAgencyResource {
 
     private static final String ENTITY_NAME = "insuranceAgency";
 
+    private final InsuranceAgencyService insuranceAgencyService;
+    
     private final InsuranceAgencyRepository insuranceAgencyRepository;
 
-    private final InsuranceAgencyMapper insuranceAgencyMapper;
-
-    private final InsuranceAgencySearchRepository insuranceAgencySearchRepository;
-
-    public InsuranceAgencyResource(InsuranceAgencyRepository insuranceAgencyRepository, InsuranceAgencyMapper insuranceAgencyMapper, InsuranceAgencySearchRepository insuranceAgencySearchRepository) {
+    public InsuranceAgencyResource(InsuranceAgencyService insuranceAgencyService, 
+    		InsuranceAgencyRepository insuranceAgencyRepository) {
+        this.insuranceAgencyService = insuranceAgencyService;
         this.insuranceAgencyRepository = insuranceAgencyRepository;
-        this.insuranceAgencyMapper = insuranceAgencyMapper;
-        this.insuranceAgencySearchRepository = insuranceAgencySearchRepository;
     }
 
     /**
@@ -63,15 +58,18 @@ public class InsuranceAgencyResource {
      */
     @PostMapping("/insurance-agencies")
     @Timed
-    public ResponseEntity<InsuranceAgencyDTO> createInsuranceAgency(@Valid @RequestBody InsuranceAgencyDTO insuranceAgencyDTO) throws URISyntaxException {
+    public ResponseEntity<InsuranceAgencyDTO> createInsuranceAgency(
+    		@Valid @RequestBody InsuranceAgencyDTO insuranceAgencyDTO) 
+    				throws URISyntaxException {
         log.debug("REST request to save InsuranceAgency : {}", insuranceAgencyDTO);
         if (insuranceAgencyDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new insuranceAgency cannot already have an ID")).body(null);
-        }
-        InsuranceAgency insuranceAgency = insuranceAgencyMapper.toEntity(insuranceAgencyDTO);
-        insuranceAgency = insuranceAgencyRepository.save(insuranceAgency);
-        InsuranceAgencyDTO result = insuranceAgencyMapper.toDto(insuranceAgency);
-        insuranceAgencySearchRepository.save(insuranceAgency);
+        } else if (insuranceAgencyRepository.findOneByCode(insuranceAgencyDTO.getCode()).isPresent()) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.agencycodeexists", "Agency Code already in use"))
+					.body(null);
+		}
+        InsuranceAgencyDTO result = insuranceAgencyService.save(insuranceAgencyDTO);
         return ResponseEntity.created(new URI("/api/insurance-agencies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -88,15 +86,14 @@ public class InsuranceAgencyResource {
      */
     @PutMapping("/insurance-agencies")
     @Timed
-    public ResponseEntity<InsuranceAgencyDTO> updateInsuranceAgency(@Valid @RequestBody InsuranceAgencyDTO insuranceAgencyDTO) throws URISyntaxException {
+    public ResponseEntity<InsuranceAgencyDTO> updateInsuranceAgency(
+    		@Valid @RequestBody InsuranceAgencyDTO insuranceAgencyDTO) 
+    				throws URISyntaxException {
         log.debug("REST request to update InsuranceAgency : {}", insuranceAgencyDTO);
         if (insuranceAgencyDTO.getId() == null) {
             return createInsuranceAgency(insuranceAgencyDTO);
         }
-        InsuranceAgency insuranceAgency = insuranceAgencyMapper.toEntity(insuranceAgencyDTO);
-        insuranceAgency = insuranceAgencyRepository.save(insuranceAgency);
-        InsuranceAgencyDTO result = insuranceAgencyMapper.toDto(insuranceAgency);
-        insuranceAgencySearchRepository.save(insuranceAgency);
+        InsuranceAgencyDTO result = insuranceAgencyService.save(insuranceAgencyDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, insuranceAgencyDTO.getId().toString()))
             .body(result);
@@ -110,11 +107,12 @@ public class InsuranceAgencyResource {
      */
     @GetMapping("/insurance-agencies")
     @Timed
-    public ResponseEntity<List<InsuranceAgencyDTO>> getAllInsuranceAgencies(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<InsuranceAgencyDTO>> getAllInsuranceAgencies(
+    		@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of InsuranceAgencies");
-        Page<InsuranceAgency> page = insuranceAgencyRepository.findAll(pageable);
+        Page<InsuranceAgencyDTO> page = insuranceAgencyService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/insurance-agencies");
-        return new ResponseEntity<>(insuranceAgencyMapper.toDto(page.getContent()), headers, HttpStatus.OK);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -127,8 +125,7 @@ public class InsuranceAgencyResource {
     @Timed
     public ResponseEntity<InsuranceAgencyDTO> getInsuranceAgency(@PathVariable Long id) {
         log.debug("REST request to get InsuranceAgency : {}", id);
-        InsuranceAgency insuranceAgency = insuranceAgencyRepository.findOne(id);
-        InsuranceAgencyDTO insuranceAgencyDTO = insuranceAgencyMapper.toDto(insuranceAgency);
+        InsuranceAgencyDTO insuranceAgencyDTO = insuranceAgencyService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(insuranceAgencyDTO));
     }
 
@@ -142,8 +139,7 @@ public class InsuranceAgencyResource {
     @Timed
     public ResponseEntity<Void> deleteInsuranceAgency(@PathVariable Long id) {
         log.debug("REST request to delete InsuranceAgency : {}", id);
-        insuranceAgencyRepository.delete(id);
-        insuranceAgencySearchRepository.delete(id);
+        insuranceAgencyService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -159,9 +155,10 @@ public class InsuranceAgencyResource {
     @Timed
     public ResponseEntity<List<InsuranceAgencyDTO>> searchInsuranceAgencies(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of InsuranceAgencies for query {}", query);
-        Page<InsuranceAgency> page = insuranceAgencySearchRepository.search(queryStringQuery(query), pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/insurance-agencies");
-        return new ResponseEntity<>(insuranceAgencyMapper.toDto(page.getContent()), headers, HttpStatus.OK);
+        Page<InsuranceAgencyDTO> page = insuranceAgencyService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(
+        		query, page, "/api/_search/insurance-agencies");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

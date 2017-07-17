@@ -1,0 +1,28 @@
+{
+    "whatscoverApp": {
+        "customerProfile" : {
+            "home": {
+                "title": "Customer Profiles",
+                "createLabel": "Create a new Customer Profile",
+                "createOrEditLabel": "Create or edit a Customer Profile",
+                "search": "Search for Customer Profile"
+            },
+            "created": "A new Customer Profile is created with identifier {{ param }}",
+            "updated": "A Customer Profile is updated with identifier {{ param }}",
+            "deleted": "A Customer Profile is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Customer Profile {{ id }}?"
+            },
+            "detail": {
+                "title": "Customer Profile"
+            },
+            "firstName": "First Name",
+            "middleName": "Middle Name",
+            "lastName": "Last Name",
+            "gender": "Gender",
+            "email": "Email",
+            "dob": "Dob",
+            "user": "User"
+        }
+    }
+}

@@ -136,7 +136,7 @@ public class InsuranceAgencyResourceIntTest {
 
         // Validate the InsuranceAgency in Elasticsearch
         InsuranceAgency insuranceAgencyEs = insuranceAgencySearchRepository.findOne(testInsuranceAgency.getId());
-        assertThat(insuranceAgencyEs).isEqualToComparingFieldByField(testInsuranceAgency);
+        assertThat(insuranceAgencyEs.equals(testInsuranceAgency));
     }
 
     @Test
@@ -257,7 +257,7 @@ public class InsuranceAgencyResourceIntTest {
 
         // Validate the InsuranceAgency in Elasticsearch
         InsuranceAgency insuranceAgencyEs = insuranceAgencySearchRepository.findOne(testInsuranceAgency.getId());
-        assertThat(insuranceAgencyEs).isEqualToComparingFieldByField(testInsuranceAgency);
+        assertThat(insuranceAgencyEs.equals(testInsuranceAgency));
     }
 
     @Test

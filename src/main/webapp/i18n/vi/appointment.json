@@ -1,0 +1,30 @@
+{
+    "whatscoverApp": {
+        "appointment" : {
+            "home": {
+                "title": "Appointments",
+                "createLabel": "Thêm mới một Appointment",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Appointment",
+                "search": "Tìm Appointment"
+            },
+            "created": "Một Appointment mới được tạo với định danh {{ param }}",
+            "updated": "Một Appointment cập nhật với định danh {{ param }}",
+            "deleted": "Một Appointment đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Appointment {{ id }}?"
+            },
+            "detail": {
+                "title": "Appointment"
+            },
+            "phone": "Phone",
+            "locationGeoLong": "Location Geo Long",
+            "locationGeoLat": "Location Geo Lat",
+            "locationAddress": "Location Address",
+            "datetime": "Datetime",
+            "assignedDatetime": "Assigned Datetime",
+            "status": "Status",
+            "customerProfile": "Customer Profile",
+            "assignedAgentProfile": "Assigned Agent Profile"
+        }
+    }
+}

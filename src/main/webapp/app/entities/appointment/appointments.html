@@ -1,0 +1,97 @@
+<div>
+    <h2 data-translate="whatscoverApp.appointment.home.title">Appointments</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="appointment.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs-down"  data-translate="whatscoverApp.appointment.home.createLabel">
+                        Create new Appointment
+                    </span>
+                </button>
+            </div>
+            <div class="col-xs-8 no-padding-right">
+                <form name="searchForm" class="form-inline">
+                    <div class="input-group pull-right" >
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'whatscoverApp.appointment.home.search' | translate }}">
+                        <span  class="input-group-btn width-min" >
+                            <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
+                            <button class="btn btn-info" ng-click="vm.clear()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="phone"><span data-translate="whatscoverApp.appointment.phone">Phone</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="locationGeoLong"><span data-translate="whatscoverApp.appointment.locationGeoLong">Location Geo Long</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="locationGeoLat"><span data-translate="whatscoverApp.appointment.locationGeoLat">Location Geo Lat</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="locationAddress"><span data-translate="whatscoverApp.appointment.locationAddress">Location Address</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="datetime"><span data-translate="whatscoverApp.appointment.datetime">Datetime</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="assignedDatetime"><span data-translate="whatscoverApp.appointment.assignedDatetime">Assigned Datetime</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="status"><span data-translate="whatscoverApp.appointment.status">Status</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="customerProfileId"><span data-translate="whatscoverApp.appointment.customerProfile">Customer Profile</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="assignedAgentProfileId"><span data-translate="whatscoverApp.appointment.assignedAgentProfile">Assigned Agent Profile</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="appointment in vm.appointments track by appointment.id">
+                    <td><a ui-sref="appointment-detail({id:appointment.id})">{{appointment.id}}</a></td>
+                    <td>{{appointment.phone}}</td>
+                    <td>{{appointment.locationGeoLong}}</td>
+                    <td>{{appointment.locationGeoLat}}</td>
+                    <td>{{appointment.locationAddress}}</td>
+                    <td>{{appointment.datetime | date:'medium'}}</td>
+                    <td>{{appointment.assignedDatetime | date:'medium'}}</td>
+                    <td data-translate="{{'whatscoverApp.AppointmentStatus.' + appointment.status}}">{{appointment.status}}</td>
+                    <td>
+                        <a ui-sref="customer-profile-detail({id:appointment.customerProfileId})">{{appointment.customerProfileId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="agent-profile-detail({id:appointment.assignedAgentProfileId})">{{appointment.assignedAgentProfileId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="appointment-detail({id:appointment.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="appointment.edit({id:appointment.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="appointment.delete({id:appointment.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>

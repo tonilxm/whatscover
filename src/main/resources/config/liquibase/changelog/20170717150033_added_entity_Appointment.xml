@@ -13,40 +13,50 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity CustomerProfile.
+        Added the entity Appointment.
     -->
-    <changeSet id="20170717142111-1" author="jhipster">
+    <changeSet id="20170717150033-1" author="jhipster">
         <validCheckSum>ANY</validCheckSum>
-        <createTable tableName="customer_profile">
+        <createTable tableName="appointment">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="first_name" type="varchar(100)">
+            <column name="phone" type="varchar(50)">
                 <constraints nullable="false" />
             </column>
 
-            <column name="middle_name" type="varchar(100)">
+            <column name="location_geo_long" type="${floatType}">
                 <constraints nullable="true" />
             </column>
 
-            <column name="last_name" type="varchar(100)">
+            <column name="location_geo_lat" type="${floatType}">
                 <constraints nullable="true" />
             </column>
 
-            <column name="gender" type="varchar(255)">
+            <column name="location_address" type="varchar(500)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="datetime" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="assigned_datetime" type="timestamp">
                 <constraints nullable="true" />
             </column>
 
-            <column name="email" type="varchar(255)">
+            <column name="status" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="customer_profile_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="assigned_agent_profile_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
-            <column name="dob" type="date">
-                <constraints nullable="true" />
-            </column>
-            <column name="user_id" type="bigint">
-                <constraints unique="true" nullable="false" />
-            </column>
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
@@ -55,8 +65,11 @@
             </column>
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="appointment" columnName="datetime" columnDataType="datetime"/>
+        <dropDefaultValue tableName="appointment" columnName="assigned_datetime" columnDataType="datetime"/>
 
     </changeSet>
 </databaseChangeLog>

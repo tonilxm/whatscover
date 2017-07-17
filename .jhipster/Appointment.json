@@ -1,0 +1,72 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "customerProfile",
+            "otherEntityName": "customerProfile",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "assignedAgentProfile",
+            "otherEntityName": "agentProfile",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "phone",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "50"
+        },
+        {
+            "fieldName": "locationGeoLong",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "locationGeoLat",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "locationAddress",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "500"
+        },
+        {
+            "fieldName": "datetime",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "assignedDatetime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "AppointmentStatus",
+            "fieldValues": "NEW_APPOINTMENT,WAITING_RESPONSE,APPOINTMENT_ACCEPTED,APPOINTMENT_REJECTED,CUSTOMER_NOT_INTERESTED,CUSTOMER_INTERESTED,POLICY_ISSUED,POLICY_REJECTED",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170717150033",
+    "dto": "mapstruct",
+    "service": "serviceImpl",
+    "entityTableName": "appointment",
+    "pagination": "pagination"
+}

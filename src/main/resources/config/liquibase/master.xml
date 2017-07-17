@@ -10,10 +10,12 @@
     <include file="classpath:config/liquibase/changelog/20170715022321_added_entity_AgentProfile.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170715025935_added_entity_InsuranceAgency.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170717142111_added_entity_CustomerProfile.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170717150033_added_entity_Appointment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170714103724_added_entity_constraints_InsuranceProduct.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170715022321_added_entity_constraints_AgentProfile.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170715025935_added_entity_constraints_InsuranceAgency.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170717142111_added_entity_constraints_CustomerProfile.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170717150033_added_entity_constraints_Appointment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

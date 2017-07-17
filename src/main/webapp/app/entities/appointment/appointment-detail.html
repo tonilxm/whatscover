@@ -1,0 +1,55 @@
+
+<div>
+    <h2><span data-translate="whatscoverApp.appointment.detail.title">Appointment</span> {{vm.appointment.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="whatscoverApp.appointment.phone">Phone</span></dt>
+        <dd>
+            <span>{{vm.appointment.phone}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.appointment.locationGeoLong">Location Geo Long</span></dt>
+        <dd>
+            <span>{{vm.appointment.locationGeoLong}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.appointment.locationGeoLat">Location Geo Lat</span></dt>
+        <dd>
+            <span>{{vm.appointment.locationGeoLat}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.appointment.locationAddress">Location Address</span></dt>
+        <dd>
+            <span>{{vm.appointment.locationAddress}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.appointment.datetime">Datetime</span></dt>
+        <dd>
+            <span>{{vm.appointment.datetime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.appointment.assignedDatetime">Assigned Datetime</span></dt>
+        <dd>
+            <span>{{vm.appointment.assignedDatetime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.appointment.status">Status</span></dt>
+        <dd>
+            <span data-translate="{{'whatscoverApp.AppointmentStatus.' + vm.appointment.status}}">{{vm.appointment.status}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.appointment.customerProfile">Customer Profile</span></dt>
+        <dd>
+            <a ui-sref="customer-profile-detail({id:vm.appointment.customerProfileId})">{{vm.appointment.customerProfileId}}</a>
+        </dd>
+        <dt><span data-translate="whatscoverApp.appointment.assignedAgentProfile">Assigned Agent Profile</span></dt>
+        <dd>
+            <a ui-sref="agent-profile-detail({id:vm.appointment.assignedAgentProfileId})">{{vm.appointment.assignedAgentProfileId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="appointment-detail.edit({id:vm.appointment.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

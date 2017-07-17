@@ -1,0 +1,136 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myAppointmentLabel" data-translate="whatscoverApp.appointment.home.createOrEditLabel">Create or edit a Appointment</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.appointment.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.appointment.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.appointment.phone" for="field_phone">Phone</label>
+            <input type="text" class="form-control" name="phone" id="field_phone"
+                    ng-model="vm.appointment.phone"
+                    required ng-maxlength="50"/>
+            <div ng-show="editForm.phone.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.phone.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.phone.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="50">
+                    This field cannot be longer than 50 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.appointment.locationGeoLong" for="field_locationGeoLong">Location Geo Long</label>
+            <input type="number" class="form-control" name="locationGeoLong" id="field_locationGeoLong"
+                    ng-model="vm.appointment.locationGeoLong"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.appointment.locationGeoLat" for="field_locationGeoLat">Location Geo Lat</label>
+            <input type="number" class="form-control" name="locationGeoLat" id="field_locationGeoLat"
+                    ng-model="vm.appointment.locationGeoLat"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.appointment.locationAddress" for="field_locationAddress">Location Address</label>
+            <input type="text" class="form-control" name="locationAddress" id="field_locationAddress"
+                    ng-model="vm.appointment.locationAddress"
+                    required ng-maxlength="500"/>
+            <div ng-show="editForm.locationAddress.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.locationAddress.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.locationAddress.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="500">
+                    This field cannot be longer than 500 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.appointment.datetime" for="field_datetime">Datetime</label>
+                <div class="input-group">
+                    <input id="field_datetime" type="text" class="form-control" name="datetime" datetime-picker="{{dateformat}}" ng-model="vm.appointment.datetime" is-open="vm.datePickerOpenStatus.datetime"
+                    required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('datetime')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.datetime.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.datetime.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.datetime.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.appointment.assignedDatetime" for="field_assignedDatetime">Assigned Datetime</label>
+                <div class="input-group">
+                    <input id="field_assignedDatetime" type="text" class="form-control" name="assignedDatetime" datetime-picker="{{dateformat}}" ng-model="vm.appointment.assignedDatetime" is-open="vm.datePickerOpenStatus.assignedDatetime"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('assignedDatetime')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.appointment.status" for="field_status">Status</label>
+            <select class="form-control" name="status" ng-model="vm.appointment.status" id="field_status" required>
+                <option value="NEW_APPOINTMENT" data-translate="whatscoverApp.AppointmentStatus.NEW_APPOINTMENT">NEW_APPOINTMENT</option>
+                <option value="WAITING_RESPONSE" data-translate="whatscoverApp.AppointmentStatus.WAITING_RESPONSE">WAITING_RESPONSE</option>
+                <option value="APPOINTMENT_ACCEPTED" data-translate="whatscoverApp.AppointmentStatus.APPOINTMENT_ACCEPTED">APPOINTMENT_ACCEPTED</option>
+                <option value="APPOINTMENT_REJECTED" data-translate="whatscoverApp.AppointmentStatus.APPOINTMENT_REJECTED">APPOINTMENT_REJECTED</option>
+                <option value="CUSTOMER_NOT_INTERESTED" data-translate="whatscoverApp.AppointmentStatus.CUSTOMER_NOT_INTERESTED">CUSTOMER_NOT_INTERESTED</option>
+                <option value="CUSTOMER_INTERESTED" data-translate="whatscoverApp.AppointmentStatus.CUSTOMER_INTERESTED">CUSTOMER_INTERESTED</option>
+                <option value="POLICY_ISSUED" data-translate="whatscoverApp.AppointmentStatus.POLICY_ISSUED">POLICY_ISSUED</option>
+                <option value="POLICY_REJECTED" data-translate="whatscoverApp.AppointmentStatus.POLICY_REJECTED">POLICY_REJECTED</option>
+            </select>
+            <div ng-show="editForm.status.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.status.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="whatscoverApp.appointment.customerProfile" for="field_customerProfile">Customer Profile</label>
+            <select class="form-control" id="field_customerProfile" name="customerProfile" ng-model="vm.appointment.customerProfileId" ng-options="customerProfile.id as customerProfile.id for customerProfile in vm.customerprofiles"             required>
+            </select>
+        </div>
+        <div ng-show="editForm.customerProfile.$invalid">
+            <p class="help-block"
+                ng-show="editForm.customerProfile.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+        <div class="form-group">
+            <label data-translate="whatscoverApp.appointment.assignedAgentProfile" for="field_assignedAgentProfile">Assigned Agent Profile</label>
+            <select class="form-control" id="field_assignedAgentProfile" name="assignedAgentProfile" ng-model="vm.appointment.assignedAgentProfileId" ng-options="agentProfile.id as agentProfile.id for agentProfile in vm.agentprofiles"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

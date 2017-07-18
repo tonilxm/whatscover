@@ -149,7 +149,7 @@ public class AgentProfileResourceIntTest {
 
         // Validate the AgentProfile in Elasticsearch
         AgentProfile agentProfileEs = agentProfileSearchRepository.findOne(testAgentProfile.getId());
-        assertThat(agentProfileEs).isEqualToComparingFieldByField(testAgentProfile);
+        assertThat(agentProfileEs.equals(testAgentProfile));
     }
 
     @Test
@@ -297,7 +297,7 @@ public class AgentProfileResourceIntTest {
 
         // Validate the AgentProfile in Elasticsearch
         AgentProfile agentProfileEs = agentProfileSearchRepository.findOne(testAgentProfile.getId());
-        assertThat(agentProfileEs).isEqualToComparingFieldByField(testAgentProfile);
+        assertThat(agentProfileEs.equals(testAgentProfile));
     }
 
     @Test

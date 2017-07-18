@@ -1,6 +1,7 @@
 package com.whatscover.service.impl;
 
 import com.whatscover.service.InsuranceAgencyService;
+import com.whatscover.config.Constants;
 import com.whatscover.domain.InsuranceAgency;
 import com.whatscover.repository.InsuranceAgencyRepository;
 import com.whatscover.repository.search.InsuranceAgencySearchRepository;
@@ -105,7 +106,9 @@ public class InsuranceAgencyServiceImpl implements InsuranceAgencyService{
     @Transactional(readOnly = true)
 	public Page<InsuranceAgencyDTO> search(String query, Pageable pageable) {
 		log.debug("Request to search for a page of InsuranceAgencies for query {}", query);
-        Page<InsuranceAgency> result = insuranceAgencySearchRepository.search(queryStringQuery(query), pageable);
+        Page<InsuranceAgency> result = insuranceAgencySearchRepository
+        		.search(queryStringQuery(query).field("name")
+				.minimumShouldMatch(String.valueOf(query.length())), pageable);
         return result.map(insuranceAgencyMapper::toDto);
 	}
 }

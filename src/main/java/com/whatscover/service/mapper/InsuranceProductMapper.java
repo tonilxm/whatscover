@@ -11,7 +11,10 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {InsuranceCompanyMapper.class, })
 public interface InsuranceProductMapper extends EntityMapper <InsuranceProductDTO, InsuranceProduct> {
 
-    @Mapping(source = "insuranceCompany.id", target = "insuranceCompanyId")
+    @Mappings({
+        @Mapping(source = "insuranceCompany.id", target = "insuranceCompanyId"),
+        @Mapping(source = "insuranceCompany.name", target = "insuranceCompanyName")
+    })
     InsuranceProductDTO toDto(InsuranceProduct insuranceProduct); 
 
     @Mapping(source = "insuranceCompanyId", target = "insuranceCompany")

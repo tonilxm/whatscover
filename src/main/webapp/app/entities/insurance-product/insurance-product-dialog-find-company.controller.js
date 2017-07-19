@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('InsuranceProductDialogFindCompanyController', InsuranceProductDialogFindCompanyController);
 
-    InsuranceProductDialogFindCompanyController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'InsuranceProduct', 'InsuranceCompany', 'InsuranceCompanySearch', 'paginationConstants', 'pagingParams', 'ParseLinks', '$state', 'AlertService', '$uibModal'];
+    InsuranceProductDialogFindCompanyController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'InsuranceProduct', 'InsuranceCompany', 'InsuranceCompanySearch', 'paginationConstants', 'pagingParams', 'ParseLinks', '$state', 'AlertService'];
 
-    function InsuranceProductDialogFindCompanyController ($timeout, $scope, $stateParams, $uibModalInstance, entity, InsuranceProduct, InsuranceCompany, InsuranceCompanySearch, paginationConstants, pagingParams, ParseLinks, $state, AlertService, $uibModal) {
+    function InsuranceProductDialogFindCompanyController ($timeout, $scope, $stateParams, $uibModalInstance, entity, InsuranceProduct, InsuranceCompany, InsuranceCompanySearch, paginationConstants, pagingParams, ParseLinks, $state, AlertService) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.clear = clear;
@@ -96,22 +96,9 @@
         }
 
         function choose (id) {
-        	$uibModal.open({
-                templateUrl: 'app/entities/insurance-product/insurance-product-choose-company-dialog.html',
-                controller: 'InsuranceCompanyChooseController',
-                controllerAs: 'vm',
-                size: 'md',
-                resolve: {
-                    entity: ['InsuranceCompany', function(InsuranceCompany) {
-                        return InsuranceCompany.get({id : id}).$promise;
-                    }],
-                    parentModal: $uibModalInstance,
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('insuranceCompany');
-                        $translatePartialLoader.addPart('global');
-                        return $translate.refresh();
-                    }]
-                }
+        	InsuranceCompany.get({id: id},function (result) {
+		 		$scope.$emit('whatscoverApp:insuranceProductCompanyUpdate',result);
+		 		$uibModalInstance.dismiss('cancel');
             });
         }
 

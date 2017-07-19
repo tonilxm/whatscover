@@ -11,6 +11,8 @@
                 "insuranceProduct": "Insurance Product",
                 "agentProfile": "Agent Profile",
                 "insuranceAgency": "Insurance Agency",
+                "customerProfile": "Customer Profile",
+                "appointment": "Appointment",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

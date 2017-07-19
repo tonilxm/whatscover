@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="whatscoverApp.customerProfile.detail.title">Customer Profile</span> {{vm.customerProfile.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="whatscoverApp.customerProfile.firstName">First Name</span></dt>
+        <dd>
+            <span>{{vm.customerProfile.firstName}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.customerProfile.middleName">Middle Name</span></dt>
+        <dd>
+            <span>{{vm.customerProfile.middleName}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.customerProfile.lastName">Last Name</span></dt>
+        <dd>
+            <span>{{vm.customerProfile.lastName}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.customerProfile.gender">Gender</span></dt>
+        <dd>
+            <span data-translate="{{'whatscoverApp.Gender.' + vm.customerProfile.gender}}">{{vm.customerProfile.gender}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.customerProfile.email">Email</span></dt>
+        <dd>
+            <span>{{vm.customerProfile.email}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.customerProfile.dob">Dob</span></dt>
+        <dd>
+            <span>{{vm.customerProfile.dob | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="whatscoverApp.customerProfile.user">User</span></dt>
+        <dd>
+            {{vm.customerProfile.userLogin}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="customer-profile-detail.edit({id:vm.customerProfile.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

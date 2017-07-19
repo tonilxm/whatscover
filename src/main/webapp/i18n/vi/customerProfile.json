@@ -1,0 +1,28 @@
+{
+    "whatscoverApp": {
+        "customerProfile" : {
+            "home": {
+                "title": "Customer Profiles",
+                "createLabel": "Thêm mới một Customer Profile",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Customer Profile",
+                "search": "Tìm Customer Profile"
+            },
+            "created": "Một Customer Profile mới được tạo với định danh {{ param }}",
+            "updated": "Một Customer Profile cập nhật với định danh {{ param }}",
+            "deleted": "Một Customer Profile đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Customer Profile {{ id }}?"
+            },
+            "detail": {
+                "title": "Customer Profile"
+            },
+            "firstName": "First Name",
+            "middleName": "Middle Name",
+            "lastName": "Last Name",
+            "gender": "Gender",
+            "email": "Email",
+            "dob": "Dob",
+            "user": "User"
+        }
+    }
+}

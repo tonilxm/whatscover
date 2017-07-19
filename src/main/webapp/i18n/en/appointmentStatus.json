@@ -1,0 +1,15 @@
+{
+    "whatscoverApp": {
+        "AppointmentStatus" : {
+            "null": "",
+            "NEW_APPOINTMENT": "NEW_APPOINTMENT",
+            "WAITING_RESPONSE": "WAITING_RESPONSE",
+            "APPOINTMENT_ACCEPTED": "APPOINTMENT_ACCEPTED",
+            "APPOINTMENT_REJECTED": "APPOINTMENT_REJECTED",
+            "CUSTOMER_NOT_INTERESTED": "CUSTOMER_NOT_INTERESTED",
+            "CUSTOMER_INTERESTED": "CUSTOMER_INTERESTED",
+            "POLICY_ISSUED": "POLICY_ISSUED",
+            "POLICY_REJECTED": "POLICY_REJECTED"
+        }
+    }
+}

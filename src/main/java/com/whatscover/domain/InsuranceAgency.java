@@ -4,6 +4,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import com.whatscover.config.Constants;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -30,7 +32,7 @@ public class InsuranceAgency extends AbstractAuditingEntity implements Serializa
     private String code;
 
     @Size(max = 200)
-    @Column(name = "name", length = 200)
+    @Column(name = Constants.INSURANCE_AGENCY_NAME, length = 200)
     private String name;
 
     @Size(max = 200)

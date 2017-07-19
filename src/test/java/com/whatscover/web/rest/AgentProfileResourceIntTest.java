@@ -5,6 +5,7 @@ import com.whatscover.WhatscoverApp;
 import com.whatscover.domain.AgentProfile;
 import com.whatscover.repository.AgentProfileRepository;
 import com.whatscover.repository.search.AgentProfileSearchRepository;
+import com.whatscover.service.AgentProfileService;
 import com.whatscover.service.dto.AgentProfileDTO;
 import com.whatscover.service.mapper.AgentProfileMapper;
 import com.whatscover.web.rest.errors.ExceptionTranslator;
@@ -67,6 +68,9 @@ public class AgentProfileResourceIntTest {
     @Autowired
     private AgentProfileRepository agentProfileRepository;
 
+    @Autowired 
+    private AgentProfileService agentProfileService;
+    
     @Autowired
     private AgentProfileMapper agentProfileMapper;
 
@@ -92,7 +96,7 @@ public class AgentProfileResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        AgentProfileResource agentProfileResource = new AgentProfileResource(agentProfileRepository, agentProfileMapper, agentProfileSearchRepository);
+        AgentProfileResource agentProfileResource = new AgentProfileResource(agentProfileService);
         this.restAgentProfileMockMvc = MockMvcBuilders.standaloneSetup(agentProfileResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

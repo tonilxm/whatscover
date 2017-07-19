@@ -12,6 +12,7 @@
         var vm = this;
 
         vm.agentProfiles = [];
+        vm.queryData = [];
         vm.loadPage = loadPage;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.page = 0;
@@ -28,9 +29,10 @@
         loadAll();
 
         function loadAll () {
-            if (vm.currentSearch) {
+            if (vm.queryData && vm.queryData.length == 5) 
+            {
                 AgentProfileSearch.query({
-                    query: vm.currentSearch,
+                	queryData: vm.queryData,
                     page: vm.page,
                     size: vm.itemsPerPage,
                     sort: sort()
@@ -73,6 +75,20 @@
             vm.page = page;
             loadAll();
         }
+        
+        function pushData(searchQueryByFirstName, searchQueryByMiddleName,
+        		searchQueryByLastName, searchQueryByCompanyName, searchQueryByAgentName) 
+        {
+        	if (!searchQueryByFirstName) { searchQueryByFirstName = ""; } 
+        	if (!searchQueryByMiddleName) { searchQueryByMiddleName = ""; }
+        	if (!searchQueryByLastName) { searchQueryByLastName = ""; } 
+        	if (!searchQueryByCompanyName) { searchQueryByCompanyName = ""; }
+        	if (!searchQueryByAgentName) { searchQueryByAgentName = ""; } 
+        	
+        	vm.queryData = [];
+        	vm.queryData.push(searchQueryByFirstName, searchQueryByMiddleName,
+        			searchQueryByLastName, searchQueryByCompanyName, searchQueryByAgentName);
+    	}
 
         function clear () {
             vm.agentProfiles = [];
@@ -82,15 +98,17 @@
             vm.page = 0;
             vm.predicate = 'id';
             vm.reverse = true;
-            vm.searchQuery = null;
-            vm.currentSearch = null;
+            vm.queryData = [];
             vm.loadAll();
         }
 
-        function search (searchQuery) {
-            if (!searchQuery){
+        function search (searchQueryByFirstName, searchQueryByMiddleName,
+        		searchQueryByLastName, searchQueryByCompanyName, searchQueryByAgentName) {
+            if (!searchQueryByFirstName && !searchQueryByMiddleName 
+            		&& !searchQueryByLastName && !searchQueryByCompanyName
+            		&& !searchQueryByAgentName){
                 return vm.clear();
-            }
+            } 
             vm.agentProfiles = [];
             vm.links = {
                 last: 0
@@ -98,7 +116,8 @@
             vm.page = 0;
             vm.predicate = '_score';
             vm.reverse = false;
-            vm.currentSearch = searchQuery;
+            pushData(searchQueryByFirstName, searchQueryByMiddleName, searchQueryByLastName,
+            		searchQueryByCompanyName, searchQueryByAgentName);
             vm.loadAll();
         }
     }

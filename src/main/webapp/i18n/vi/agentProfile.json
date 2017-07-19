@@ -5,7 +5,12 @@
                 "title": "Agent Profiles",
                 "createLabel": "Thêm mới một Agent Profile",
                 "createOrEditLabel": "Thêm mới hoặc cập nhật Agent Profile",
-                "search": "Tìm Agent Profile"
+                "search": "Tìm Agent Profile",
+                "searchByFirstName": "Tìm First Name",
+                "searchByMiddleName": "Tìm Middle Name",
+                "searchByLastName": "Tìm Last Name",
+                "searchByCompanyName": "Tìm Company Name",
+                "searchByAgentName": "Tìm Agent Name"
             },
             "created": "Một Agent Profile mới được tạo với định danh {{ param }}",
             "updated": "Một Agent Profile cập nhật với định danh {{ param }}",

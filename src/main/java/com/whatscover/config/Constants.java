@@ -13,4 +13,15 @@ public final class Constants {
 
     private Constants() {
     }
+    
+    // Field name for Entity
+    // AGENT PROFILE
+    public static final String AGENT_PROFILE_FIRST_NAME = "first_name";
+    public static final String AGENT_PROFILE_MIDDLE_NAME = "middle_name"; 
+    public static final String AGENT_PROFILE_LAST_NAME = "last_name";
+    public static final String AGENT_PROFILE_INSURANCE_COMPANY = "insuranceCompany";
+    public static final String AGENT_PROFILE_INSURANCE_AGENCY = "insuranceAgency";
+    
+    // INSURANCE AGENCY
+    public static final String INSURANCE_AGENCY_NAME = "name";
 }

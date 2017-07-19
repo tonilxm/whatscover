@@ -1,15 +1,11 @@
 package com.whatscover.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.whatscover.domain.InsuranceAgency;
-import com.whatscover.domain.InsuranceCompany;
 import com.whatscover.repository.InsuranceAgencyRepository;
-import com.whatscover.repository.search.InsuranceAgencySearchRepository;
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
 import com.whatscover.service.InsuranceAgencyService;
 import com.whatscover.service.dto.InsuranceAgencyDTO;
-import com.whatscover.service.mapper.InsuranceAgencyMapper;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;

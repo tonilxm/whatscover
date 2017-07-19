@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.whatscover.config.Constants;
 import com.whatscover.domain.enumeration.Gender;
 
 /**
@@ -33,15 +34,15 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
     private String agent_code;
 
     @Size(max = 100)
-    @Column(name = "first_name", length = 100)
+    @Column(name = Constants.AGENT_PROFILE_FIRST_NAME, length = 100)
     private String first_name;
 
     @Size(max = 100)
-    @Column(name = "middle_name", length = 100)
+    @Column(name = Constants.AGENT_PROFILE_MIDDLE_NAME, length = 100)
     private String middle_name;
 
     @Size(max = 100)
-    @Column(name = "last_name", length = 100)
+    @Column(name = Constants.AGENT_PROFILE_LAST_NAME, length = 100)
     private String last_name;
 
     @Enumerated(EnumType.STRING)

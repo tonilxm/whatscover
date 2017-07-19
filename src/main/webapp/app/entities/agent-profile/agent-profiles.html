@@ -12,30 +12,19 @@
                 </button>
             </div>
             <div class="col-xs-8 no-padding-right">
-                <form name="searchForm" class="form-group">
-                    <div class="pull-right">        
-                    	<div class="form-inline">            
-	                        <input type="text" class="form-control" ng-model="vm.searchQueryByFirstName" id="searchQueryByFirstName" 
-	                        	placeholder="{{ 'whatscoverApp.agentProfile.home.searchByFirstName' | translate }}">                    	
-	                        <input type="text" class="form-control" ng-model="vm.searchQueryByMiddleName" id="searchQueryByMiddleName"
-	                        	placeholder="{{ 'whatscoverApp.agentProfile.home.searchByMiddleName' | translate }}">
-	                       	<input type="text" class="form-control" ng-model="vm.searchQueryByLastName" id="searchQueryByLastName"
-	                        	placeholder="{{ 'whatscoverApp.agentProfile.home.searchByLastName' | translate }}">
-                       	</div>
-                       	<div class="form-inline">	                      	
-	                       	<input type="text" class="form-control" ng-model="vm.searchQueryByCompanyName" id="searchQueryByCompanyName"
-	                        	placeholder="{{ 'whatscoverApp.agentProfile.home.searchByCompanyName' | translate }}">
-	                       	<input type="text" class="form-control" ng-model="vm.searchQueryByAgentName" id="searchQueryByAgentName"
-	                        	placeholder="{{ 'whatscoverApp.agentProfile.home.searchByAgentName' | translate }}">	
-                        	<div class="pull-right">
-	                           <button class="btn btn-info" ng-click="vm.search(vm.searchQueryByFirstName,vm.searchQueryByMiddleName,vm.searchQueryByLastName, vm.searchQueryByCompanyName,vm.searchQueryByAgentName)">
-	                               <span class="glyphicon glyphicon-search"></span>
-	                           </button>
-	                           <button class="btn btn-info" ng-click="vm.clear()">
-	                               <span class="glyphicon glyphicon-trash"></span>
-	                           </button>
-	         				</div>
-                        </div>
+                <form name="searchForm" class="form-inline">
+                    <div class="input-group pull-right" >
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'whatscoverApp.agentProfile.home.search' | translate }}">
+                        <span  class="input-group-btn width-min" >
+                            <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
+                            <button class="btn btn-info" ng-click="vm.clear()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </span>
                     </div>
                 </form>
             </div>

@@ -1,14 +1,16 @@
 package com.whatscover.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.whatscover.domain.AgentProfile;
 
+import com.whatscover.repository.AgentProfileRepository;
+import com.whatscover.repository.search.AgentProfileSearchRepository;
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
-import com.whatscover.service.AgentProfileService;
 import com.whatscover.service.dto.AgentProfileDTO;
+import com.whatscover.service.mapper.AgentProfileMapper;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,10 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing AgentProfile.
@@ -36,10 +42,16 @@ public class AgentProfileResource {
 
     private static final String ENTITY_NAME = "agentProfile";
 
-    private final AgentProfileService agentProfileService;
+    private final AgentProfileRepository agentProfileRepository;
 
-    public AgentProfileResource(AgentProfileService agentProfileService) {
-        this.agentProfileService = agentProfileService;
+    private final AgentProfileMapper agentProfileMapper;
+
+    private final AgentProfileSearchRepository agentProfileSearchRepository;
+
+    public AgentProfileResource(AgentProfileRepository agentProfileRepository, AgentProfileMapper agentProfileMapper, AgentProfileSearchRepository agentProfileSearchRepository) {
+        this.agentProfileRepository = agentProfileRepository;
+        this.agentProfileMapper = agentProfileMapper;
+        this.agentProfileSearchRepository = agentProfileSearchRepository;
     }
 
     /**
@@ -56,7 +68,10 @@ public class AgentProfileResource {
         if (agentProfileDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new agentProfile cannot already have an ID")).body(null);
         }
-        AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
+        AgentProfile agentProfile = agentProfileMapper.toEntity(agentProfileDTO);
+        agentProfile = agentProfileRepository.save(agentProfile);
+        AgentProfileDTO result = agentProfileMapper.toDto(agentProfile);
+        agentProfileSearchRepository.save(agentProfile);
         return ResponseEntity.created(new URI("/api/agent-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -78,7 +93,10 @@ public class AgentProfileResource {
         if (agentProfileDTO.getId() == null) {
             return createAgentProfile(agentProfileDTO);
         }
-        AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
+        AgentProfile agentProfile = agentProfileMapper.toEntity(agentProfileDTO);
+        agentProfile = agentProfileRepository.save(agentProfile);
+        AgentProfileDTO result = agentProfileMapper.toDto(agentProfile);
+        agentProfileSearchRepository.save(agentProfile);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, agentProfileDTO.getId().toString()))
             .body(result);
@@ -94,9 +112,9 @@ public class AgentProfileResource {
     @Timed
     public ResponseEntity<List<AgentProfileDTO>> getAllAgentProfiles(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of AgentProfiles");
-        Page<AgentProfileDTO> page = agentProfileService.findAll(pageable);
+        Page<AgentProfile> page = agentProfileRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/agent-profiles");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(agentProfileMapper.toDto(page.getContent()), headers, HttpStatus.OK);
     }
 
     /**
@@ -109,7 +127,8 @@ public class AgentProfileResource {
     @Timed
     public ResponseEntity<AgentProfileDTO> getAgentProfile(@PathVariable Long id) {
         log.debug("REST request to get AgentProfile : {}", id);
-        AgentProfileDTO agentProfileDTO = agentProfileService.findOne(id);
+        AgentProfile agentProfile = agentProfileRepository.findOne(id);
+        AgentProfileDTO agentProfileDTO = agentProfileMapper.toDto(agentProfile);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(agentProfileDTO));
     }
 
@@ -123,7 +142,8 @@ public class AgentProfileResource {
     @Timed
     public ResponseEntity<Void> deleteAgentProfile(@PathVariable Long id) {
         log.debug("REST request to delete AgentProfile : {}", id);
-        agentProfileService.delete(id);
+        agentProfileRepository.delete(id);
+        agentProfileSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -131,20 +151,17 @@ public class AgentProfileResource {
      * SEARCH  /_search/agent-profiles?query=:query : search for the agentProfile corresponding
      * to the query.
      *
-     * @param queryData the query of the agentProfile search
+     * @param query the query of the agentProfile search
      * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/agent-profiles")
     @Timed
-    public ResponseEntity<List<AgentProfileDTO>> searchAgentProfiles(
-    		@RequestParam(value="queryData") String[] queryData,
-    		@ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of AgentProfiles for query {}", queryData.toString());
-        Page<AgentProfileDTO> page = agentProfileService.search(queryData, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(
-        		queryData.toString(), page, "/api/_search/agent-profiles");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public ResponseEntity<List<AgentProfileDTO>> searchAgentProfiles(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of AgentProfiles for query {}", query);
+        Page<AgentProfile> page = agentProfileSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/agent-profiles");
+        return new ResponseEntity<>(agentProfileMapper.toDto(page.getContent()), headers, HttpStatus.OK);
     }
 
 }

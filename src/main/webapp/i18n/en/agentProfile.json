@@ -5,12 +5,7 @@
                 "title": "Agent Profiles",
                 "createLabel": "Create a new Agent Profile",
                 "createOrEditLabel": "Create or edit a Agent Profile",
-                "search": "Search for Agent Profile",
-                "searchByFirstName": "Search By First Name",
-                "searchByMiddleName": "Search By Middle Name",
-                "searchByLastName": "Search By Last Name",
-                "searchByCompanyName": "Search By Company Name",
-                "searchByAgentName": "Search By Agent Name"
+                "search": "Search for Agent Profile"
             },
             "created": "A new Agent Profile is created with identifier {{ param }}",
             "updated": "A Agent Profile is updated with identifier {{ param }}",

@@ -107,7 +107,7 @@ public class InsuranceAgencyServiceImpl implements InsuranceAgencyService{
 	public Page<InsuranceAgencyDTO> search(String query, Pageable pageable) {
 		log.debug("Request to search for a page of InsuranceAgencies for query {}", query);
         Page<InsuranceAgency> result = insuranceAgencySearchRepository
-        		.search(queryStringQuery(query).field(Constants.INSURANCE_AGENCY_NAME)
+        		.search(queryStringQuery(query).field("name")
 				.minimumShouldMatch(String.valueOf(query.length())), pageable);
         return result.map(insuranceAgencyMapper::toDto);
 	}

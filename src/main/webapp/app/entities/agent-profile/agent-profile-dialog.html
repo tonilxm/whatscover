@@ -107,15 +107,21 @@
         </div>
         <div class="form-group">
             <label data-translate="whatscoverApp.agentProfile.insuranceCompany" for="field_insuranceCompany">Insurance Company</label>
-            <select class="form-control" id="field_insuranceCompany" name="insuranceCompany" ng-model="vm.agentProfile.insuranceCompanyId" ng-options="insuranceCompany.id as insuranceCompany.id for insuranceCompany in vm.insurancecompanies"            >
-                <option value=""></option>
-            </select>
+            <input type="text" class="form-control" id="field_insuranceCompany" name="insuranceCompany"
+                    ng-bind="vm.agentProfile.insuranceCompanyId" ng-value="vm.agentProfile.insuranceCompanyName" readonly />
+            <button type="submit" ui-sref="{{vm.childState}}" class="btn btn-info btn-sm">
+                <span class="glyphicon glyphicon-eye-open"></span>
+                <span class="hidden-sm-down" data-translate="Find Company"></span>
+            </button>
         </div>
         <div class="form-group">
             <label data-translate="whatscoverApp.agentProfile.insuranceAgency" for="field_insuranceAgency">Insurance Agency</label>
-            <select class="form-control" id="field_insuranceAgency" name="insuranceAgency" ng-model="vm.agentProfile.insuranceAgencyId" ng-options="insuranceAgency.id as insuranceAgency.id for insuranceAgency in vm.insuranceagencies"            >
-                <option value=""></option>
-            </select>
+            <input type="text" class="form-control" id="field_insuranceAgency" name="insuranceAgency"
+                    ng-bind="vm.agentProfile.insuranceAgencyId" ng-value="vm.agentProfile.insuranceAgencyName" readonly />
+            <button type="submit" ui-sref="{{vm.childState}}" class="btn btn-info btn-sm">
+                <span class="glyphicon glyphicon-eye-open"></span>
+                <span class="hidden-sm-down" data-translate="Find Agency"></span>
+            </button>
         </div>
     </div>
     <div class="modal-footer">

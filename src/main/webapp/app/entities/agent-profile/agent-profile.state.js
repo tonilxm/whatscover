@@ -172,7 +172,66 @@
                     $state.go('^');
                 });
             }]
-        });
+        })
+        .state(generateFindingStateObj('agent-profile.edit.dialog-find-agency', 'agent-profile.edit'))
+        .state(generateFindingStateObj('agent-profile.new.dialog-find-agency', 'agent-profile.new'));
+    }
+    
+    /**
+     * generate State for agency find dialog 
+     */ 
+    function generateFindingStateObj(name, parent){
+    	var obj = {
+			name: name,	
+			parent: parent,
+	        url: '/findAgency?page&sort&search',
+	        data: {
+	            authorities: ['ROLE_USER']
+	        },
+	        params: {
+	            page: {
+	                value: '1',
+	                squash: true
+	            },
+	            sort: {
+	                value: 'id,asc',
+	                squash: true
+	            },
+	            search: null
+	        },
+	        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+	        	 $uibModal.open({
+	                 templateUrl: 'app/entities/agent-profile/agent-profile-dialog-find-agency.html',
+	                 controller: 'AgentProfileDialogFindAgencyController',
+	                 controllerAs: 'vm',
+	                 backdrop: 'static',
+	                 size: 'lg',
+	                 resolve: {
+	                     entity: null,
+	                     pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+	                         return {
+	                             page: PaginationUtil.parsePage($stateParams.page),
+	                             sort: $stateParams.sort,
+	                             predicate: PaginationUtil.parsePredicate($stateParams.sort),
+	                             ascending: PaginationUtil.parseAscending($stateParams.sort),
+	                             search: $stateParams.search
+	                         };
+	                     }],
+	                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+	                         $translatePartialLoader.addPart('insuranceAgency');
+	                         $translatePartialLoader.addPart('global');
+	                         return $translate.refresh();
+	                     }]
+	                 }
+	             }).result.then(function() {
+	                 $state.go('agent-profile', null, { reload: 'agent-profile' });
+	             }, function() {
+	                 $state.go('^');
+	             });
+	        }]
+    	};
+    	
+    	return obj;
     }
 
 })();

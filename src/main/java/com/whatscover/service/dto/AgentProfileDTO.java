@@ -4,8 +4,6 @@ package com.whatscover.service.dto;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import com.whatscover.domain.enumeration.Gender;
 
@@ -43,7 +41,13 @@ public class AgentProfileDTO implements Serializable {
 
     private Long insuranceCompanyId;
 
+    @Size(max = 100)
+    private String insuranceCompanyName;
+
     private Long insuranceAgencyId;
+
+    @Size(max = 100)
+    private String insuranceAgencyName;
 
     public Long getId() {
         return id;
@@ -137,9 +141,25 @@ public class AgentProfileDTO implements Serializable {
         return insuranceAgencyId;
     }
 
-    public void setInsuranceAgencyId(Long insuranceAgencyId) {
+    public String getInsuranceCompanyName() {
+		return insuranceCompanyName;
+	}
+
+	public void setInsuranceCompanyName(String insuranceCompanyName) {
+		this.insuranceCompanyName = insuranceCompanyName;
+	}
+
+	public void setInsuranceAgencyId(Long insuranceAgencyId) {
         this.insuranceAgencyId = insuranceAgencyId;
     }
+
+	public String getInsuranceAgencyName() {
+		return insuranceAgencyName;
+	}
+
+	public void setInsuranceAgencyName(String insuranceAgencyName) {
+		this.insuranceAgencyName = insuranceAgencyName;
+	}
 
     @Override
     public boolean equals(Object o) {

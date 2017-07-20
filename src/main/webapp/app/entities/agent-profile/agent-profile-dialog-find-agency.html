@@ -1,0 +1,65 @@
+<div>
+    <h2 data-translate="whatscoverApp.insuranceAgency.home.title">Insurance Agencies</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-8 no-padding-right">
+                <form name="searchForm" class="form-inline">
+                    <div class="input-group pull-right" >
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'whatscoverApp.insuranceAgency.home.search' | translate }}">
+                        <span  class="input-group-btn width-min" >
+                            <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
+                            <button class="btn btn-info" ng-click="vm.clear()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="code"><span data-translate="whatscoverApp.insuranceAgency.code">Code</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="whatscoverApp.insuranceAgency.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="address_1"><span data-translate="whatscoverApp.insuranceAgency.address_1">Address 1</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="address_2"><span data-translate="whatscoverApp.insuranceAgency.address_2">Address 2</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="address_3"><span data-translate="whatscoverApp.insuranceAgency.address_3">Address 3</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="insuranceCompanyId"><span data-translate="whatscoverApp.insuranceAgency.insuranceCompany">Insurance Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+                <tr ng-repeat="insuranceAgency in vm.insuranceAgencies track by insuranceAgency.id">
+                    <td>{{insuranceAgency.id}}</td>
+                    <td>{{insuranceAgency.code}}</td>
+                    <td>{{insuranceAgency.name}}</td>
+                    <td>{{insuranceAgency.address_1}}</td>
+                    <td>{{insuranceAgency.address_2}}</td>
+                    <td>{{insuranceAgency.address_3}}</td>
+                    <td>
+                        <a ui-sref="insurance-company-detail({id:insuranceAgency.insuranceCompanyId})">{{insuranceAgency.insuranceCompanyId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ng-click="vm.choose(agencyCompany.id)"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-ok-sign"></span>
+                                <span class="hidden-sm-down" data-translate="Choose"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

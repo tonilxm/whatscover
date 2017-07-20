@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('AgentProfileDialogController', AgentProfileDialogController);
 
-    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency'];
+    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency', '$state', '$rootScope'];
 
-    function AgentProfileDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency) {
+    function AgentProfileDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency, $state, $rootScope) {
         var vm = this;
 
         vm.agentProfile = entity;
@@ -18,6 +18,7 @@
         vm.users = User.query();
         vm.insurancecompanies = InsuranceCompany.query();
         vm.insuranceagencies = InsuranceAgency.query();
+        vm.childState = $state.current.name + '.dialog-find-agency';
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -51,5 +52,13 @@
         function openCalendar (date) {
             vm.datePickerOpenStatus[date] = true;
         }
+        
+        var unsubscribe = $rootScope.$on('whatscoverApp:agentProfileAgencyUpdate', function(event, result) {
+//        	vm.agentProfile.insuranceCompanyId = result.id;
+//            vm.agentProfile.insuranceCompanyName = result.name;
+            vm.agentProfile.insuranceAgencyId = result.id;
+            vm.agentProfile.insuranceAgencyName = result.name;
+        });
+        $scope.$on('$destroy', unsubscribe);
     }
 })();

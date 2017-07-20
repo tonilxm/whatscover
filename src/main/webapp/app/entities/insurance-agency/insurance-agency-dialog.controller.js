@@ -5,15 +5,15 @@
         .module('whatscoverApp')
         .controller('InsuranceAgencyDialogController', InsuranceAgencyDialogController);
 
-    InsuranceAgencyDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'InsuranceAgency', 'InsuranceCompany'];
+    InsuranceAgencyDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'InsuranceAgency', 'InsuranceCompany', '$rootScope', '$state'];
 
-    function InsuranceAgencyDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, InsuranceAgency, InsuranceCompany) {
+    function InsuranceAgencyDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, InsuranceAgency, InsuranceCompany, $rootScope, $state) {
         var vm = this;
 
         vm.insuranceAgency = entity;
         vm.clear = clear;
         vm.save = save;
-        vm.insurancecompanies = InsuranceCompany.query();
+        vm.childState = $state.current.name + '.dialog-find-company';
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -42,6 +42,11 @@
             vm.isSaving = false;
         }
 
-
+        var unsubscribe = $rootScope.$on('whatscoverApp:insuranceAgencyCompanyUpdate', function(event, result) {
+        	vm.insuranceAgency.insuranceCompanyId = result.id;
+            vm.insuranceAgency.insuranceCompanyName = result.name;
+        });
+        $scope.$on('$destroy', unsubscribe);
+        
     }
 })();

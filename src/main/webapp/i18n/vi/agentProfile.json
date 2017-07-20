@@ -14,6 +14,7 @@
             },
             "created": "Một Agent Profile mới được tạo với định danh {{ param }}",
             "updated": "Một Agent Profile cập nhật với định danh {{ param }}",
+			"sendEmail": "Một Agent Profile đã send với định danh {{ param }}",	
             "deleted": "Một Agent Profile đã xóa với định danh {{ param }}",
             "delete": {
                 "question": "Bạn có chắc là muốn xóa Agent Profile {{ id }}?"
@@ -30,7 +31,13 @@
             "dob": "Dob",
             "user": "User",
             "insuranceCompany": "Insurance Company",
-            "insuranceAgency": "Insurance Agency"
+            "insuranceAgency": "Insurance Agency",
+            "messages": {
+            	"error": {
+                	"agentcodeexists": "Agent Code is already in use!, Please choose another one.",
+                	"agentemailexists": "Agent Email is already in use!, Please choose another one."
+            	}
+            }
         }
     }
 }

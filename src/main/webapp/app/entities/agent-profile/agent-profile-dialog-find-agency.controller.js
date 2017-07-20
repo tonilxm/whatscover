@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('AgentProfileDialogFindAgencyController', AgentProfileDialogFindAgencyController);
 
-    AgentProfileDialogFindAgencyController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'AgentProfile', 'InsuranceAgency', 'InsuranceAgencySearch', 'paginationConstants', 'pagingParams', 'ParseLinks', '$state', 'AlertService'];
+    AgentProfileDialogFindAgencyController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'AgentProfile', 'InsuranceAgency', 'InsuranceAgencySearch', 'paginationConstants', 'pagingParams', 'ParseLinks', '$state', 'AlertService', 'emitName'];
 
-    function AgentProfileDialogFindAgencyController ($timeout, $scope, $stateParams, $uibModalInstance, entity, AgentProfile, InsuranceAgency, InsuranceAgencySearch, paginationConstants, pagingParams, ParseLinks, $state, AlertService) {
+    function AgentProfileDialogFindAgencyController ($timeout, $scope, $stateParams, $uibModalInstance, entity, AgentProfile, InsuranceAgency, InsuranceAgencySearch, paginationConstants, pagingParams, ParseLinks, $state, AlertService, emitName) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.clear = clear;
@@ -97,7 +97,7 @@
 
         function choose (id) {
         	InsuranceAgency.get({id: id},function (result) {
-		 		$scope.$emit('whatscoverApp:agentProfileAgencyUpdate',result);
+		 		$scope.$emit('whatscoverApp:' + emitName, result);
 		 		$uibModalInstance.dismiss('cancel');
             });
         }

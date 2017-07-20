@@ -168,7 +168,63 @@
                     $state.go('^');
                 });
             }]
-        });
+        })
+        .state(generateFindCompanyStateObj('insurance-agency.edit.dialog-find-company', 'insurance-agency.edit'))
+        .state(generateFindCompanyStateObj('insurance-agency.new.dialog-find-company', 'insurance-agency.new'));
+    }
+    
+   /**
+    * generate State for company find dialog 
+    */ 
+    function generateFindCompanyStateObj(name, parent){
+    	var obj = {
+			name: name,	
+			parent: parent,
+	        url: '/findCompany?page&sort&search',
+	        data: {
+	            authorities: ['ROLE_USER']
+	        },
+	        params: {
+	            page: '1',
+	            sort: 'id,asc',
+	            search: null
+	        },
+	        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+	        	 $uibModal.open({
+	                 templateUrl: 'app/entities/common-ui/common-dialog-find-company.html',
+	                 controller: 'CommonDialogFindCompanyController',
+	                 controllerAs: 'vm',
+	                 backdrop: 'static',
+	                 size: 'lg',
+	                 resolve: {
+	                     entity: null,
+	                     emitName: function(){
+	                    	 return 'insuranceAgencyCompanyUpdate';
+	                     },
+	                     pagingParams: ['PaginationUtil', function (PaginationUtil) {
+	                         return {
+	                             page: PaginationUtil.parsePage(obj.params.page),
+	                             sort: obj.params.sort,
+	                             predicate: PaginationUtil.parsePredicate(obj.params.sort),
+	                             ascending: PaginationUtil.parseAscending(obj.params.sort),
+	                             search: obj.params.search
+	                         };
+	                     }],
+	                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+	                         $translatePartialLoader.addPart('insuranceCompany');
+	                         $translatePartialLoader.addPart('global');
+	                         return $translate.refresh();
+	                     }]
+	                 }
+	             }).result.then(function() {
+	                 $state.go('insurance-agency', null, { reload: 'insurance-agency' });
+	             }, function() {
+	                 $state.go('^');
+	             });
+	        }]
+    	};
+    	
+    	return obj;
     }
 
 })();

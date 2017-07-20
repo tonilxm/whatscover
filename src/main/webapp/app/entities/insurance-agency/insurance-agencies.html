@@ -41,7 +41,7 @@
                     <th jh-sort-by="address_1"><span data-translate="whatscoverApp.insuranceAgency.address_1">Address 1</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="address_2"><span data-translate="whatscoverApp.insuranceAgency.address_2">Address 2</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="address_3"><span data-translate="whatscoverApp.insuranceAgency.address_3">Address 3</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="insuranceCompanyId"><span data-translate="whatscoverApp.insuranceAgency.insuranceCompany">Insurance Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="insuranceCompanyName"><span data-translate="whatscoverApp.insuranceAgency.insuranceCompany">Insurance Company</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -53,9 +53,7 @@
                     <td>{{insuranceAgency.address_1}}</td>
                     <td>{{insuranceAgency.address_2}}</td>
                     <td>{{insuranceAgency.address_3}}</td>
-                    <td>
-                        <a ui-sref="insurance-company-detail({id:insuranceAgency.insuranceCompanyId})">{{insuranceAgency.insuranceCompanyId}}</a>
-                    </td>
+                    <td>{{insuranceAgency.insuranceCompanyName}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

@@ -176,10 +176,7 @@
         .state(generateFindingStateObj('agent-profile.edit.dialog-find-agency', 'agent-profile.edit'))
         .state(generateFindingStateObj('agent-profile.new.dialog-find-agency', 'agent-profile.new'));
     }
-    
-    /**
-     * generate State for agency find dialog 
-     */ 
+  
     function generateFindingStateObj(name, parent){
     	var obj = {
 			name: name,	
@@ -189,14 +186,8 @@
 	            authorities: ['ROLE_USER']
 	        },
 	        params: {
-	            page: {
-	                value: '1',
-	                squash: true
-	            },
-	            sort: {
-	                value: 'id,asc',
-	                squash: true
-	            },
+	            page: '1',
+	            sort: 'id,asc',
 	            search: null
 	        },
 	        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
@@ -207,14 +198,17 @@
 	                 backdrop: 'static',
 	                 size: 'lg',
 	                 resolve: {
-	                     entity: null,
-	                     pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+	                	 entity: null,
+	                     emitName: function(){
+	                    	 return 'agentProfileAgencyUpdate';
+	                     },
+	                     pagingParams: ['PaginationUtil', function (PaginationUtil) {
 	                         return {
-	                             page: PaginationUtil.parsePage($stateParams.page),
-	                             sort: $stateParams.sort,
-	                             predicate: PaginationUtil.parsePredicate($stateParams.sort),
-	                             ascending: PaginationUtil.parseAscending($stateParams.sort),
-	                             search: $stateParams.search
+	                             page: PaginationUtil.parsePage(obj.page),
+	                             sort: obj.params.sort,
+	                             predicate: PaginationUtil.parsePredicate(obj.params.sort),
+	                             ascending: PaginationUtil.parseAscending(obj.params.sort),
+	                             search: obj.params.search
 	                         };
 	                     }],
 	                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {

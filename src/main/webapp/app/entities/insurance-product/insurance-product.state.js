@@ -219,32 +219,29 @@
 	            authorities: ['ROLE_USER']
 	        },
 	        params: {
-	            page: {
-	                value: '1',
-	                squash: true
-	            },
-	            sort: {
-	                value: 'id,asc',
-	                squash: true
-	            },
+	        	page: '1',
+	            sort: 'id,asc',
 	            search: null
 	        },
 	        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
 	        	 $uibModal.open({
-	                 templateUrl: 'app/entities/insurance-product/insurance-product-dialog-find-company.html',
-	                 controller: 'InsuranceProductDialogFindCompanyController',
+	                 templateUrl: 'app/entities/common-ui/common-dialog-find-company.html',
+	                 controller: 'CommonDialogFindCompanyController',
 	                 controllerAs: 'vm',
 	                 backdrop: 'static',
 	                 size: 'lg',
 	                 resolve: {
 	                     entity: null,
-	                     pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+	                     emitName: function(){
+	                    	 return 'insuranceProductCompanyUpdate';
+	                     },
+	                     pagingParams: ['PaginationUtil', function (PaginationUtil) {
 	                         return {
-	                             page: PaginationUtil.parsePage($stateParams.page),
-	                             sort: $stateParams.sort,
-	                             predicate: PaginationUtil.parsePredicate($stateParams.sort),
-	                             ascending: PaginationUtil.parseAscending($stateParams.sort),
-	                             search: $stateParams.search
+	                             page: PaginationUtil.parsePage(obj.params.page),
+	                             sort: obj.params.sort,
+	                             predicate: PaginationUtil.parsePredicate(obj.params.sort),
+	                             ascending: PaginationUtil.parseAscending(obj.params.sort),
+	                             search: obj.params.search
 	                         };
 	                     }],
 	                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {

@@ -3,11 +3,11 @@
 
     angular
         .module('whatscoverApp')
-        .controller('InsuranceProductDialogFindCompanyController', InsuranceProductDialogFindCompanyController);
+        .controller('CommonDialogFindCompanyController', CommonDialogFindCompanyController);
 
-    InsuranceProductDialogFindCompanyController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'InsuranceProduct', 'InsuranceCompany', 'InsuranceCompanySearch', 'paginationConstants', 'pagingParams', 'ParseLinks', '$state', 'AlertService'];
+    CommonDialogFindCompanyController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'InsuranceProduct', 'InsuranceCompany', 'InsuranceCompanySearch', 'paginationConstants', 'pagingParams', 'ParseLinks', '$state', 'AlertService', 'emitName'];
 
-    function InsuranceProductDialogFindCompanyController ($timeout, $scope, $stateParams, $uibModalInstance, entity, InsuranceProduct, InsuranceCompany, InsuranceCompanySearch, paginationConstants, pagingParams, ParseLinks, $state, AlertService) {
+    function CommonDialogFindCompanyController ($timeout, $scope, $stateParams, $uibModalInstance, entity, InsuranceProduct, InsuranceCompany, InsuranceCompanySearch, paginationConstants, pagingParams, ParseLinks, $state, AlertService, emitName) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.clear = clear;
@@ -97,7 +97,7 @@
 
         function choose (id) {
         	InsuranceCompany.get({id: id},function (result) {
-		 		$scope.$emit('whatscoverApp:insuranceProductCompanyUpdate',result);
+		 		$scope.$emit('whatscoverApp:' + emitName, result);
 		 		$uibModalInstance.dismiss('cancel');
             });
         }

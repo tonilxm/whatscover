@@ -4,7 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
+import com.whatscover.repository.AgentProfileRepository;
+import com.whatscover.repository.InsuranceCompanyRepository;
 import com.whatscover.service.AgentProfileService;
+import com.whatscover.service.MailService;
 import com.whatscover.service.dto.AgentProfileDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -35,11 +38,20 @@ public class AgentProfileResource {
     private final Logger log = LoggerFactory.getLogger(AgentProfileResource.class);
 
     private static final String ENTITY_NAME = "agentProfile";
+    private static final String EMAIL_SUBJECT = "Create New Agent Profiles";
 
+    private static final String EMAIL_CONTENT = "Congratulations, you've successfully created an Agent Profile";
+    
     private final AgentProfileService agentProfileService;
+    
+	private final AgentProfileRepository agentProfileRepository;
+    
+    private final MailService mailService;
 
-    public AgentProfileResource(AgentProfileService agentProfileService) {
+    public AgentProfileResource(AgentProfileService agentProfileService, AgentProfileRepository agentProfileRepository, MailService mailService) {
         this.agentProfileService = agentProfileService;
+        this.agentProfileRepository = agentProfileRepository;
+        this.mailService = mailService;
     }
 
     /**
@@ -97,6 +109,26 @@ public class AgentProfileResource {
         Page<AgentProfileDTO> page = agentProfileService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/agent-profiles");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    @PostMapping("/send-email-profiles")
+    @Timed
+    public ResponseEntity<AgentProfileDTO> getSendEmailAgentProfiles(@Valid @RequestBody AgentProfileDTO agentProfileDTO) {
+    	log.debug("REST request to Email AgentProfile : {}", agentProfileDTO);
+    	if (agentProfileDTO.getId() != null) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists",
+					"A new Agent Profile cannot already have an ID")).body(null);
+		} else if (agentProfileRepository.findOneByAgentCode(agentProfileDTO.getAgent_code()).isPresent()) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.agentcodeexists", "Agent Code already in use"))
+					.body(null);
+		}else if(agentProfileRepository.findOneByEmail(agentProfileDTO.getEmail()).isPresent()) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.agentemailexists", "Agent Email already in use"))
+					.body(null);
+		}
+        mailService.sendEmail(agentProfileDTO.getEmail(), EMAIL_SUBJECT, EMAIL_CONTENT, false, true);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntitySendEmailAlert(ENTITY_NAME, "Send Email Alert")).build();
     }
 
     /**

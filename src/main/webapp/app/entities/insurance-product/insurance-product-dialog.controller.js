@@ -13,7 +13,6 @@
         vm.insuranceProduct = entity;
         vm.clear = clear;
         vm.save = save;
-        vm.insurancecompanies = InsuranceCompany.query();
         vm.childState = $state.current.name + '.dialog-find-company';
 
         $timeout(function (){

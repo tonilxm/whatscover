@@ -16,6 +16,17 @@
                 authorities: ['ROLE_USER'],
                 pageTitle: 'whatscoverApp.insuranceAgency.home.title'
             },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
             views: {
                 'content@': {
                     templateUrl: 'app/entities/insurance-agency/insurance-agencies.html',
@@ -168,7 +179,69 @@
                     $state.go('^');
                 });
             }]
-        });
+        })
+        .state(generateFindCompanyStateObj('insurance-agency.edit.dialog-find-company', 'insurance-agency.edit'))
+        .state(generateFindCompanyStateObj('insurance-agency.new.dialog-find-company', 'insurance-agency.new'));
+    }
+    
+   /**
+    * generate State for company find dialog 
+    */ 
+    function generateFindCompanyStateObj(name, parent){
+    	var obj = {
+			name: name,	
+			parent: parent,
+	        url: '/findCompany?page&sort&search',
+	        data: {
+	            authorities: ['ROLE_USER']
+	        },
+	        params: {
+	            page: {
+	                value: '1',
+	                squash: true
+	            },
+	            sort: {
+	                value: 'id,asc',
+	                squash: true
+	            },
+	            search: null
+	        },
+	        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+	        	 $uibModal.open({
+	                 templateUrl: 'app/entities/common-ui/common-dialog-find-company.html',
+	                 controller: 'CommonDialogFindCompanyController',
+	                 controllerAs: 'vm',
+	                 backdrop: 'static',
+	                 size: 'lg',
+	                 resolve: {
+	                     entity: null,
+	                     emitName: function(){
+	                    	 return 'insuranceAgencyCompanyUpdate';
+	                     },
+	                     pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+	                         return {
+	                             page: PaginationUtil.parsePage($stateParams.page),
+	                             sort: $stateParams.sort,
+	                             predicate: PaginationUtil.parsePredicate($stateParams.sort),
+	                             ascending: PaginationUtil.parseAscending($stateParams.sort),
+	                             search: $stateParams.search
+	                         };
+	                     }],
+	                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+	                         $translatePartialLoader.addPart('insuranceCompany');
+	                         $translatePartialLoader.addPart('global');
+	                         return $translate.refresh();
+	                     }]
+	                 }
+	             }).result.then(function() {
+	                 $state.go('insurance-agency', null, { reload: 'insurance-agency' });
+	             }, function() {
+	                 $state.go('^');
+	             });
+	        }]
+    	};
+    	
+    	return obj;
     }
 
 })();

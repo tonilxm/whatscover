@@ -231,13 +231,16 @@
 	        },
 	        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
 	        	 $uibModal.open({
-	                 templateUrl: 'app/entities/insurance-product/insurance-product-dialog-find-company.html',
-	                 controller: 'InsuranceProductDialogFindCompanyController',
+	                 templateUrl: 'app/entities/common-ui/common-dialog-find-company.html',
+	                 controller: 'CommonDialogFindCompanyController',
 	                 controllerAs: 'vm',
 	                 backdrop: 'static',
 	                 size: 'lg',
 	                 resolve: {
 	                     entity: null,
+	                     emitName: function(){
+	                    	 return 'insuranceProductCompanyUpdate';
+	                     },
 	                     pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
 	                         return {
 	                             page: PaginationUtil.parsePage($stateParams.page),

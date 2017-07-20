@@ -29,6 +29,9 @@ public class InsuranceAgencyDTO implements Serializable {
 
     private Long insuranceCompanyId;
 
+    @Size(max = 100)
+    private String insuranceCompanyName;
+    
     public Long getId() {
         return id;
     }
@@ -83,6 +86,14 @@ public class InsuranceAgencyDTO implements Serializable {
 
     public void setInsuranceCompanyId(Long insuranceCompanyId) {
         this.insuranceCompanyId = insuranceCompanyId;
+    }
+    
+    public String getInsuranceCompanyName() {
+        return insuranceCompanyName;
+    }
+
+    public void setInsuranceCompanyName(String insuranceCompanyName) {
+        this.insuranceCompanyName = insuranceCompanyName;
     }
 
     @Override

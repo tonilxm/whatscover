@@ -31,7 +31,7 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
     @NotNull
     @Size(max = 100)
     @Column(name = "agent_code", length = 100, nullable = false)
-    private String agent_code;
+    private String agentCode;
 
     @Size(max = 100)
     @Column(name = Constants.AGENT_PROFILE_FIRST_NAME, length = 100)
@@ -76,16 +76,16 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
     }
 
     public String getAgent_code() {
-        return agent_code;
+        return agentCode;
     }
 
     public AgentProfile agent_code(String agent_code) {
-        this.agent_code = agent_code;
+        this.agentCode = agent_code;
         return this;
     }
 
     public void setAgent_code(String agent_code) {
-        this.agent_code = agent_code;
+        this.agentCode = agent_code;
     }
 
     public String getFirst_name() {

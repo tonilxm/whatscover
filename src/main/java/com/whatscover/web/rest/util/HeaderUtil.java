@@ -33,6 +33,10 @@ public final class HeaderUtil {
     public static HttpHeaders createEntityDeletionAlert(String entityName, String param) {
         return createAlert(APPLICATION_NAME + "." + entityName + ".deleted", param);
     }
+    
+    public static HttpHeaders createEntitySendEmailAlert(String entityName, String param) {
+        return createAlert(APPLICATION_NAME + "." + entityName + ".sendEmail", param);
+    }
 
     public static HttpHeaders createFailureAlert(String entityName, String errorKey, String defaultMessage) {
         log.error("Entity processing failed, {}", defaultMessage);

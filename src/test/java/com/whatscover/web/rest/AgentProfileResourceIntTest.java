@@ -6,6 +6,7 @@ import com.whatscover.domain.AgentProfile;
 import com.whatscover.repository.AgentProfileRepository;
 import com.whatscover.repository.search.AgentProfileSearchRepository;
 import com.whatscover.service.AgentProfileService;
+import com.whatscover.service.MailService;
 import com.whatscover.service.dto.AgentProfileDTO;
 import com.whatscover.service.mapper.AgentProfileMapper;
 import com.whatscover.web.rest.errors.ExceptionTranslator;
@@ -92,11 +93,13 @@ public class AgentProfileResourceIntTest {
     private MockMvc restAgentProfileMockMvc;
 
     private AgentProfile agentProfile;
+    
+    private MailService mailService;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        AgentProfileResource agentProfileResource = new AgentProfileResource(agentProfileService);
+        AgentProfileResource agentProfileResource = new AgentProfileResource(agentProfileService, agentProfileRepository, mailService);
         this.restAgentProfileMockMvc = MockMvcBuilders.standaloneSetup(agentProfileResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -143,7 +146,7 @@ public class AgentProfileResourceIntTest {
         List<AgentProfile> agentProfileList = agentProfileRepository.findAll();
         assertThat(agentProfileList).hasSize(databaseSizeBeforeCreate + 1);
         AgentProfile testAgentProfile = agentProfileList.get(agentProfileList.size() - 1);
-        assertThat(testAgentProfile.getAgent_code()).isEqualTo(DEFAULT_AGENT_CODE);
+        assertThat(testAgentProfile.getAgentCode()).isEqualTo(DEFAULT_AGENT_CODE);
         assertThat(testAgentProfile.getFirst_name()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testAgentProfile.getMiddle_name()).isEqualTo(DEFAULT_MIDDLE_NAME);
         assertThat(testAgentProfile.getLast_name()).isEqualTo(DEFAULT_LAST_NAME);
@@ -181,7 +184,7 @@ public class AgentProfileResourceIntTest {
     public void checkAgent_codeIsRequired() throws Exception {
         int databaseSizeBeforeTest = agentProfileRepository.findAll().size();
         // set the field null
-        agentProfile.setAgent_code(null);
+        agentProfile.setAgentCode(null);
 
         // Create the AgentProfile, which fails.
         AgentProfileDTO agentProfileDTO = agentProfileMapper.toDto(agentProfile);
@@ -291,7 +294,7 @@ public class AgentProfileResourceIntTest {
         List<AgentProfile> agentProfileList = agentProfileRepository.findAll();
         assertThat(agentProfileList).hasSize(databaseSizeBeforeUpdate);
         AgentProfile testAgentProfile = agentProfileList.get(agentProfileList.size() - 1);
-        assertThat(testAgentProfile.getAgent_code()).isEqualTo(UPDATED_AGENT_CODE);
+        assertThat(testAgentProfile.getAgentCode()).isEqualTo(UPDATED_AGENT_CODE);
         assertThat(testAgentProfile.getFirst_name()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testAgentProfile.getMiddle_name()).isEqualTo(UPDATED_MIDDLE_NAME);
         assertThat(testAgentProfile.getLast_name()).isEqualTo(UPDATED_LAST_NAME);

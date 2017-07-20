@@ -125,5 +125,8 @@
         <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
         </button>
+        <button type="button" class="btn btn-primary" ng-disabled="editForm.$invalid || (!editForm.$invalid && vm.isSendEmail)" ng-click="vm.sendEmail()">
+            <span class="glyphicons glyphicons-message-out"></span>&nbsp;<span>Send Email</span>
+        </button>
     </div>
 </form>

@@ -16,17 +16,6 @@
                 authorities: ['ROLE_USER'],
                 pageTitle: 'whatscoverApp.insuranceAgency.home.title'
             },
-            params: {
-                page: {
-                    value: '1',
-                    squash: true
-                },
-                sort: {
-                    value: 'id,asc',
-                    squash: true
-                },
-                search: null
-            },
             views: {
                 'content@': {
                     templateUrl: 'app/entities/insurance-agency/insurance-agencies.html',
@@ -196,14 +185,8 @@
 	            authorities: ['ROLE_USER']
 	        },
 	        params: {
-	            page: {
-	                value: '1',
-	                squash: true
-	            },
-	            sort: {
-	                value: 'id,asc',
-	                squash: true
-	            },
+	            page: '1',
+	            sort: 'id,asc',
 	            search: null
 	        },
 	        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
@@ -218,13 +201,13 @@
 	                     emitName: function(){
 	                    	 return 'insuranceAgencyCompanyUpdate';
 	                     },
-	                     pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+	                     pagingParams: ['PaginationUtil', function (PaginationUtil) {
 	                         return {
-	                             page: PaginationUtil.parsePage($stateParams.page),
-	                             sort: $stateParams.sort,
-	                             predicate: PaginationUtil.parsePredicate($stateParams.sort),
-	                             ascending: PaginationUtil.parseAscending($stateParams.sort),
-	                             search: $stateParams.search
+	                             page: PaginationUtil.parsePage(obj.params.page),
+	                             sort: obj.params.sort,
+	                             predicate: PaginationUtil.parsePredicate(obj.params.sort),
+	                             ascending: PaginationUtil.parseAscending(obj.params.sort),
+	                             search: obj.params.search
 	                         };
 	                     }],
 	                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {

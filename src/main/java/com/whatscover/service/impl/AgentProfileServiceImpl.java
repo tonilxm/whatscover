@@ -3,6 +3,8 @@ package com.whatscover.service.impl;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,23 +110,54 @@ public class AgentProfileServiceImpl implements AgentProfileService{
 	public Page<AgentProfileDTO> search(String []queryData, Pageable pageable) {
 		log.debug("Request to search for a page of AgentProfiles for query {}", 
 				queryData.toString());
-		// Elastic boolQuery to search multiple file
-		Page<AgentProfile> result = agentProfileSearchRepository.search(boolQuery()
-        		.should(queryStringQuery(queryData[0]).defaultField(        				
-        				Constants.AGENT_PROFILE_FIRST_NAME))
-        		.should(queryStringQuery(queryData[1]).defaultField(
-        				Constants.AGENT_PROFILE_MIDDLE_NAME)
-        				.defaultOperator(Operator.AND))
-				.should(queryStringQuery(queryData[2]).defaultField(
-        				Constants.AGENT_PROFILE_LAST_NAME)
-        				.defaultOperator(Operator.AND))
-				.should(queryStringQuery(queryData[3]).defaultField(
-        				Constants.AGENT_PROFILE_INSURANCE_COMPANY)
-        				.defaultOperator(Operator.AND))
-				.should(queryStringQuery(queryData[4]).defaultField(
-        				Constants.AGENT_PROFILE_INSURANCE_AGENCY)
-        				.defaultOperator(Operator.AND)),
-        		pageable);
+		
+		Page<AgentProfile> result = handleMultipleSearch(queryData, pageable);
+		
         return result.map(agentProfileMapper::toDto);
+	}
+	
+	/**
+	 * Elastic boolQuery to search multiple file
+	 * @param queryData
+	 * @param pageable
+	 * @return
+	 */
+	private Page<AgentProfile> handleMultipleSearch(String [] queryData, Pageable pageable) {
+
+		Page<AgentProfile> result = null;
+		BoolQueryBuilder queryBuilders = boolQuery();
+		
+		if (!queryData[0].equals("")) {
+			queryBuilders.must(queryStringQuery(queryData[0])
+    				.defaultField(Constants.AGENT_PROFILE_FIRST_NAME));
+		}
+		
+		if (!queryData[1].equals("")) {
+			queryBuilders.must(queryStringQuery(queryData[1])
+    				.defaultField(Constants.AGENT_PROFILE_MIDDLE_NAME)
+    				.defaultOperator(Operator.AND));
+		}
+
+		if (!queryData[2].equals("")) {
+			queryBuilders.must(queryStringQuery(queryData[2])
+					.defaultField(Constants.AGENT_PROFILE_LAST_NAME)
+    				.defaultOperator(Operator.AND));
+		}
+		
+		if (!queryData[3].equals("")) {
+			queryBuilders.must(queryStringQuery(queryData[3])
+					.defaultField(Constants.AGENT_PROFILE_INSURANCE_COMPANY)
+    				.defaultOperator(Operator.AND));
+		}
+		
+		if (!queryData[4].equals("")) {
+			queryBuilders.must(queryStringQuery(queryData[4])
+					.defaultField(Constants.AGENT_PROFILE_INSURANCE_AGENCY)
+    				.defaultOperator(Operator.AND));
+		}
+		
+		result = agentProfileSearchRepository.search(queryBuilders, pageable);
+		
+		return result;
 	}
 }

@@ -14,6 +14,7 @@
             },
             "created": "A new Agent Profile is created with identifier {{ param }}",
             "updated": "A Agent Profile is updated with identifier {{ param }}",
+			"sendEmail":  "A new Agent Profile is sended with identifier {{ param }}",
             "deleted": "A Agent Profile is deleted with identifier {{ param }}",
             "delete": {
                 "question": "Are you sure you want to delete Agent Profile {{ id }}?"
@@ -30,7 +31,13 @@
             "dob": "Dob",
             "user": "User",
             "insuranceCompany": "Insurance Company",
-            "insuranceAgency": "Insurance Agency"
+            "insuranceAgency": "Insurance Agency",
+             "messages": {
+            	"error": {
+                	"agentcodeexists": "Agent Code is already in use!, Please choose another one.",
+                	"agentemailexists": "Agent Email is already in use!, Please choose another one."
+            	}
+            }
         }
     }
 }

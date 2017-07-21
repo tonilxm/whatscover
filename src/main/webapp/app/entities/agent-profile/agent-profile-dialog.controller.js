@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('AgentProfileDialogController', AgentProfileDialogController);
 
-    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency'];
+    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency', 'AgentProfileSendEmail'];
 
-    function AgentProfileDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency) {
+    function AgentProfileDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency, AgentProfileSendEmail) {
         var vm = this;
 
         vm.agentProfile = entity;
@@ -15,6 +15,7 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
+        vm.sendEmail = sendEmail;
         vm.users = User.query();
         vm.insurancecompanies = InsuranceCompany.query();
         vm.insuranceagencies = InsuranceAgency.query();
@@ -46,10 +47,27 @@
             vm.isSaving = false;
         }
 
+        function onSendEmailError () {
+            vm.isSendEmail = false;
+        }
+
         vm.datePickerOpenStatus.dob = false;
 
         function openCalendar (date) {
             vm.datePickerOpenStatus[date] = true;
+        }
+
+        function onSendEmailSuccess () {
+            vm.isSendEmail = true;
+        }
+
+        function sendEmail(){
+        	vm.isSendEmail = true;
+			if (vm.agentProfile.id !== null) {
+				alert("We've sent notification to your email");
+			}else{
+				AgentProfileSendEmail.email(vm.agentProfile, onSendEmailSuccess, onSendEmailError);
+			}
         }
     }
 })();

@@ -86,10 +86,10 @@
         	if (!searchQueryByAgentName) { searchQueryByAgentName = ""; } 
         	
         	vm.queryData = [];
-        	vm.queryData.push(searchQueryByFirstName, searchQueryByMiddleName,
+        	vm.queryData.push(searchQueryByFirstName, searchQueryByMiddleName, 
         			searchQueryByLastName, searchQueryByCompanyName, searchQueryByAgentName);
     	}
-
+        
         function clear () {
             vm.agentProfiles = [];
             vm.links = {

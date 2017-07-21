@@ -17,7 +17,8 @@
         vm.save = save;
         vm.sendEmail = sendEmail;
         vm.users = User.query();
-        vm.childState = $state.current.name + '.dialog-find-agency';
+        vm.insuranceCompanyState = $state.current.name + '.dialog-find-company';
+        vm.insuranceAgencyState = $state.current.name + '.dialog-find-agency';
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -56,13 +57,17 @@
             vm.datePickerOpenStatus[date] = true;
         }
         
-        var unsubscribe = $rootScope.$on('whatscoverApp:agentProfileAgencyUpdate', function(event, result) {
-//        	vm.agentProfile.insuranceCompanyId = result.id;
-//            vm.agentProfile.insuranceCompanyName = result.name;
-            vm.agentProfile.insuranceAgencyId = result.id;
+        var agencyUnsubscribe = $rootScope.$on('whatscoverApp:agentProfileAgencyUpdate', function(event, result) {
+        	vm.agentProfile.insuranceAgencyId = result.id;
             vm.agentProfile.insuranceAgencyName = result.name;
         });
-        $scope.$on('$destroy', unsubscribe);
+        $scope.$on('$destroy', agencyUnsubscribe);
+        
+        var companyUnsubscribe = $rootScope.$on('whatscoverApp:agentProfileCompanyUpdate', function(event, result) {
+        	vm.agentProfile.insuranceCompanyId = result.id;
+            vm.agentProfile.insuranceCompanyName = result.name;
+        });
+        $scope.$on('$destroy', companyUnsubscribe);
 
         function onSendEmailSuccess () {
             vm.isSendEmail = true;

@@ -73,12 +73,8 @@
                     <td>
                         {{agentProfile.userLogin}}
                     </td>
-                    <td>
-                        <a ui-sref="insurance-company-detail({id:agentProfile.insuranceCompanyId})">{{agentProfile.insuranceCompanyId}}</a>
-                    </td>
-                    <td>
-                        <a ui-sref="insurance-agency-detail({id:agentProfile.insuranceAgencyId})">{{agentProfile.insuranceAgencyId}}</a>
-                    </td>
+                    <td>{{agentProfile.insuranceCompanyName}}</td>
+                    <td>{{agentProfile.insuranceAgencyName}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

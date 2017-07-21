@@ -3,11 +3,11 @@
 
     angular
         .module('whatscoverApp')
-        .controller('AgentProfileDialogFindAgencyController', AgentProfileDialogFindAgencyController);
+        .controller('CommonDialogFindAgencyController', CommonDialogFindAgencyController);
 
-    AgentProfileDialogFindAgencyController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'AgentProfile', 'InsuranceAgency', 'InsuranceAgencySearch', 'paginationConstants', 'pagingParams', 'ParseLinks', '$state', 'AlertService', 'emitName'];
+    CommonDialogFindAgencyController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'AgentProfile', 'InsuranceAgency', 'InsuranceAgencySearch', 'paginationConstants', 'pagingParams', 'ParseLinks', '$state', 'AlertService', 'emitName'];
 
-    function AgentProfileDialogFindAgencyController ($timeout, $scope, $stateParams, $uibModalInstance, entity, AgentProfile, InsuranceAgency, InsuranceAgencySearch, paginationConstants, pagingParams, ParseLinks, $state, AlertService, emitName) {
+    function CommonDialogFindAgencyController ($timeout, $scope, $stateParams, $uibModalInstance, entity, AgentProfile, InsuranceAgency, InsuranceAgencySearch, paginationConstants, pagingParams, ParseLinks, $state, AlertService, emitName) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.clear = clear;

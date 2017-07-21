@@ -173,11 +173,64 @@
                 });
             }]
         })
-        .state(generateFindingStateObj('agent-profile.edit.dialog-find-agency', 'agent-profile.edit'))
-        .state(generateFindingStateObj('agent-profile.new.dialog-find-agency', 'agent-profile.new'));
+        .state(generateFindCompanyStateObj('agent-profile.edit.dialog-find-company', 'agent-profile.edit'))
+        .state(generateFindCompanyStateObj('agent-profile.new.dialog-find-company', 'agent-profile.new'))
+        .state(generateFindAgencyStateObj('agent-profile.edit.dialog-find-agency', 'agent-profile.edit'))
+        .state(generateFindAgencyStateObj('agent-profile.new.dialog-find-agency', 'agent-profile.new'));
     }
   
-    function generateFindingStateObj(name, parent){
+    function generateFindCompanyStateObj(name, parent){
+    	var obj = {
+			name: name,	
+			parent: parent,
+	        url: '/findCompany?page&sort&search',
+	        data: {
+	            authorities: ['ROLE_USER']
+	        },
+	        params: {
+	        	page: '1',
+	            sort: 'id,asc',
+	            search: null
+	        },
+	        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+	        	 $uibModal.open({
+	                 templateUrl: 'app/entities/common-ui/common-dialog-find-company.html',
+	                 controller: 'CommonDialogFindCompanyController',
+	                 controllerAs: 'vm',
+	                 backdrop: 'static',
+	                 size: 'lg',
+	                 resolve: {
+	                     entity: null,
+	                     emitName: function(){
+	                    	 return 'agentProfileCompanyUpdate';
+	                     },
+	                     pagingParams: ['PaginationUtil', function (PaginationUtil) {
+	                         return {
+	                             page: PaginationUtil.parsePage(obj.params.page),
+	                             sort: obj.params.sort,
+	                             predicate: PaginationUtil.parsePredicate(obj.params.sort),
+	                             ascending: PaginationUtil.parseAscending(obj.params.sort),
+	                             search: obj.params.search
+	                         };
+	                     }],
+	                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+	                         $translatePartialLoader.addPart('insuranceCompany');
+	                         $translatePartialLoader.addPart('global');
+	                         return $translate.refresh();
+	                     }]
+	                 }
+	             }).result.then(function() {
+	                 $state.go('agent-profile', null, { reload: 'agent-profile' });
+	             }, function() {
+	                 $state.go('^');
+	             });
+	        }]
+    	};
+    	
+    	return obj;
+    }
+    
+    function generateFindAgencyStateObj(name, parent){
     	var obj = {
 			name: name,	
 			parent: parent,
@@ -192,8 +245,8 @@
 	        },
 	        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
 	        	 $uibModal.open({
-	                 templateUrl: 'app/entities/agent-profile/agent-profile-dialog-find-agency.html',
-	                 controller: 'AgentProfileDialogFindAgencyController',
+	                 templateUrl: 'app/entities/common-ui/common-dialog-find-agency.html',
+	                 controller: 'CommonDialogFindAgencyController',
 	                 controllerAs: 'vm',
 	                 backdrop: 'static',
 	                 size: 'lg',

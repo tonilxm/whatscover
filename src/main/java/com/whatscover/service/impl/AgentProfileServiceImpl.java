@@ -1,13 +1,9 @@
 package com.whatscover.service.impl;
 
-import com.whatscover.service.AgentProfileService;
-import com.whatscover.config.Constants;
-import com.whatscover.domain.AgentProfile;
-import com.whatscover.repository.AgentProfileRepository;
-import com.whatscover.repository.search.AgentProfileSearchRepository;
-import com.whatscover.service.dto.AgentProfileDTO;
-import com.whatscover.service.mapper.AgentProfileMapper;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
+import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,9 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
-import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
+import com.whatscover.config.Constants;
+import com.whatscover.domain.AgentProfile;
+import com.whatscover.repository.AgentProfileRepository;
+import com.whatscover.repository.search.AgentProfileSearchRepository;
+import com.whatscover.service.AgentProfileService;
+import com.whatscover.service.dto.AgentProfileDTO;
+import com.whatscover.service.mapper.AgentProfileMapper;
 
 /**
  * Service Implementation for managing InsuranceCompany.
@@ -68,9 +68,9 @@ public class AgentProfileServiceImpl implements AgentProfileService{
 
 	@Override
 	public void delete(Long id) {
-        log.debug("Request to get AgentProfile : {}", id);
-        AgentProfile agentProfile = agentProfileRepository.findOne(id);
-        agentProfileMapper.toDto(agentProfile);
+        log.debug("Request to delete AgentProfile : {}", id);
+        agentProfileRepository.delete(id);
+        agentProfileSearchRepository.delete(id);
 	}
 
 	@Override

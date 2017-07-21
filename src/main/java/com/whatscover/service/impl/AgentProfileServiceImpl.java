@@ -20,7 +20,7 @@ import com.whatscover.service.dto.AgentProfileDTO;
 import com.whatscover.service.mapper.AgentProfileMapper;
 
 /**
- * Service Implementation for managing InsuranceCompany.
+ * Service Implementation for managing AgentProfile.
  */
 @Service
 @Transactional
@@ -31,49 +31,79 @@ public class AgentProfileServiceImpl implements AgentProfileService{
     private final AgentProfileRepository agentProfileRepository;
 
     private final AgentProfileMapper agentProfileMapper;
-    
+
     private final AgentProfileSearchRepository agentProfileSearchRepository;
 
-    public AgentProfileServiceImpl(AgentProfileRepository agentProfileRepository, AgentProfileMapper agentProfileMapper, 
-    		AgentProfileSearchRepository agentProfileSearchRepository) {
+    public AgentProfileServiceImpl(AgentProfileRepository agentProfileRepository, AgentProfileMapper agentProfileMapper, AgentProfileSearchRepository agentProfileSearchRepository) {
         this.agentProfileRepository = agentProfileRepository;
         this.agentProfileMapper = agentProfileMapper;
         this.agentProfileSearchRepository = agentProfileSearchRepository;
     }
 
+    /**
+     * Save a agentProfile.
+     *
+     * @param agentProfileDTO the entity to save
+     * @return the persisted entity
+     */
     @Override
-	public AgentProfileDTO save(AgentProfileDTO agentProfileDTO) {
-    	log.debug("Request to save AgentProfile : {}", agentProfileDTO);
-    	AgentProfile agentProfile = agentProfileMapper.toEntity(agentProfileDTO);
-    	agentProfile = agentProfileRepository.save(agentProfile);
-    	AgentProfileDTO result = agentProfileMapper.toDto(agentProfile);
-    	agentProfileSearchRepository.save(agentProfile);
-		return result;
-	}
+    public AgentProfileDTO save(AgentProfileDTO agentProfileDTO) {
+        log.debug("Request to save AgentProfile : {}", agentProfileDTO);
+        AgentProfile agentProfile = agentProfileMapper.toEntity(agentProfileDTO);
+        agentProfile = agentProfileRepository.save(agentProfile);
+        AgentProfileDTO result = agentProfileMapper.toDto(agentProfile);
+        agentProfileSearchRepository.save(agentProfile);
+        return result;
+    }
 
-	@Override
+    /**
+     *  Get all the agentProfiles.
+     *
+     *  @param pageable the pagination information
+     *  @return the list of entities
+     */
+    @Override
     @Transactional(readOnly = true)
-	public AgentProfileDTO findOne(Long id) {
+    public Page<AgentProfileDTO> findAll(Pageable pageable) {
+        log.debug("Request to get all AgentProfiles");
+        return agentProfileRepository.findAll(pageable)
+            .map(agentProfileMapper::toDto);
+    }
+
+    /**
+     *  Get one agentProfile by id.
+     *
+     *  @param id the id of the entity
+     *  @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public AgentProfileDTO findOne(Long id) {
         log.debug("Request to get AgentProfile : {}", id);
         AgentProfile agentProfile = agentProfileRepository.findOne(id);
         return agentProfileMapper.toDto(agentProfile);
-	}
+    }
 
-	@Override
-	public Page<AgentProfileDTO> findAll(Pageable pageable) {
-		log.debug("Request to get all AgentProfiles");
-        return agentProfileRepository.findAll(pageable)
-            .map(agentProfileMapper::toDto);
-	}
-
-	@Override
-	public void delete(Long id) {
+    /**
+     *  Delete the  agentProfile by id.
+     *
+     *  @param id the id of the entity
+     */
+    @Override
+    public void delete(Long id) {
         log.debug("Request to delete AgentProfile : {}", id);
         agentProfileRepository.delete(id);
         agentProfileSearchRepository.delete(id);
-	}
+    }
 
-	@Override
+    /**
+     * Search for the agentProfile corresponding to the query.
+     *
+     *  @param query the query of the search
+     *  @param pageable the pagination information
+     *  @return the list of entities
+     */
+    @Override
     @Transactional(readOnly = true)
 	public Page<AgentProfileDTO> search(String []queryData, Pageable pageable) {
 		log.debug("Request to search for a page of AgentProfiles for query {}", 

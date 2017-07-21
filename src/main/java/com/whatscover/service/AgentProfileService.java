@@ -9,20 +9,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.whatscover.service.dto.AgentProfileDTO;
 
 /**
- * Service Interface for managing InsuranceAgency.
+ * Service Interface for managing AgentProfile.
  */
 public interface AgentProfileService {
 
     /**
-     * Save a insuranceAgencyDTO.
+     * Save a agentProfile.
      *
-     * @param insuranceAgencyDTO the entity to save
+     * @param agentProfileDTO the entity to save
      * @return the persisted entity
      */
-	AgentProfileDTO save(AgentProfileDTO agentProfileDTO);
+    AgentProfileDTO save(AgentProfileDTO agentProfileDTO);
 
     /**
-     *  Get all the insuranceAgencies.
+     *  Get all the agentProfiles.
      *
      *  @param pageable the pagination information
      *  @return the list of entities
@@ -30,7 +30,7 @@ public interface AgentProfileService {
     Page<AgentProfileDTO> findAll(Pageable pageable);
 
     /**
-     *  Get the "id" insuranceAgency.
+     *  Get the "id" agentProfile.
      *
      *  @param id the id of the entity
      *  @return the entity
@@ -38,14 +38,14 @@ public interface AgentProfileService {
     AgentProfileDTO findOne(Long id);
 
     /**
-     *  Delete the "id" insuranceAgency.
+     *  Delete the "id" agentProfile.
      *
      *  @param id the id of the entity
      */
     void delete(Long id);
 
     /**
-     * Search for the insuranceAgency corresponding to the query.
+     * Search for the agentProfile corresponding to the query.
      *
      *  @param query the query of the search
      *  

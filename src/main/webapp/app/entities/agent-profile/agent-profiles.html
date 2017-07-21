@@ -45,7 +45,7 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="agent_code"><span data-translate="whatscoverApp.agentProfile.agent_code">Agent Code</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="first_name"><span data-translate="whatscoverApp.agentProfile.first_name">First Name</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -60,7 +60,7 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+            <tbody>
                 <tr ng-repeat="agentProfile in vm.agentProfiles track by agentProfile.id">
                     <td><a ui-sref="agent-profile-detail({id:agentProfile.id})">{{agentProfile.id}}</a></td>
                     <td>{{agentProfile.agent_code}}</td>
@@ -100,5 +100,9 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
     </div>
 </div>

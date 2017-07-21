@@ -5,15 +5,18 @@
         .module('whatscoverApp')
         .controller('AgentProfileController', AgentProfileController);
 
-    AgentProfileController.$inject = ['AgentProfile', 'AgentProfileSearch', 'ParseLinks', 'AlertService', 'paginationConstants'];
+    AgentProfileController.$inject = ['$state', 'AgentProfile', 'AgentProfileSearch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function AgentProfileController(AgentProfile, AgentProfileSearch, ParseLinks, AlertService, paginationConstants) {
+    function AgentProfileController($state, AgentProfile, AgentProfileSearch, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
 
         vm.agentProfiles = [];
         vm.queryData = [];
         vm.loadPage = loadPage;
+        vm.predicate = pagingParams.predicate;
+        vm.reverse = pagingParams.ascending;
+        vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.page = 0;
         vm.links = {
@@ -32,14 +35,14 @@
             if (vm.queryData && vm.queryData.length == 5) 
             {
                 AgentProfileSearch.query({
-                	queryData: vm.queryData,
-                    page: vm.page,
+                    queryData: vm.queryData,
+                    page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
                     sort: sort()
                 }, onSuccess, onError);
             } else {
                 AgentProfile.query({
-                    page: vm.page,
+                    page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
                     sort: sort()
                 }, onSuccess, onError);
@@ -55,9 +58,11 @@
             function onSuccess(data, headers) {
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
+                vm.queryCount = vm.totalItems;
                 for (var i = 0; i < data.length; i++) {
                     vm.agentProfiles.push(data[i]);
                 }
+	    	vm.page = pagingParams.page;
             }
 
             function onError(error) {
@@ -73,9 +78,16 @@
 
         function loadPage(page) {
             vm.page = page;
+            vm.transition();
             loadAll();
         }
-        
+        function transition() {
+            $state.transitionTo($state.$current, {
+                page: vm.page,
+                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
+                search: vm.currentSearch
+            });
+        }
         function pushData(searchQueryByFirstName, searchQueryByMiddleName,
         		searchQueryByLastName, searchQueryByCompanyName, searchQueryByAgentName) 
         {
@@ -90,17 +102,7 @@
         			searchQueryByLastName, searchQueryByCompanyName, searchQueryByAgentName);
     	}
         
-        function clear () {
-            vm.agentProfiles = [];
-            vm.links = {
-                last: 0
-            };
-            vm.page = 0;
-            vm.predicate = 'id';
-            vm.reverse = true;
-            vm.queryData = [];
-            vm.loadAll();
-        }
+
 
         function search (searchQueryByFirstName, searchQueryByMiddleName,
         		searchQueryByLastName, searchQueryByCompanyName, searchQueryByAgentName) {
@@ -118,6 +120,18 @@
             vm.reverse = false;
             pushData(searchQueryByFirstName, searchQueryByMiddleName, searchQueryByLastName,
             		searchQueryByCompanyName, searchQueryByAgentName);
+	    vm.transition();
+            vm.loadAll();
+        }
+        function clear () {
+            vm.agentProfiles = [];
+            vm.links = {
+                last: 0
+            };
+            vm.page = 0;
+            vm.predicate = 'id';
+            vm.reverse = true;
+            vm.queryData = [];
             vm.loadAll();
         }
     }

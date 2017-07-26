@@ -48,6 +48,7 @@ public class CacheConfiguration {
             cm.createCache(com.whatscover.domain.InsuranceAgency.class.getName() + ".ys", jcacheConfiguration);
             cm.createCache(com.whatscover.domain.CustomerProfile.class.getName(), jcacheConfiguration);
             cm.createCache(com.whatscover.domain.Appointment.class.getName(), jcacheConfiguration);
+            cm.createCache(com.whatscover.domain.ProductCategory.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

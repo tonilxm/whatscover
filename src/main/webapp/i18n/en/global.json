@@ -13,6 +13,7 @@
                 "insuranceAgency": "Insurance Agency",
                 "customerProfile": "Customer Profile",
                 "appointment": "Appointment",
+                "productCategory": "Product Category",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

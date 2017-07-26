@@ -31,15 +31,16 @@
                 "required",
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": "100"
+            "fieldValidateRulesMaxlength": "50"
         },
         {
             "fieldName": "first_name",
             "fieldType": "String",
             "fieldValidateRules": [
+                "required",
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": "100"
+            "fieldValidateRulesMaxlength": "50"
         },
         {
             "fieldName": "middle_name",
@@ -47,7 +48,7 @@
             "fieldValidateRules": [
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": "100"
+            "fieldValidateRulesMaxlength": "50"
         },
         {
             "fieldName": "last_name",
@@ -55,7 +56,7 @@
             "fieldValidateRules": [
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": "100"
+            "fieldValidateRulesMaxlength": "50"
         },
         {
             "fieldName": "gender",

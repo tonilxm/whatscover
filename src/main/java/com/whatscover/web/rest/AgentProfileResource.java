@@ -27,6 +27,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import com.whatscover.config.Constants;
 
 /**
  * REST controller for managing AgentProfile.
@@ -38,9 +39,6 @@ public class AgentProfileResource {
     private final Logger log = LoggerFactory.getLogger(AgentProfileResource.class);
 
     private static final String ENTITY_NAME = "agentProfile";
-    private static final String EMAIL_SUBJECT = "Create New Agent Profiles";
-
-    private static final String EMAIL_CONTENT = "Congratulations, you've successfully created an Agent Profile";
     
     private final AgentProfileService agentProfileService;
     
@@ -65,10 +63,18 @@ public class AgentProfileResource {
     @Timed
     public ResponseEntity<AgentProfileDTO> createAgentProfile(@Valid @RequestBody AgentProfileDTO agentProfileDTO) throws URISyntaxException {
         log.debug("REST request to save AgentProfile : {}", agentProfileDTO);
-        if (agentProfileDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new agentProfile cannot already have an ID")).body(null);
-        }
+		if (agentProfileDTO.getId() != null) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists",
+					"A new Agent Profile cannot already have an ID")).body(null);
+		} else if (agentProfileRepository.findOneByAgentCode(agentProfileDTO.getAgent_code()).isPresent()) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.agentcodeexists", "Agent Code already in use")).body(null);
+		} else if (agentProfileRepository.findOneByEmail(agentProfileDTO.getEmail()).isPresent()) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.agentemailexists", "Agent Email already in use")).body(null);
+		}
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
+        mailService.sendEmail(agentProfileDTO.getEmail(), Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, Constants.AGENT_EMAIL_CONTENT_REGISTRATION, false, true);
         return ResponseEntity.created(new URI("/api/agent-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -122,12 +128,12 @@ public class AgentProfileResource {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.agentcodeexists", "Agent Code already in use"))
 					.body(null);
-		}else if(agentProfileRepository.findOneByEmail(agentProfileDTO.getEmail()).isPresent()) {
+		} else if(agentProfileRepository.findOneByEmail(agentProfileDTO.getEmail()).isPresent()) {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.agentemailexists", "Agent Email already in use"))
 					.body(null);
 		}
-        mailService.sendEmail(agentProfileDTO.getEmail(), EMAIL_SUBJECT, EMAIL_CONTENT, false, true);
+        mailService.sendEmail(agentProfileDTO.getEmail(), Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, false, true);
         return ResponseEntity.ok().headers(HeaderUtil.createEntitySendEmailAlert(ENTITY_NAME, "Send Email Alert")).build();
     }
 

@@ -15,16 +15,17 @@ public class AgentProfileDTO implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(max = 100)
+    @Size(max = 50)
     private String agent_code;
 
-    @Size(max = 100)
+    @NotNull
+    @Size(max = 50)
     private String first_name;
 
-    @Size(max = 100)
+    @Size(max = 50)
     private String middle_name;
 
-    @Size(max = 100)
+    @Size(max = 50)
     private String last_name;
 
     private Gender gender;

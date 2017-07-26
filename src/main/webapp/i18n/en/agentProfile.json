@@ -4,7 +4,7 @@
             "home": {
                 "title": "Agent Profiles",
                 "createLabel": "Create a new Agent Profile",
-                "createOrEditLabel": "Create or edit a Agent Profile",
+                "createOrEditLabel": "Agent Registration",
                 "search": "Search for Agent Profile",
                 "searchByFirstName": "Search By First Name",
                 "searchByMiddleName": "Search By Middle Name",
@@ -28,7 +28,7 @@
             "last_name": "Last Name",
             "gender": "Gender",
             "email": "Email",
-            "dob": "Dob",
+            "dob": "Date of Birth",
             "user": "User",
             "insuranceCompany": "Insurance Company",
             "insuranceAgency": "Insurance Agency",

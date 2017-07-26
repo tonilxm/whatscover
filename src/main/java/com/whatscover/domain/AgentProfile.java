@@ -29,20 +29,20 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
     private Long id;
 
     @NotNull
-    @Size(max = 100)
-    @Column(name = "agent_code", length = 100, nullable = false)
+    @Size(min = 1, max = 50)
+    @Column(name = "agent_code", length = 50, nullable = false)
     private String agentCode;
 
-    @Size(max = 100)
-    @Column(name = Constants.AGENT_PROFILE_FIRST_NAME, length = 100)
+    @Size(min = 1, max = 50)
+    @Column(name = Constants.AGENT_PROFILE_FIRST_NAME, length = 50, nullable = false)
     private String first_name;
 
-    @Size(max = 100)
-    @Column(name = Constants.AGENT_PROFILE_MIDDLE_NAME, length = 100)
+    @Size(max = 50)
+    @Column(name = Constants.AGENT_PROFILE_MIDDLE_NAME, length = 50)
     private String middle_name;
 
-    @Size(max = 100)
-    @Column(name = Constants.AGENT_PROFILE_LAST_NAME, length = 100)
+    @Size(max = 50)
+    @Column(name = Constants.AGENT_PROFILE_LAST_NAME, length = 50)
     private String last_name;
 
     @Enumerated(EnumType.STRING)

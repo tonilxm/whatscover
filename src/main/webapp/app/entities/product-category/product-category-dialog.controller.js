@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('ProductCategoryDialogController', ProductCategoryDialogController);
 
-    ProductCategoryDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'ProductCategory'];
+    ProductCategoryDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$window', 'entity', 'ProductCategory'];
 
-    function ProductCategoryDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, ProductCategory) {
+    function ProductCategoryDialogController ($timeout, $scope, $stateParams, $window, entity, ProductCategory) {
         var vm = this;
 
         vm.productCategory = entity;
@@ -19,7 +19,7 @@
         });
 
         function clear () {
-            $uibModalInstance.dismiss('cancel');
+            $window.history.back();
         }
 
         function save () {
@@ -29,11 +29,12 @@
             } else {
                 ProductCategory.save(vm.productCategory, onSaveSuccess, onSaveError);
             }
+            $window.history.back();
         }
 
         function onSaveSuccess (result) {
             $scope.$emit('whatscoverApp:productCategoryUpdate', result);
-            $uibModalInstance.close(result);
+            //$uibModalInstance.close(result);
             vm.isSaving = false;
         }
 

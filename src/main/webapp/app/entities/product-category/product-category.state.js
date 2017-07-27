@@ -114,6 +114,34 @@
             data: {
                 authorities: ['ROLE_USER']
             },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/product-category/product-category-dialog.html',
+                    controller: 'ProductCategoryDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('productCategory');
+                    return $translate.refresh();
+                }],
+                entity: function () {
+                    return {
+                        name: null,
+                        id: null
+                    };
+                },
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'product-category',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
+            /*
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/product-category/product-category-dialog.html',
@@ -134,7 +162,7 @@
                 }, function() {
                     $state.go('product-category');
                 });
-            }]
+            }] */
         })
         .state('product-category.edit', {
             parent: 'product-category',
@@ -142,6 +170,31 @@
             data: {
                 authorities: ['ROLE_USER']
             },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/product-category/product-category-dialog.html',
+                    controller: 'ProductCategoryDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('productCategory');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'ProductCategory', function($stateParams, ProductCategory) {
+                    return ProductCategory.get({id : $stateParams.id}).$promise;
+                }],
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'product-category',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
+            /*
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/product-category/product-category-dialog.html',
@@ -160,6 +213,7 @@
                     $state.go('^');
                 });
             }]
+            */
         })
         .state('product-category.delete', {
             parent: 'product-category',

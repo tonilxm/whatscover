@@ -199,7 +199,12 @@ public class AgentProfileResource {
     @Timed
     public ResponseEntity<Void> deleteAgentProfile(@PathVariable Long id) {
         log.debug("REST request to delete AgentProfile : {}", id);
+        AgentProfileDTO agentProfileDTO = agentProfileService.findOne(id);
         agentProfileService.delete(id);
+        String email = agentProfileDTO.getEmail();
+        int index = email.indexOf("@gmail.com");
+        String login = email.substring(0, index);
+        userService.deleteUser(login);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 

@@ -35,7 +35,8 @@
              "messages": {
             	"error": {
                 	"agentcodeexists": "Agent Code is already in use!, Please choose another one.",
-                	"agentemailexists": "Agent Email is already in use!, Please choose another one."
+                	"agentemailexists": "Agent Email is already in use!, Please choose another one.",
+                	"agentemailformat": "Agent Email was wrong fortmat. Example: Correct email abc@gmail.com"
             	}
             }
         }

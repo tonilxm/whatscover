@@ -1,16 +1,12 @@
 package com.whatscover.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
-import com.whatscover.web.rest.util.HeaderUtil;
-import com.whatscover.web.rest.util.PaginationUtil;
-import com.whatscover.repository.AgentProfileRepository;
-import com.whatscover.repository.InsuranceCompanyRepository;
-import com.whatscover.service.AgentProfileService;
-import com.whatscover.service.MailService;
-import com.whatscover.service.dto.AgentProfileDTO;
-import io.swagger.annotations.ApiParam;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +15,31 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.List;
-import java.util.Optional;
+import com.codahale.metrics.annotation.Timed;
 import com.whatscover.config.Constants;
+import com.whatscover.domain.User;
+import com.whatscover.repository.AgentProfileRepository;
+import com.whatscover.security.AuthoritiesConstants;
+import com.whatscover.service.AgentProfileService;
+import com.whatscover.service.MailService;
+import com.whatscover.service.UserService;
+import com.whatscover.service.dto.AgentProfileDTO;
+import com.whatscover.web.rest.util.HeaderUtil;
+import com.whatscover.web.rest.util.PaginationUtil;
+
+import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 
 /**
  * REST controller for managing AgentProfile.
@@ -40,16 +52,21 @@ public class AgentProfileResource {
 
     private static final String ENTITY_NAME = "agentProfile";
     
+    private static final int PASSWORD_LENGTH = 6;
+
     private final AgentProfileService agentProfileService;
     
 	private final AgentProfileRepository agentProfileRepository;
     
     private final MailService mailService;
-
-    public AgentProfileResource(AgentProfileService agentProfileService, AgentProfileRepository agentProfileRepository, MailService mailService) {
+    
+    private final UserService userService;
+ 
+    public AgentProfileResource(AgentProfileService agentProfileService, AgentProfileRepository agentProfileRepository, MailService mailService, UserService userService) {
         this.agentProfileService = agentProfileService;
         this.agentProfileRepository = agentProfileRepository;
         this.mailService = mailService;
+        this.userService = userService;
     }
 
     /**
@@ -63,21 +80,42 @@ public class AgentProfileResource {
     @Timed
     public ResponseEntity<AgentProfileDTO> createAgentProfile(@Valid @RequestBody AgentProfileDTO agentProfileDTO) throws URISyntaxException {
         log.debug("REST request to save AgentProfile : {}", agentProfileDTO);
+        String email = agentProfileDTO.getEmail();
+        int index = email.indexOf("@gmail.com");
 		if (agentProfileDTO.getId() != null) {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists",
 					"A new Agent Profile cannot already have an ID")).body(null);
 		} else if (agentProfileRepository.findOneByAgentCode(agentProfileDTO.getAgent_code()).isPresent()) {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.agentcodeexists", "Agent Code already in use")).body(null);
-		} else if (agentProfileRepository.findOneByEmail(agentProfileDTO.getEmail()).isPresent()) {
+		} else if (agentProfileRepository.findOneByEmail(email).isPresent()) {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.agentemailexists", "Agent Email already in use")).body(null);
+		} else if (index < 1) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.agentemailformat", "Agent Email wrong format")).body(null);
 		}
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
-        mailService.sendEmail(agentProfileDTO.getEmail(), Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, Constants.AGENT_EMAIL_CONTENT_REGISTRATION, false, true);
+        User user = new User();
+        String login = email.substring(0, index);
+        String  password = getSaltString();
+    	user = userService.createUser(login, password, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , "en");
+        mailService.sendActivationEmail(user);
         return ResponseEntity.created(new URI("/api/agent-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+    
+    protected String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < PASSWORD_LENGTH) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
     }
 
     /**

@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/product-category?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'whatscoverApp.productCategory.home.title'
             },
             views: {

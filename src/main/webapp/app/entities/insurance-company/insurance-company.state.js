@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/insurance-company?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'whatscoverApp.insuranceCompany.home.title'
             },
             views: {

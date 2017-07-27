@@ -95,11 +95,12 @@ public class AgentProfileResource {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.agentemailformat", "Agent Email wrong format")).body(null);
 		}
-        AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         User user = new User();
         String login = email.substring(0, index);
         String  password = getSaltString();
     	user = userService.createUser(login, password, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , "en");
+    	agentProfileDTO.setUserId(user.getId());
+        AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         mailService.sendActivationEmail(user);
         return ResponseEntity.created(new URI("/api/agent-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

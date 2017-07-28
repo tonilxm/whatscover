@@ -1,8 +1,8 @@
 package com.whatscover.service.dto;
 
 
-import javax.validation.constraints.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
@@ -21,15 +21,6 @@ public class InsuranceCompanyDTO extends AbstractAuditingDTO {
 
     @Size(max = 200)
     private String description;
-
-    @Size(max = 200)
-    private String address_1;
-
-    @Size(max = 200)
-    private String address_2;
-
-    @Size(max = 200)
-    private String address_3;
 
     public Long getId() {
         return id;
@@ -63,30 +54,6 @@ public class InsuranceCompanyDTO extends AbstractAuditingDTO {
         this.description = description;
     }
 
-    public String getAddress_1() {
-        return address_1;
-    }
-
-    public void setAddress_1(String address_1) {
-        this.address_1 = address_1;
-    }
-
-    public String getAddress_2() {
-        return address_2;
-    }
-
-    public void setAddress_2(String address_2) {
-        this.address_2 = address_2;
-    }
-
-    public String getAddress_3() {
-        return address_3;
-    }
-
-    public void setAddress_3(String address_3) {
-        this.address_3 = address_3;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -115,9 +82,6 @@ public class InsuranceCompanyDTO extends AbstractAuditingDTO {
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", address_1='" + getAddress_1() + "'" +
-            ", address_2='" + getAddress_2() + "'" +
-            ", address_3='" + getAddress_3() + "'" +
             "}";
     }
 }

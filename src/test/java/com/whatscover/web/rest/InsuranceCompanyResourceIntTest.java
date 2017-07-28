@@ -48,15 +48,6 @@ public class InsuranceCompanyResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_ADDRESS_1 = "AAAAAAAAAA";
-    private static final String UPDATED_ADDRESS_1 = "BBBBBBBBBB";
-
-    private static final String DEFAULT_ADDRESS_2 = "AAAAAAAAAA";
-    private static final String UPDATED_ADDRESS_2 = "BBBBBBBBBB";
-
-    private static final String DEFAULT_ADDRESS_3 = "AAAAAAAAAA";
-    private static final String UPDATED_ADDRESS_3 = "BBBBBBBBBB";
-
     @Autowired
     private InsuranceCompanyRepository insuranceCompanyRepository;
 
@@ -105,10 +96,7 @@ public class InsuranceCompanyResourceIntTest {
         InsuranceCompany insuranceCompany = new InsuranceCompany()
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
-            .description(DEFAULT_DESCRIPTION)
-            .address_1(DEFAULT_ADDRESS_1)
-            .address_2(DEFAULT_ADDRESS_2)
-            .address_3(DEFAULT_ADDRESS_3);
+            .description(DEFAULT_DESCRIPTION);
         return insuranceCompany;
     }
 
@@ -137,9 +125,6 @@ public class InsuranceCompanyResourceIntTest {
         assertThat(testInsuranceCompany.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testInsuranceCompany.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testInsuranceCompany.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testInsuranceCompany.getAddress_1()).isEqualTo(DEFAULT_ADDRESS_1);
-        assertThat(testInsuranceCompany.getAddress_2()).isEqualTo(DEFAULT_ADDRESS_2);
-        assertThat(testInsuranceCompany.getAddress_3()).isEqualTo(DEFAULT_ADDRESS_3);
 
         // Validate the InsuranceCompany in Elasticsearch
         InsuranceCompany insuranceCompanyEs = insuranceCompanySearchRepository.findOne(testInsuranceCompany.getId());
@@ -198,10 +183,7 @@ public class InsuranceCompanyResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(insuranceCompany.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].address_1").value(hasItem(DEFAULT_ADDRESS_1.toString())))
-            .andExpect(jsonPath("$.[*].address_2").value(hasItem(DEFAULT_ADDRESS_2.toString())))
-            .andExpect(jsonPath("$.[*].address_3").value(hasItem(DEFAULT_ADDRESS_3.toString())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
     @Test
@@ -217,10 +199,7 @@ public class InsuranceCompanyResourceIntTest {
             .andExpect(jsonPath("$.id").value(insuranceCompany.getId().intValue()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.address_1").value(DEFAULT_ADDRESS_1.toString()))
-            .andExpect(jsonPath("$.address_2").value(DEFAULT_ADDRESS_2.toString()))
-            .andExpect(jsonPath("$.address_3").value(DEFAULT_ADDRESS_3.toString()));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
 
     @Test
@@ -244,10 +223,7 @@ public class InsuranceCompanyResourceIntTest {
         updatedInsuranceCompany
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
-            .description(UPDATED_DESCRIPTION)
-            .address_1(UPDATED_ADDRESS_1)
-            .address_2(UPDATED_ADDRESS_2)
-            .address_3(UPDATED_ADDRESS_3);
+            .description(UPDATED_DESCRIPTION);
         InsuranceCompanyDTO insuranceCompanyDTO = insuranceCompanyMapper.toDto(updatedInsuranceCompany);
 
         restInsuranceCompanyMockMvc.perform(put("/api/insurance-companies")
@@ -262,9 +238,6 @@ public class InsuranceCompanyResourceIntTest {
         assertThat(testInsuranceCompany.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testInsuranceCompany.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testInsuranceCompany.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testInsuranceCompany.getAddress_1()).isEqualTo(UPDATED_ADDRESS_1);
-        assertThat(testInsuranceCompany.getAddress_2()).isEqualTo(UPDATED_ADDRESS_2);
-        assertThat(testInsuranceCompany.getAddress_3()).isEqualTo(UPDATED_ADDRESS_3);
 
         // Validate the InsuranceCompany in Elasticsearch
         InsuranceCompany insuranceCompanyEs = insuranceCompanySearchRepository.findOne(testInsuranceCompany.getId());
@@ -326,10 +299,7 @@ public class InsuranceCompanyResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(insuranceCompany.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].address_1").value(hasItem(DEFAULT_ADDRESS_1.toString())))
-            .andExpect(jsonPath("$.[*].address_2").value(hasItem(DEFAULT_ADDRESS_2.toString())))
-            .andExpect(jsonPath("$.[*].address_3").value(hasItem(DEFAULT_ADDRESS_3.toString())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
     @Test

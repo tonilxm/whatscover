@@ -114,6 +114,28 @@
             data: {
                 authorities: ['ROLE_USER']
             },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/insurance-company/insurance-company-dialog.html',
+                    controller: 'InsuranceCompanyDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('insuranceCompany');
+                    return $translate.refresh();
+                }],
+                entity: function () {
+                    return {
+                        code: null,
+                        name: null,
+                        description: null,
+                        id: null
+                    };
+                }
+            }
+            /*
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/insurance-company/insurance-company-dialog.html',
@@ -127,9 +149,6 @@
                                 code: null,
                                 name: null,
                                 description: null,
-                                address_1: null,
-                                address_2: null,
-                                address_3: null,
                                 id: null
                             };
                         }
@@ -140,6 +159,7 @@
                     $state.go('insurance-company');
                 });
             }]
+            */
         })
         .state('insurance-company.edit', {
             parent: 'insurance-company',
@@ -147,6 +167,23 @@
             data: {
                 authorities: ['ROLE_USER']
             },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/insurance-company/insurance-company-dialog.html',
+                    controller: 'InsuranceCompanyDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('insuranceCompany');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'InsuranceCompany', function($stateParams, InsuranceCompany) {
+                    return InsuranceCompany.get({id : $stateParams.id}).$promise;
+                }]
+            }
+            /*
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/insurance-company/insurance-company-dialog.html',
@@ -164,7 +201,7 @@
                 }, function() {
                     $state.go('^');
                 });
-            }]
+            }]*/
         })
         .state('insurance-company.delete', {
             parent: 'insurance-company',

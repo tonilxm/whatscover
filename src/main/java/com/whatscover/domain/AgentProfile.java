@@ -57,6 +57,18 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
     @Column(name = "dob")
     private LocalDate dob;
 
+    @Size(max = 500)
+    @Column(name = "address", length = 500)
+    private String address;
+
+    @Size(max = 500)
+    @Column(name = "photo_dir", length = 500)
+    private String photo_dir;
+
+    @Size(max = 100)
+    @Column(name = "phone", length = 100)
+    private String phone;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -166,6 +178,45 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
         this.dob = dob;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public AgentProfile address(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoto_dir() {
+        return photo_dir;
+    }
+
+    public AgentProfile photo_dir(String photo_dir) {
+        this.photo_dir = photo_dir;
+        return this;
+    }
+
+    public void setPhoto_dir(String photo_dir) {
+        this.photo_dir = photo_dir;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public AgentProfile phone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public User getUser() {
         return user;
     }
@@ -236,6 +287,9 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
             ", gender='" + getGender() + "'" +
             ", email='" + getEmail() + "'" +
             ", dob='" + getDob() + "'" +
+            ", address='" + getAddress() + "'" +
+            ", photo_dir='" + getPhoto_dir() + "'" +
+            ", phone='" + getPhone() + "'" +
             "}";
     }
 }

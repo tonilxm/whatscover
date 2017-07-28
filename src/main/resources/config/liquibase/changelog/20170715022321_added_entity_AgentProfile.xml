@@ -50,6 +50,19 @@
             <column name="dob" type="date">
                 <constraints nullable="true" />
             </column>
+
+            <column name="address" type="varchar(500)">
+                <constraints nullable="true" />
+            </column>
+
+
+            <column name="phone" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="photo_dir" type="varchar(500)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="user_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>

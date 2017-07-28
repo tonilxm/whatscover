@@ -74,17 +74,52 @@
                     </span>
                 </div>
         </div>
+		<div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.address" for="field_address">Address</label>
+            <input type="text" class="form-control" name="address" id="field_address"
+                    ng-model="vm.agentProfile.address"
+                    ng-maxlength="500"/>
+            <div ng-show="editForm.address.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.address.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="500">
+                    This field cannot be longer than 500 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.phone" for="field_phone">Phone</label>
+            <input type="text" class="form-control" name="phone" id="field_phone"
+                    ng-model="vm.agentProfile.phone"
+                    ng-maxlength="100"/>
+            <div ng-show="editForm.phone.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.phone.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.photo_dir" for="field_photo_dir">Photo Dir</label>
+            <input type="text" class="form-control" name="photo_dir" id="field_photo_dir"
+                    ng-model="vm.agentProfile.photo_dir"
+                    ng-maxlength="500"/>
+            <div ng-show="editForm.photo_dir.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.photo_dir.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="500">
+                    This field cannot be longer than 500 characters.
+                </p>
+            </div>
+        </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.agentProfile.email" for="field_email">Email</label>
-            <input type="email" class="form-control" name="email" id="field_email"
-                    ng-model="vm.agentProfile.email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"
-                    required ng-maxlength="100"/>
+            <input type="text" class="form-control" name="email" id="field_email"
+                    ng-model="vm.agentProfile.email"
+                    required ng-maxlength="100" readonly/>
             <div ng-show="editForm.email.$invalid">
                 <p class="help-block"
                     ng-show="editForm.email.$error.required" data-translate="entity.validation.required">
                     This field is required.
                 </p>
-				<p ng-message="pattern">Please enter a valid email address!</p>
                 <p class="help-block"
                     ng-show="editForm.email.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
                     This field cannot be longer than 100 characters.
@@ -102,7 +137,7 @@
             <label data-translate="whatscoverApp.agentProfile.insuranceCompany" for="field_insuranceCompany">Insurance Company</label>
             <input type="text" class="form-control" id="field_insuranceCompany" name="insuranceCompany"
                     ng-bind="vm.agentProfile.insuranceCompanyId" ng-value="vm.agentProfile.insuranceCompanyName" readonly />
-            <button type="submit" ui-sref="{{vm.insuranceCompanyState}}" class="btn btn-info btn-sm">
+            <button type="submit" ui-sref="{{vm.insuranceCompanyState}}" class="btn btn-info btn-sm" ng-disabled="true">
                 <span class="glyphicon glyphicon-eye-open"></span>
                 <span class="hidden-sm-down" data-translate="Find Company"></span>
             </button>
@@ -117,7 +152,7 @@
             <label class="control-label" data-translate="whatscoverApp.agentProfile.agent_code" for="field_agent_code">Agent Code</label>
             <input type="text" class="form-control" name="agent_code" id="field_agent_code"
                     ng-model="vm.agentProfile.agent_code"
-                    required ng-maxlength="50"/>
+                    required ng-maxlength="50" readonly/>
             <div ng-show="editForm.agent_code.$invalid">
                 <p class="help-block"
                     ng-show="editForm.agent_code.$error.required" data-translate="entity.validation.required">
@@ -133,7 +168,7 @@
             <label data-translate="whatscoverApp.agentProfile.insuranceAgency" for="field_insuranceAgency">Insurance Agency</label>
             <input type="text" class="form-control" id="field_insuranceAgency" name="insuranceAgency"
                     ng-bind="vm.agentProfile.insuranceAgencyId" ng-value="vm.agentProfile.insuranceAgencyName" readonly />
-            <button type="submit" ui-sref="{{vm.insuranceAgencyState}}" class="btn btn-info btn-sm">
+            <button type="submit" ui-sref="{{vm.insuranceAgencyState}}" class="btn btn-info btn-sm" ng-disabled="true">
                 <span class="glyphicon glyphicon-eye-open"></span>
                 <span class="hidden-sm-down" data-translate="Find Agency"></span>
             </button>

@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/insurance-product?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'whatscoverApp.insuranceProduct.home.title'
             },
             views: {
@@ -212,7 +212,7 @@
 
     function generateFindCompanyStateObj(name, parent){
     	var obj = {
-			name: name,	
+			name: name,
 			parent: parent,
 	        url: '/findCompany?page&sort&search',
 	        data: {
@@ -257,7 +257,7 @@
 	             });
 	        }]
     	};
-    	
+
     	return obj;
     }
 

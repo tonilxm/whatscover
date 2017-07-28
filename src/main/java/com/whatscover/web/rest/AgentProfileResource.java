@@ -81,7 +81,7 @@ public class AgentProfileResource {
     public ResponseEntity<AgentProfileDTO> createAgentProfile(@Valid @RequestBody AgentProfileDTO agentProfileDTO) throws URISyntaxException {
         log.debug("REST request to save AgentProfile : {}", agentProfileDTO);
         String email = agentProfileDTO.getEmail();
-        int index = email.indexOf("@gmail.com");
+        int index = email.indexOf("@");
 		if (agentProfileDTO.getId() != null) {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists",
 					"A new Agent Profile cannot already have an ID")).body(null);
@@ -91,15 +91,13 @@ public class AgentProfileResource {
 		} else if (agentProfileRepository.findOneByEmail(email).isPresent()) {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.agentemailexists", "Agent Email already in use")).body(null);
-		} else if (index < 1) {
-			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
-					"messages.error.agentemailformat", "Agent Email wrong format")).body(null);
 		}
-        AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         User user = new User();
         String login = email.substring(0, index);
         String  password = getSaltString();
-    	user = userService.createUser(login, password, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , "en");
+    	user = userService.createUser(login, password, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , Constants.DEFAULT_LANG_KEY, AuthoritiesConstants.AGENT);
+    	agentProfileDTO.setUserId(user.getId());
+        AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         mailService.sendActivationEmail(user);
         return ResponseEntity.created(new URI("/api/agent-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -202,7 +200,7 @@ public class AgentProfileResource {
         AgentProfileDTO agentProfileDTO = agentProfileService.findOne(id);
         agentProfileService.delete(id);
         String email = agentProfileDTO.getEmail();
-        int index = email.indexOf("@gmail.com");
+        int index = email.indexOf("@");
         String login = email.substring(0, index);
         userService.deleteUser(login);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

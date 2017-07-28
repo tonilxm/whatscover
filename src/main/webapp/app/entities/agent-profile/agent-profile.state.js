@@ -93,7 +93,7 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/agent-profile/agent-profile-dialog.html',
+                    templateUrl: 'app/entities/agent-profile/agent-profile-edit-dialog.html',
                     controller: 'AgentProfileDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -133,6 +133,9 @@
                                 gender: null,
                                 email: null,
                                 dob: null,
+                                address: null,
+                                photo_dir: null,
+                                phone: null,
                                 id: null
                             };
                         }
@@ -152,7 +155,7 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/agent-profile/agent-profile-dialog.html',
+                    templateUrl: 'app/entities/agent-profile/agent-profile-edit-dialog.html',
                     controller: 'AgentProfileDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',

@@ -26,30 +26,6 @@
                 "maxlength"
             ],
             "fieldValidateRulesMaxlength": "200"
-        },
-        {
-            "fieldName": "address_1",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "maxlength"
-            ],
-            "fieldValidateRulesMaxlength": "200"
-        },
-        {
-            "fieldName": "address_2",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "maxlength"
-            ],
-            "fieldValidateRulesMaxlength": "200"
-        },
-        {
-            "fieldName": "address_3",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "maxlength"
-            ],
-            "fieldValidateRulesMaxlength": "200"
         }
     ],
     "changelogDate": "20170713231811",

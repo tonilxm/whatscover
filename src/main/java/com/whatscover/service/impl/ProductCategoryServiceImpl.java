@@ -1,9 +1,9 @@
 package com.whatscover.service.impl;
 
-import com.whatscover.service.ProductCategoryService;
 import com.whatscover.domain.ProductCategory;
 import com.whatscover.repository.ProductCategoryRepository;
 import com.whatscover.repository.search.ProductCategorySearchRepository;
+import com.whatscover.service.ProductCategoryService;
 import com.whatscover.service.dto.ProductCategoryDTO;
 import com.whatscover.service.mapper.ProductCategoryMapper;
 import org.slf4j.Logger;
@@ -12,9 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing ProductCategory.
@@ -104,7 +101,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
     @Transactional(readOnly = true)
     public Page<ProductCategoryDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of ProductCategories for query {}", query);
-        Page<ProductCategory> result = productCategorySearchRepository.search(queryStringQuery(query), pageable);
+        Page<ProductCategory> result = productCategorySearchRepository.searchByName(query, pageable);
         return result.map(productCategoryMapper::toDto);
     }
 }

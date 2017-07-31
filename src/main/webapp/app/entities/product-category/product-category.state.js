@@ -89,6 +89,23 @@
             data: {
                 authorities: ['ROLE_USER']
             },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/product-category/product-category-dialog.html',
+                    controller: 'ProductCategoryDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('productCategory');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'ProductCategory', function($stateParams, ProductCategory) {
+                    return ProductCategory.get({id : $stateParams.id}).$promise;
+                }]
+            }
+            /*
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/product-category/product-category-dialog.html',
@@ -106,7 +123,7 @@
                 }, function() {
                     $state.go('^');
                 });
-            }]
+            }] */
         })
         .state('product-category.new', {
             parent: 'product-category',

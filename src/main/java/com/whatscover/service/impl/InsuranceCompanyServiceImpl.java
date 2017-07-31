@@ -1,9 +1,9 @@
 package com.whatscover.service.impl;
 
-import com.whatscover.service.InsuranceCompanyService;
 import com.whatscover.domain.InsuranceCompany;
 import com.whatscover.repository.InsuranceCompanyRepository;
 import com.whatscover.repository.search.InsuranceCompanySearchRepository;
+import com.whatscover.service.InsuranceCompanyService;
 import com.whatscover.service.dto.InsuranceCompanyDTO;
 import com.whatscover.service.mapper.InsuranceCompanyMapper;
 import org.slf4j.Logger;
@@ -12,9 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing InsuranceCompany.
@@ -94,17 +91,17 @@ public class InsuranceCompanyServiceImpl implements InsuranceCompanyService{
     }
 
     /**
-     * Search for the insuranceCompany corresponding to the query.
+     * Search for the insuranceCompany by name.
      *
-     *  @param query the query of the search
+     *  @param name company insurance name to look for
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<InsuranceCompanyDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of InsuranceCompanies for query {}", query);
-        Page<InsuranceCompany> result = insuranceCompanySearchRepository.search(queryStringQuery(query), pageable);
+    public Page<InsuranceCompanyDTO> search(String name, Pageable pageable) {
+        log.debug("Request to search for a page of InsuranceCompanies for query {}", name);
+        Page<InsuranceCompany> result = insuranceCompanySearchRepository.searchByName(name, pageable);
         return result.map(insuranceCompanyMapper::toDto);
     }
 }

@@ -5,7 +5,7 @@
                 "title": "Insurance Companies",
                 "createLabel": "Create a new Insurance Company",
                 "createOrEditLabel": "Create or edit a Insurance Company",
-                "search": "Search for Insurance Company"
+                "search": "Search by name"
             },
             "created": "A new Insurance Company is created with identifier {{ param }}",
             "updated": "A Insurance Company is updated with identifier {{ param }}",

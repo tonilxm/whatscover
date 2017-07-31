@@ -5,7 +5,7 @@
                 "title": "Product Categories",
                 "createLabel": "Create a new Product Category",
                 "createOrEditLabel": "Create or edit a Product Category",
-                "search": "Search for Product Category"
+                "search": "Search by name"
             },
             "created": "A new Product Category is created with identifier {{ param }}",
             "updated": "A Product Category is updated with identifier {{ param }}",

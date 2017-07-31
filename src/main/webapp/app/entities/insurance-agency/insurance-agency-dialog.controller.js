@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('InsuranceAgencyDialogController', InsuranceAgencyDialogController);
 
-    InsuranceAgencyDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'InsuranceAgency', 'InsuranceCompany', '$rootScope', '$state'];
+    InsuranceAgencyDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$window', 'entity', 'InsuranceAgency', 'InsuranceCompany', '$rootScope', '$state'];
 
-    function InsuranceAgencyDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, InsuranceAgency, InsuranceCompany, $rootScope, $state) {
+    function InsuranceAgencyDialogController ($timeout, $scope, $stateParams, $window, entity, InsuranceAgency, InsuranceCompany, $rootScope, $state) {
         var vm = this;
 
         vm.insuranceAgency = entity;
@@ -20,7 +20,8 @@
         });
 
         function clear () {
-            $uibModalInstance.dismiss('cancel');
+//            $uibModalInstance.dismiss('cancel');
+        	$window.history.back();
         }
 
         function save () {
@@ -30,6 +31,7 @@
             } else {
                 InsuranceAgency.save(vm.insuranceAgency, onSaveSuccess, onSaveError);
             }
+            $window.history.back();
         }
 
         function onSaveSuccess (result) {

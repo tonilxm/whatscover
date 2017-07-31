@@ -192,6 +192,25 @@ public class UserService {
         });
     }
 
+    public void updateUser(String login, String firstName, String lastName, String email, String langKey, String imageUrl) {
+        userRepository.findOneByLogin(login).ifPresent(user -> {
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setLangKey(langKey);
+            user.setImageUrl(imageUrl);
+            userSearchRepository.save(user);
+            log.debug("Changed Information for User: {}", user);
+        });
+    }
+
+    public boolean checkUserPresent(String login) {
+    	return userRepository.findOneByLogin(login).isPresent();
+    }
+    	
+    public User getUserPresent(String login) {
+    	return userRepository.findOneByLogin(login).get();
+    }
     /**
      * Update all information for a specific user, and return the modified user.
      *

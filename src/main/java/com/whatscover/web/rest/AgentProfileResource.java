@@ -1,5 +1,6 @@
 package com.whatscover.web.rest;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -81,7 +82,7 @@ public class AgentProfileResource {
     public ResponseEntity<AgentProfileDTO> createAgentProfile(@Valid @RequestBody AgentProfileDTO agentProfileDTO) throws URISyntaxException {
         log.debug("REST request to save AgentProfile : {}", agentProfileDTO);
         String email = agentProfileDTO.getEmail();
-        int index = email.indexOf("@");
+
 		if (agentProfileDTO.getId() != null) {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists",
 					"A new Agent Profile cannot already have an ID")).body(null);
@@ -93,9 +94,15 @@ public class AgentProfileResource {
 					"messages.error.agentemailexists", "Agent Email already in use")).body(null);
 		}
         User user = new User();
-        String login = email.substring(0, index);
-        String  password = getSaltString();
-    	user = userService.createUser(login, password, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , Constants.DEFAULT_LANG_KEY, AuthoritiesConstants.AGENT);
+        String login = loginUser(agentProfileDTO);
+        if(userService.checkUserPresent(login)) {
+        	user = userService.getUserPresent(login);
+    		userService.updateUser(login, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
+        }else {
+        	String  password = getSaltString();
+    		user = userService.createUser(login, password, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , Constants.DEFAULT_LANG_KEY, AuthoritiesConstants.AGENT);
+        }
+        
     	agentProfileDTO.setUserId(user.getId());
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         mailService.sendActivationEmail(user);
@@ -132,12 +139,32 @@ public class AgentProfileResource {
         if (agentProfileDTO.getId() == null) {
             return createAgentProfile(agentProfileDTO);
         }
+        String login=loginUser(agentProfileDTO);
+		userService.updateUser(login, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
+
+		File files = new File(Constants.DEFAULT_SYSTEM_DIRECTORY);
+		processImgUpload(agentProfileDTO, files);
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, agentProfileDTO.getId().toString()))
             .body(result);
     }
 
+    protected void processImgUpload(AgentProfileDTO agentProfileDTO, File files) {
+    	createDirectory(files);
+    	String photo_dir =  agentProfileDTO.getUserId() + "_" + agentProfileDTO.getId() + ".JPG";
+    	agentProfileDTO.setPhoto_dir(files.getPath() + "\\" +photo_dir);
+    }
+    
+    protected void createDirectory(File files) {
+		if (!files.exists()) {
+			if (files.mkdirs()) {
+				System.out.println("Multiple directories are created!");
+			} else {
+				System.out.println("Failed to create multiple directories!");
+			}
+		}
+    }
     /**
      * GET  /agent-profiles : get all the agentProfiles.
      *
@@ -199,13 +226,17 @@ public class AgentProfileResource {
         log.debug("REST request to delete AgentProfile : {}", id);
         AgentProfileDTO agentProfileDTO = agentProfileService.findOne(id);
         agentProfileService.delete(id);
-        String email = agentProfileDTO.getEmail();
-        int index = email.indexOf("@");
-        String login = email.substring(0, index);
+        String login=loginUser(agentProfileDTO);
         userService.deleteUser(login);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+    public String loginUser(AgentProfileDTO agentProfileDTO) {
+        String email = agentProfileDTO.getEmail();
+        int index = email.indexOf("@");
+        String login = email.substring(0, index);
+        return login;
+    }
     /**
      * SEARCH  /_search/agent-profiles?query=:query : search for the agentProfile corresponding
      * to the query.

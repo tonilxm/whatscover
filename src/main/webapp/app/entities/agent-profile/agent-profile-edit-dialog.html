@@ -100,9 +100,14 @@
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.agentProfile.photo_dir" for="field_photo_dir">Photo Dir</label>
-            <input type="text" class="form-control" name="photo_dir" id="field_photo_dir"
-                    ng-model="vm.agentProfile.photo_dir"
-                    ng-maxlength="500"/>
+			<input type="file" id="browse" name="fileupload" accept="image/x-png,image/gif,image/jpeg" style="display: none" onchange="angular.element(this).scope().fileNameChanged()"/>
+			<input type="text" id="tmp_photo_dir" style="display: none" />
+            <input type="text" class="form-control" name="photo_dir" id="field_photo_dir" ng-value="vm.agentProfile.photo_dir"
+                    ng-model="vm.agentProfile.photo_dir" 
+                    ng-maxlength="500" readonly/>
+            <button type="button" class="btn btn-primary" ng-click="vm.uploadFile()">
+                <span class="hidden-sm-down" data-translate="Upload File"></span>
+            </button>
             <div ng-show="editForm.photo_dir.$invalid">
                 <p class="help-block"
                     ng-show="editForm.photo_dir.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="500">

@@ -16,6 +16,8 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.sendEmail = sendEmail;
+        vm.uploadFile = uploadFile;
+        vm.validateFileType = validateFileType;
         vm.users = User.query();
         vm.insuranceCompanyState = $state.current.name + '.dialog-find-company';
         vm.insuranceAgencyState = $state.current.name + '.dialog-find-agency';
@@ -80,6 +82,39 @@
 			}else{
 				AgentProfileSendEmail.email(vm.agentProfile, onSendEmailSuccess, onSendEmailError);
 			}
+        }
+
+        function validateFileType(){
+            var fileName = document.getElementById("field_photo_dir").value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+                //TO DO
+            }else{
+                alert("Only jpg/jpeg and png files are allowed!");
+            }   
+        }
+        
+        function uploadFile(){
+            var fileinput = document.getElementById("browse");
+            fileinput.click();
+            //document.getElementById("field_photo_dir").value = fileinput.value;
+            //vm.agentProfile.photo_dir = document.getElementById("field_photo_dir").value;
+        }
+        
+        $scope.fileNameChanged = function() {
+        	console.log("select file");
+            document.getElementById("tmp_photo_dir").value =  document.getElementById("browse").value;
+            var tempValue = $("#tmp_photo_dir").val().trim();
+            var tempLength = tempValue.length;
+
+            if(!tempLength < 1)
+            {
+            	var sIndex = tempValue.lastIndexOf('\\');
+            	tempValue = tempValue.substr(sIndex + 1, tempLength);
+            }
+            document.getElementById("field_photo_dir").value = tempValue;
+            vm.agentProfile.photo_dir = tempValue;
         }
     }
 })();

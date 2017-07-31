@@ -20,8 +20,8 @@
         });
 
         function clear () {
-//            $uibModalInstance.dismiss('cancel');
-        	$window.history.back();
+//        	$window.history.back();
+        	 $state.go('insurance-agency', {}, { reload: true});
         }
 
         function save () {
@@ -31,12 +31,12 @@
             } else {
                 InsuranceAgency.save(vm.insuranceAgency, onSaveSuccess, onSaveError);
             }
-            $window.history.back();
+            $state.go('insurance-agency', {}, { reload: true});
         }
 
         function onSaveSuccess (result) {
             $scope.$emit('whatscoverApp:insuranceAgencyUpdate', result);
-            $uibModalInstance.close(result);
+//            $uibModalInstance.close(result);
             vm.isSaving = false;
         }
 

@@ -83,6 +83,7 @@
                 }]
             }
         })
+        /*
         .state('insurance-agency-detail.edit', {
             parent: 'insurance-agency-detail',
             url: '/detail/edit',
@@ -108,6 +109,7 @@
                 });
             }]
         })
+        */
         .state('insurance-agency.new', {
             parent: 'insurance-agency',
             url: '/new',

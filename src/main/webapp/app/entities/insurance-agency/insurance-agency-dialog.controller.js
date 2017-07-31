@@ -36,6 +36,7 @@
 
         function onSaveSuccess (result) {
             $scope.$emit('whatscoverApp:insuranceAgencyUpdate', result);
+            $state.reload();
 //            $uibModalInstance.close(result);
             vm.isSaving = false;
         }

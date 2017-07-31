@@ -11,7 +11,7 @@
         $stateProvider
         .state('insurance-agency', {
             parent: 'entity',
-            url: '/insurance-agency',
+            url: '/insurance-agency/?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
                 pageTitle: 'whatscoverApp.insuranceAgency.home.title'
@@ -23,7 +23,27 @@
                     controllerAs: 'vm'
                 }
             },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
             resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('insuranceAgency');
                     $translatePartialLoader.addPart('global');
@@ -63,6 +83,7 @@
                 }]
             }
         })
+        /*
         .state('insurance-agency-detail.edit', {
             parent: 'insurance-agency-detail',
             url: '/detail/edit',
@@ -88,12 +109,35 @@
                 });
             }]
         })
+        */
         .state('insurance-agency.new', {
             parent: 'insurance-agency',
             url: '/new',
             data: {
                 authorities: ['ROLE_USER']
             },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/insurance-agency/insurance-agency-dialog.html',
+                    controller: 'InsuranceAgencyDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('insuranceAgency');
+                    return $translate.refresh();
+                }],
+                entity: function () {
+                    return {
+                        code: null,
+                        name: null,
+                        description: null,
+                        id: null
+                    };
+                }
+            }
+            /*
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/insurance-agency/insurance-agency-dialog.html',
@@ -119,6 +163,7 @@
                     $state.go('insurance-agency');
                 });
             }]
+            */
         })
         .state('insurance-agency.edit', {
             parent: 'insurance-agency',
@@ -126,6 +171,23 @@
             data: {
                 authorities: ['ROLE_USER']
             },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/insurance-agency/insurance-agency-dialog.html',
+                    controller: 'InsuranceAgencyDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('insuranceAgency');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'InsuranceAgency', function($stateParams, InsuranceAgency) {
+                    return InsuranceAgency.get({id : $stateParams.id}).$promise;
+                }]
+            }
+            /*
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/insurance-agency/insurance-agency-dialog.html',
@@ -144,6 +206,7 @@
                     $state.go('^');
                 });
             }]
+            */
         })
         .state('insurance-agency.delete', {
             parent: 'insurance-agency',

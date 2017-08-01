@@ -45,6 +45,14 @@ public interface AgentProfileService {
     void delete(Long id);
 
     /**
+     *  Get the "Email" agentProfile.
+     *
+     *  @param email the email of the entity
+     *  @return the entity
+     */
+    AgentProfileDTO findOneByEmail(String email);
+
+    /**
      * Search for the agentProfile corresponding to the query.
      *
      *  @param query the query of the search

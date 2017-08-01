@@ -3,6 +3,8 @@ package com.whatscover.service.impl;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
+import java.util.Optional;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
@@ -97,6 +99,23 @@ public class AgentProfileServiceImpl implements AgentProfileService{
         agentProfileRepository.delete(id);
         agentProfileSearchRepository.delete(id);
     }
+
+    /**
+     *  Get one agentProfile by email.
+     *
+     *  @param email the email of the entity
+     *  @return the entity
+     */
+	@Override
+	public AgentProfileDTO findOneByEmail(String email) {
+        log.debug("Request to get AgentProfile : {}", email);
+        Optional<AgentProfile> optAgentProfile = agentProfileRepository.findOneByEmail(email);
+        AgentProfile agentProfile = new AgentProfile();
+        if(optAgentProfile.isPresent()) {
+            agentProfile = optAgentProfile.get();
+        }
+        return agentProfileMapper.toDto(agentProfile);
+	}
 
     /**
      * Search for the agentProfile corresponding to the query.

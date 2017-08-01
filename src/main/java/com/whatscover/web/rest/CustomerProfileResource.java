@@ -160,12 +160,12 @@ public class CustomerProfileResource {
      * @param pageable the pagination information
      * @return the result of the search
      */
-    @GetMapping("/_search/customer-profiles")
+    @GetMapping("/_search-name/customer-profiles")
     @Timed
-    public ResponseEntity<List<CustomerProfileDTO>> searchCustomerProfiles(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<CustomerProfileDTO>> searchCustomerProfilesByName(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of CustomerProfiles for query {}", query);
-        Page<CustomerProfileDTO> page = customerProfileService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/customer-profiles");
+        Page<CustomerProfileDTO> page = customerProfileService.searchByName(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search-name/customer-profiles");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

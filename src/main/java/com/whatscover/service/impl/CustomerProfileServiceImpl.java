@@ -147,4 +147,18 @@ public class CustomerProfileServiceImpl implements CustomerProfileService{
         log.debug("Request to delete CustomerProfile by userId: {}", userId);
         customerProfileRepository.deleteByUserId(userId);
     }
+
+    /**
+     * Search for the customerProfile corresponding by name to the query.
+     *
+     *  @param query the query of the search
+     *  @param pageable the pagination information
+     *  @return the list of entitiess
+     */
+    @Override
+    public Page<CustomerProfileDTO> searchByName(String query, Pageable pageable) {
+        log.debug("Request to search for a page of CustomerProfiles by name for query {}", query);
+        Page<CustomerProfile> result = customerProfileSearchRepository.searchByName(query, pageable);
+        return result.map(customerProfileMapper::toDto);
+    }
 }

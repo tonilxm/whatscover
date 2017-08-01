@@ -29,7 +29,7 @@
             } else {
                 ProductCategory.save(vm.productCategory, onSaveSuccess, onSaveError);
             }
-            $window.history.back();
+            $state.go('product-category', {}, { reload: true});
         }
 
         function onSaveSuccess (result) {

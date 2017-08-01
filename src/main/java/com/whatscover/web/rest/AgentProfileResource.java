@@ -36,6 +36,7 @@ import com.whatscover.service.AgentProfileService;
 import com.whatscover.service.MailService;
 import com.whatscover.service.UserService;
 import com.whatscover.service.dto.AgentProfileDTO;
+import com.whatscover.service.util.RandomUtil;
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
 
@@ -52,8 +53,6 @@ public class AgentProfileResource {
     private final Logger log = LoggerFactory.getLogger(AgentProfileResource.class);
 
     private static final String ENTITY_NAME = "agentProfile";
-    
-    private static final int PASSWORD_LENGTH = 6;
 
     private final AgentProfileService agentProfileService;
     
@@ -105,8 +104,8 @@ public class AgentProfileResource {
         	user = userService.findUserByEmail(email);
     		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
         }else {
-        	String  password = getSaltString();
-    		user = userService.createUser(login, password, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , Constants.DEFAULT_LANG_KEY, AuthoritiesConstants.AGENT);
+        	String randomPassword = RandomUtil.generatePassword();
+    		user = userService.createUser(login, randomPassword, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , Constants.DEFAULT_LANG_KEY, AuthoritiesConstants.AGENT);
         }
         
     	agentProfileDTO.setUserId(user.getId());
@@ -117,18 +116,6 @@ public class AgentProfileResource {
             .body(result);
     }
     
-    protected String getSaltString() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < PASSWORD_LENGTH) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        String saltStr = salt.toString();
-        return saltStr;
-    }
-
     /**
      * PUT  /agent-profiles : Updates an existing agentProfile.
      *

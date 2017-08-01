@@ -1,6 +1,7 @@
 package com.whatscover.repository;
 
 import com.whatscover.domain.CustomerProfile;
+import com.whatscover.repository.ext.CustomerProfileExtRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CustomerProfileRepository extends JpaRepository<CustomerProfile,Long> {
+public interface CustomerProfileRepository extends JpaRepository<CustomerProfile,Long>, CustomerProfileExtRepository {
 
 }

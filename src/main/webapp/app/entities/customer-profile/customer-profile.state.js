@@ -116,6 +116,40 @@
             data: {
                 authorities: ['ROLE_USER']
             },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/customer-profile/customer-profile-dialog.html',
+                    controller: 'CustomerProfileDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('customerProfile');
+                    $translatePartialLoader.addPart('gender');
+                    return $translate.refresh();
+                }],
+                entity: function () {
+                    return {
+                        firstName: null,
+                        middleName: null,
+                        lastName: null,
+                        gender: null,
+                        email: null,
+                        dob: null,
+                        id: null
+                    };
+                },
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'customer-profile',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
+            /*
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/customer-profile/customer-profile-dialog.html',
@@ -141,7 +175,7 @@
                 }, function() {
                     $state.go('customer-profile');
                 });
-            }]
+            }] */
         })
         .state('customer-profile.edit', {
             parent: 'customer-profile',
@@ -149,6 +183,32 @@
             data: {
                 authorities: ['ROLE_USER']
             },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/customer-profile/customer-profile-dialog.html',
+                    controller: 'CustomerProfileDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('customerProfile');
+                    $translatePartialLoader.addPart('gender');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'CustomerProfile', function($stateParams, CustomerProfile) {
+                    return CustomerProfile.get({id : $stateParams.id}).$promise;
+                }],
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'customer-profile',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
+            /*
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/customer-profile/customer-profile-dialog.html',
@@ -167,6 +227,7 @@
                     $state.go('^');
                 });
             }]
+            */
         })
         .state('customer-profile.delete', {
             parent: 'customer-profile',

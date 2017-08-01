@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('CustomerProfileDialogController', CustomerProfileDialogController);
 
-    CustomerProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'CustomerProfile', 'User'];
+    CustomerProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$q', '$window' ,'entity', 'CustomerProfile', 'User'];
 
-    function CustomerProfileDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, CustomerProfile, User) {
+    function CustomerProfileDialogController ($timeout, $scope, $stateParams, $q, $window, entity, CustomerProfile, User) {
         var vm = this;
 
         vm.customerProfile = entity;
@@ -22,7 +22,8 @@
         });
 
         function clear () {
-            $uibModalInstance.dismiss('cancel');
+            //$uibModalInstance.dismiss('cancel');
+            $window.history.back();
         }
 
         function save () {
@@ -32,11 +33,12 @@
             } else {
                 CustomerProfile.save(vm.customerProfile, onSaveSuccess, onSaveError);
             }
+            $window.history.back();
         }
 
         function onSaveSuccess (result) {
             $scope.$emit('whatscoverApp:customerProfileUpdate', result);
-            $uibModalInstance.close(result);
+            //$uibModalInstance.close(result);
             vm.isSaving = false;
         }
 

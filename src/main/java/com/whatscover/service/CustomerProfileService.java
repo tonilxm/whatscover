@@ -1,6 +1,7 @@
 package com.whatscover.service;
 
 import com.whatscover.service.dto.CustomerProfileDTO;
+import com.whatscover.service.exception.BusinessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -8,6 +9,15 @@ import org.springframework.data.domain.Pageable;
  * Service Interface for managing CustomerProfile.
  */
 public interface CustomerProfileService {
+
+    /**
+     * Create customerProfile.
+     *
+     * @param customerProfileDTO the entity to save
+     * @return the persisted entity
+     */
+    CustomerProfileDTO create(CustomerProfileDTO customerProfileDTO, String randomPassword) throws BusinessException;
+
 
     /**
      * Save a customerProfile.
@@ -44,9 +54,15 @@ public interface CustomerProfileService {
      * Search for the customerProfile corresponding to the query.
      *
      *  @param query the query of the search
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     Page<CustomerProfileDTO> search(String query, Pageable pageable);
+
+    /**
+     * Delete customer profile by userId
+     * @param userId
+     */
+    void deleteByUserId(Long userId);
 }

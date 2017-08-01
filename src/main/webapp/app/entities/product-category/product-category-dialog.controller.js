@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('ProductCategoryDialogController', ProductCategoryDialogController);
 
-    ProductCategoryDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$window', 'entity', 'ProductCategory'];
+    ProductCategoryDialogController.$inject = ['$state', '$timeout', '$scope', '$stateParams', '$window', 'entity', 'ProductCategory'];
 
-    function ProductCategoryDialogController ($timeout, $scope, $stateParams, $window, entity, ProductCategory) {
+    function ProductCategoryDialogController ($state, $timeout, $scope, $stateParams, $window, entity, ProductCategory) {
         var vm = this;
 
         vm.productCategory = entity;
@@ -34,6 +34,7 @@
 
         function onSaveSuccess (result) {
             $scope.$emit('whatscoverApp:productCategoryUpdate', result);
+            $state.reload()
             //$uibModalInstance.close(result);
             vm.isSaving = false;
         }

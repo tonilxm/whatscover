@@ -26,7 +26,7 @@ public class CustomerProfileSearchRepositoryImpl implements CustomerProfileSearc
             .setMaxResults(pageable.getPageSize())
             .getResultList();
 
-        String totalRecordSql = "select count(*) from CustomerProfile cp where cp.name like :name";
+        String totalRecordSql = "select count(*) from CustomerProfile cp where cp.firstName like :name";
         Long totalRecord =  (Long) entityManager.createQuery(totalRecordSql).setParameter("name", "%" + name + "%")
             .getSingleResult();
 

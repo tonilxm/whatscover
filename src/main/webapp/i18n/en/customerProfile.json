@@ -5,7 +5,7 @@
                 "title": "Customer Profiles",
                 "createLabel": "Create a new Customer Profile",
                 "createOrEditLabel": "Create or edit a Customer Profile",
-                "search": "Search for Customer Profile"
+                "search": "Search by first name"
             },
             "created": "A new Customer Profile is created with identifier {{ param }}",
             "updated": "A Customer Profile is updated with identifier {{ param }}",

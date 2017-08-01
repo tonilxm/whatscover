@@ -106,9 +106,10 @@ public class InsuranceAgencyServiceImpl implements InsuranceAgencyService{
     @Transactional(readOnly = true)
 	public Page<InsuranceAgencyDTO> search(String query, Pageable pageable) {
 		log.debug("Request to search for a page of InsuranceAgencies for query {}", query);
-        Page<InsuranceAgency> result = insuranceAgencySearchRepository
-        		.search(queryStringQuery(query).field(Constants.INSURANCE_AGENCY_NAME)
-				.minimumShouldMatch(String.valueOf(query.length())), pageable);
+        Page<InsuranceAgency> result = insuranceAgencySearchRepository.search(
+        		queryStringQuery(query).field(Constants.INSURANCE_AGENCY_NAME)
+        		.minimumShouldMatch(String.valueOf(query.trim().length())),
+        		pageable);
         return result.map(insuranceAgencyMapper::toDto);
 	}
 }

@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('AgentProfileDialogController', AgentProfileDialogController);
 
-    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency', 'AgentProfileSendEmail', '$state', '$rootScope'];
+    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$window', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency', 'AgentProfileSendEmail', '$state', '$rootScope'];
 
-    function AgentProfileDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency, AgentProfileSendEmail, $state, $rootScope) {
+    function AgentProfileDialogController ($timeout, $scope, $stateParams, $window, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency, AgentProfileSendEmail, $state, $rootScope) {
         var vm = this;
 
         vm.agentProfile = entity;
@@ -16,6 +16,8 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.sendEmail = sendEmail;
+        vm.uploadFile = uploadFile;
+        vm.validateFileType = validateFileType;
         vm.users = User.query();
         vm.insuranceCompanyState = $state.current.name + '.dialog-find-company';
         vm.insuranceAgencyState = $state.current.name + '.dialog-find-agency';
@@ -25,7 +27,8 @@
         });
 
         function clear () {
-            $uibModalInstance.dismiss('cancel');
+            //$uibModalInstance.dismiss('cancel');
+       	 	$state.go('agent-profile', {}, { reload: true});
         }
 
         function save () {
@@ -39,8 +42,9 @@
 
         function onSaveSuccess (result) {
             $scope.$emit('whatscoverApp:agentProfileUpdate', result);
-            $uibModalInstance.close(result);
+            //$uibModalInstance.close(result);
             vm.isSaving = false;
+            $state.go('agent-profile', {}, { reload: true});
         }
 
         function onSaveError () {
@@ -80,6 +84,39 @@
 			}else{
 				AgentProfileSendEmail.email(vm.agentProfile, onSendEmailSuccess, onSendEmailError);
 			}
+        }
+
+        function validateFileType(){
+            var fileName = document.getElementById("field_photo_dir").value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+                //TO DO
+            }else{
+                alert("Only jpg/jpeg and png files are allowed!");
+            }   
+        }
+        
+        function uploadFile(){
+            var fileinput = document.getElementById("browse");
+            fileinput.click();
+            //document.getElementById("field_photo_dir").value = fileinput.value;
+            //vm.agentProfile.photo_dir = document.getElementById("field_photo_dir").value;
+        }
+        
+        $scope.fileNameChanged = function() {
+        	console.log("select file");
+            document.getElementById("tmp_photo_dir").value =  document.getElementById("browse").value;
+            var tempValue = $("#tmp_photo_dir").val().trim();
+            var tempLength = tempValue.length;
+
+            if(!tempLength < 1)
+            {
+            	var sIndex = tempValue.lastIndexOf('\\');
+            	tempValue = tempValue.substr(sIndex + 1, tempLength);
+            }
+            document.getElementById("field_photo_dir").value = tempValue;
+            vm.agentProfile.photo_dir = tempValue;
         }
     }
 })();

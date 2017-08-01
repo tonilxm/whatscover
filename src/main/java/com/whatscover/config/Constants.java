@@ -12,6 +12,7 @@ public final class Constants {
     public static final String ANONYMOUS_USER = "anonymoususer";
     
     public static final String DEFAULT_LANG_KEY = "en";
+    public static final String DEFAULT_SYSTEM_DIRECTORY = "C:\\Directory";
 
     private Constants() {
     }

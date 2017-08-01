@@ -26,7 +26,7 @@
         </dd>
         <dt><span data-translate="whatscoverApp.insuranceAgency.insuranceCompany">Insurance Company</span></dt>
         <dd>
-            <a ui-sref="insurance-company-detail({id:vm.insuranceAgency.insuranceCompanyId})">{{vm.insuranceAgency.insuranceCompanyId}}</a>
+            <span>{{vm.insuranceAgency.insuranceCompanyName}}</span>
         </dd>
     </dl>
 
@@ -36,8 +36,10 @@
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
     </button>
 
+	<!-- 
     <button type="button" ui-sref="insurance-agency-detail.edit({id:vm.insuranceAgency.id})" class="btn btn-primary">
         <span class="glyphicon glyphicon-pencil"></span>
         <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
     </button>
+    -->
 </div>

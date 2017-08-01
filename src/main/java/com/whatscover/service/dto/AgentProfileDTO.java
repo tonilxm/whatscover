@@ -230,6 +230,8 @@ public class AgentProfileDTO implements Serializable {
             ", address='" + getAddress() + "'" +
             ", photo_dir='" + getPhoto_dir() + "'" +
             ", phone='" + getPhone() + "'" +
+            ", insuranceCompanyId='" + getInsuranceCompanyId() + "'" +
+            ", insuranceAgencyId='" + getInsuranceAgencyId() + "'" +            
             "}";
     }
 }

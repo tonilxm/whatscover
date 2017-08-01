@@ -39,7 +39,9 @@
             	"error": {
                 	"agentcodeexists": "Agent Code is already in use!, Please choose another one.",
                 	"agentemailexists": "Agent Email is already in use!, Please choose another one.",
-                	"agentemailformat": "Agent Email was wrong fortmat. Example: Correct email abc@gmail.com"
+                	"agentemailformat": "Agent Email was wrong fortmat. Example: Correct email abc@gmail.com",
+                	"insuranceCompanyIdBlank": "You have to choose Insurance Company",
+                	"insuranceAgencyIdBlank": "You have to choose Insurance Agency"
             	}
             }
         }

@@ -92,12 +92,18 @@ public class AgentProfileResource {
 		} else if (agentProfileRepository.findOneByEmail(email).isPresent()) {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.agentemailexists", "Agent Email already in use")).body(null);
+		} else if (agentProfileDTO.getInsuranceCompanyId() == null) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.insuranceCompanyIdBlank", "You have to choose Insurance Company")).body(null);
+		} else if (agentProfileDTO.getInsuranceAgencyId() == null) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.insuranceAgencyIdBlank", "You have to choose Insurance Agency")).body(null);
 		}
         User user = new User();
         String login = loginUser(agentProfileDTO);
-        if(userService.checkUserPresent(login)) {
-        	user = userService.getUserPresent(login);
-    		userService.updateUser(login, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
+        if(userService.checkUserExistByEmail(email)) {
+        	user = userService.findUserByEmail(email);
+    		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
         }else {
         	String  password = getSaltString();
     		user = userService.createUser(login, password, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , Constants.DEFAULT_LANG_KEY, AuthoritiesConstants.AGENT);
@@ -139,8 +145,7 @@ public class AgentProfileResource {
         if (agentProfileDTO.getId() == null) {
             return createAgentProfile(agentProfileDTO);
         }
-        String login=loginUser(agentProfileDTO);
-		userService.updateUser(login, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
+		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
 
 		File files = new File(Constants.DEFAULT_SYSTEM_DIRECTORY);
 		processImgUpload(agentProfileDTO, files);
@@ -226,8 +231,8 @@ public class AgentProfileResource {
         log.debug("REST request to delete AgentProfile : {}", id);
         AgentProfileDTO agentProfileDTO = agentProfileService.findOne(id);
         agentProfileService.delete(id);
-        String login=loginUser(agentProfileDTO);
-        userService.deleteUser(login);
+        User user = userService.findUserByEmail(agentProfileDTO.getEmail());
+        userService.deleteUser(user.getLogin());
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 

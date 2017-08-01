@@ -13,13 +13,18 @@
             "relationshipName": "insuranceCompany",
             "otherEntityName": "insuranceCompany",
             "relationshipType": "many-to-one",
-            "relationshipValidateRules": [],
+            "relationshipValidateRules": [
+                "required"
+            ],
             "otherEntityField": "id"
         },
         {
             "relationshipName": "insuranceAgency",
             "otherEntityName": "insuranceAgency",
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
             "otherEntityField": "id"
         }
     ],

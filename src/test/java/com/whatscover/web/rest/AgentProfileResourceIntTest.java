@@ -3,6 +3,8 @@ package com.whatscover.web.rest;
 import com.whatscover.WhatscoverApp;
 
 import com.whatscover.domain.AgentProfile;
+import com.whatscover.domain.InsuranceAgency;
+import com.whatscover.domain.InsuranceCompany;
 import com.whatscover.repository.AgentProfileRepository;
 import com.whatscover.repository.search.AgentProfileSearchRepository;
 import com.whatscover.service.AgentProfileService;
@@ -67,6 +69,15 @@ public class AgentProfileResourceIntTest {
     private static final LocalDate DEFAULT_DOB = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DOB = LocalDate.now(ZoneId.systemDefault());
 
+    private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PHOTO_DIR = "AAAAAAAAAA";
+    private static final String UPDATED_PHOTO_DIR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PHONE = "AAAAAAAAAA";
+    private static final String UPDATED_PHONE = "BBBBBBBBBB";
+
     @Autowired
     private AgentProfileRepository agentProfileRepository;
 
@@ -123,7 +134,20 @@ public class AgentProfileResourceIntTest {
             .last_name(DEFAULT_LAST_NAME)
             .gender(DEFAULT_GENDER)
             .email(DEFAULT_EMAIL)
-            .dob(DEFAULT_DOB);
+            .dob(DEFAULT_DOB)
+            .address(DEFAULT_ADDRESS)
+            .photo_dir(DEFAULT_PHOTO_DIR)
+            .phone(DEFAULT_PHONE);
+        // Add required entity
+        InsuranceCompany insuranceCompany = InsuranceCompanyResourceIntTest.createEntity(em);
+        em.persist(insuranceCompany);
+        em.flush();
+        agentProfile.setInsuranceCompany(insuranceCompany);
+        // Add required entity
+        InsuranceAgency insuranceAgency = InsuranceAgencyResourceIntTest.createEntity(em);
+        em.persist(insuranceAgency);
+        em.flush();
+        agentProfile.setInsuranceAgency(insuranceAgency);
         return agentProfile;
     }
 
@@ -156,6 +180,9 @@ public class AgentProfileResourceIntTest {
         assertThat(testAgentProfile.getGender()).isEqualTo(DEFAULT_GENDER);
         assertThat(testAgentProfile.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testAgentProfile.getDob()).isEqualTo(DEFAULT_DOB);
+        assertThat(testAgentProfile.getAddress()).isEqualTo(DEFAULT_ADDRESS);
+        assertThat(testAgentProfile.getPhoto_dir()).isEqualTo(DEFAULT_PHOTO_DIR);
+        assertThat(testAgentProfile.getPhone()).isEqualTo(DEFAULT_PHONE);
 
         // Validate the AgentProfile in Elasticsearch
         AgentProfile agentProfileEs = agentProfileSearchRepository.findOne(testAgentProfile.getId());
@@ -237,7 +264,10 @@ public class AgentProfileResourceIntTest {
             .andExpect(jsonPath("$.[*].last_name").value(hasItem(DEFAULT_LAST_NAME.toString())))
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
-            .andExpect(jsonPath("$.[*].dob").value(hasItem(DEFAULT_DOB.toString())));
+            .andExpect(jsonPath("$.[*].dob").value(hasItem(DEFAULT_DOB.toString())))
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
+            .andExpect(jsonPath("$.[*].photo_dir").value(hasItem(DEFAULT_PHOTO_DIR.toString())))
+            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE.toString())));
     }
 
     @Test
@@ -257,7 +287,10 @@ public class AgentProfileResourceIntTest {
             .andExpect(jsonPath("$.last_name").value(DEFAULT_LAST_NAME.toString()))
             .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
-            .andExpect(jsonPath("$.dob").value(DEFAULT_DOB.toString()));
+            .andExpect(jsonPath("$.dob").value(DEFAULT_DOB.toString()))
+            .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS.toString()))
+            .andExpect(jsonPath("$.photo_dir").value(DEFAULT_PHOTO_DIR.toString()))
+            .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE.toString()));
     }
 
     @Test
@@ -285,7 +318,10 @@ public class AgentProfileResourceIntTest {
             .last_name(UPDATED_LAST_NAME)
             .gender(UPDATED_GENDER)
             .email(UPDATED_EMAIL)
-            .dob(UPDATED_DOB);
+            .dob(UPDATED_DOB)
+            .address(UPDATED_ADDRESS)
+            .photo_dir(UPDATED_PHOTO_DIR)
+            .phone(UPDATED_PHONE);
         AgentProfileDTO agentProfileDTO = agentProfileMapper.toDto(updatedAgentProfile);
 
         restAgentProfileMockMvc.perform(put("/api/agent-profiles")
@@ -304,6 +340,9 @@ public class AgentProfileResourceIntTest {
         assertThat(testAgentProfile.getGender()).isEqualTo(UPDATED_GENDER);
         assertThat(testAgentProfile.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testAgentProfile.getDob()).isEqualTo(UPDATED_DOB);
+        assertThat(testAgentProfile.getAddress()).isEqualTo(UPDATED_ADDRESS);
+        assertThat(testAgentProfile.getPhoto_dir()).isEqualTo(UPDATED_PHOTO_DIR);
+        assertThat(testAgentProfile.getPhone()).isEqualTo(UPDATED_PHONE);
 
         // Validate the AgentProfile in Elasticsearch
         AgentProfile agentProfileEs = agentProfileSearchRepository.findOne(testAgentProfile.getId());
@@ -369,7 +408,10 @@ public class AgentProfileResourceIntTest {
             .andExpect(jsonPath("$.[*].last_name").value(hasItem(DEFAULT_LAST_NAME.toString())))
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
-            .andExpect(jsonPath("$.[*].dob").value(hasItem(DEFAULT_DOB.toString())));
+            .andExpect(jsonPath("$.[*].dob").value(hasItem(DEFAULT_DOB.toString())))
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
+            .andExpect(jsonPath("$.[*].photo_dir").value(hasItem(DEFAULT_PHOTO_DIR.toString())))
+            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE.toString())));
     }
 
     @Test

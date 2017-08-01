@@ -245,11 +245,26 @@ public class UserService {
         });
     }
 
-    public boolean checkUserPresent(String login) {
+    public void updateUserByEmail(String firstName, String lastName, String email, String langKey, String imageUrl) {
+        userRepository.findOneByEmail(email).ifPresent(user -> {
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setLangKey(langKey);
+            user.setImageUrl(imageUrl);
+            userSearchRepository.save(user);
+            log.debug("Changed Information for User: {}", user);
+        });
+    }
+
+    public boolean checkUserExistByLogin(String login) {
     	return userRepository.findOneByLogin(login).isPresent();
     }
-    	
-    public User getUserPresent(String login) {
+    /**
+     * Find user by login
+     * @param login
+     * @return User object if exist, null otherwise
+     */
+    public User findUserByLogin(String login) {
     	return userRepository.findOneByLogin(login).get();
     }
     /**

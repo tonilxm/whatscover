@@ -67,11 +67,11 @@
                 <constraints unique="true" nullable="true" />
             </column>
             <column name="insurance_company_id" type="bigint">
-                <constraints unique="true"/>
+                <constraints nullable="false"/>
             </column>
 
             <column name="insurance_agency_id" type="bigint">
-                <constraints unique="true"/>
+                <constraints nullable="false" />
             </column>
 
             <column name="created_by" type="varchar(50)">

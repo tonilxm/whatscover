@@ -31,7 +31,7 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
         		+ condQuery;
 
         TypedQuery<AgentProfile> typeQueryList = entityManager.createQuery(searchSql, AgentProfile.class)
-                .setParameter("firstName", "%" + queryData[0] + "%");
+                .setParameter("firstName", valueObj(queryData[0]));
         
         typeQueryList = typeQueryList(queryData, typeQueryList);
     			
@@ -45,7 +45,7 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
         		+ " and ap.first_name like :firstName "
         		+ condQuery;
 
-        Query queryList = entityManager.createQuery(totalRecordSql).setParameter("firstName", "%" + queryData[0] + "%");
+        Query queryList = entityManager.createQuery(totalRecordSql).setParameter("firstName", valueObj(queryData[0]));
 
         queryList = queryList(queryData, queryList);
 
@@ -57,35 +57,35 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
     }
     
 	protected String condQuery(String[] queryData) {
-		String condQuery = "";
+		StringBuilder condQuery = new StringBuilder();
 		if (!checkEmpty(queryData[1])) {
-			condQuery += " and ap.middle_name like :middleName ";
+			condQuery.append(" and ap.middle_name like :middleName ");
 		}
 		if (!checkEmpty(queryData[2])) {
-			condQuery += " and ap.last_name like :lastName ";
+			condQuery.append(" and ap.last_name like :lastName ");
 		}
 		if (!checkEmpty(queryData[3])) {
-			condQuery += " and ic.name like :companyName ";
+			condQuery.append(" and ic.name like :companyName ");
 		}
 		if (!checkEmpty(queryData[4])) {
-			condQuery += " and ia.name like :agencyName ";
+			condQuery.append(" and ia.name like :agencyName ");
 		}
-		return condQuery;
+		return condQuery.toString();
 	}
 
 	protected TypedQuery<AgentProfile> typeQueryList(String[] queryData, TypedQuery<AgentProfile> typeQueryList) {
 		TypedQuery<AgentProfile> typeQueryListTmp = typeQueryList;
 		if (!checkEmpty(queryData[1])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("middleName", "%" + queryData[1] + "%");
+			typeQueryListTmp = typeQueryListTmp.setParameter("middleName", valueObj(queryData[1]));
 		}
 		if (!checkEmpty(queryData[2])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("lastName", "%" + queryData[2] + "%");
+			typeQueryListTmp = typeQueryListTmp.setParameter("lastName", valueObj(queryData[2]));
 		}
 		if (!checkEmpty(queryData[3])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("companyName", "%" + queryData[3] + "%");
+			typeQueryListTmp = typeQueryListTmp.setParameter("companyName", valueObj(queryData[3]));
 		}
 		if (!checkEmpty(queryData[4])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("agencyName", "%" + queryData[4] + "%");
+			typeQueryListTmp = typeQueryListTmp.setParameter("agencyName", valueObj(queryData[4]));
 		}
 		return typeQueryListTmp;
 	}
@@ -93,20 +93,26 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
 	protected Query queryList(String[] queryData, Query queryList) {
 		Query queryListTmp = queryList;
 		if (!checkEmpty(queryData[1])) {
-			queryListTmp = queryListTmp.setParameter("middleName", "%" + queryData[1] + "%");
+			queryListTmp = queryListTmp.setParameter("middleName", valueObj(queryData[1]));
 		}
 		if (!checkEmpty(queryData[2])) {
-			queryListTmp = queryListTmp.setParameter("lastName", "%" + queryData[2] + "%");
+			queryListTmp = queryListTmp.setParameter("lastName", valueObj(queryData[2]));
 		}
 		if (!checkEmpty(queryData[3])) {
-			queryListTmp = queryListTmp.setParameter("companyName", "%" + queryData[3] + "%");
+			queryListTmp = queryListTmp.setParameter("companyName", valueObj(queryData[3]));
 		}
 		if (!checkEmpty(queryData[4])) {
-			queryListTmp = queryListTmp.setParameter("agencyName", "%" + queryData[4] + "%");
+			queryListTmp = queryListTmp.setParameter("agencyName", valueObj(queryData[4]));
 		}
 		return queryListTmp;
 	}
 
+	protected String valueObj(String str) {
+		StringBuilder valueObj = new StringBuilder();
+		valueObj.append("%").append(str).append("%");
+		return valueObj.toString();
+		
+	}
 	protected boolean checkEmpty(String str) {
 		if ("".equals(str)) {
 			return true;

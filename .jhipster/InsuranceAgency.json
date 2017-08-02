@@ -27,28 +27,12 @@
             "fieldValidateRulesMaxlength": "200"
         },
         {
-            "fieldName": "address_1",
+            "fieldName": "address",
             "fieldType": "String",
             "fieldValidateRules": [
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": "200"
-        },
-        {
-            "fieldName": "address_2",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "maxlength"
-            ],
-            "fieldValidateRulesMaxlength": "200"
-        },
-        {
-            "fieldName": "address_3",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "maxlength"
-            ],
-            "fieldValidateRulesMaxlength": "200"
+            "fieldValidateRulesMaxlength": "500"
         }
     ],
     "changelogDate": "20170715025935",

@@ -35,17 +35,9 @@ public class InsuranceAgency extends AbstractAuditingEntity implements Serializa
     @Column(name = Constants.INSURANCE_AGENCY_NAME, length = 200)
     private String name;
 
-    @Size(max = 200)
-    @Column(name = "address_1", length = 200)
-    private String address_1;
-
-    @Size(max = 200)
-    @Column(name = "address_2", length = 200)
-    private String address_2;
-
-    @Size(max = 200)
-    @Column(name = "address_3", length = 200)
-    private String address_3;
+    @Size(max = 500)
+    @Column(name = "address", length = 200)
+    private String address;
 
     @ManyToOne
     private InsuranceCompany insuranceCompany;
@@ -84,43 +76,17 @@ public class InsuranceAgency extends AbstractAuditingEntity implements Serializa
         this.name = name;
     }
 
-    public String getAddress_1() {
-        return address_1;
+    public String getAddress() {
+        return address;
     }
 
-    public InsuranceAgency address_1(String address_1) {
-        this.address_1 = address_1;
+    public InsuranceAgency address(String address) {
+        this.address = address;
         return this;
     }
 
-    public void setAddress_1(String address_1) {
-        this.address_1 = address_1;
-    }
-
-    public String getAddress_2() {
-        return address_2;
-    }
-
-    public InsuranceAgency address_2(String address_2) {
-        this.address_2 = address_2;
-        return this;
-    }
-
-    public void setAddress_2(String address_2) {
-        this.address_2 = address_2;
-    }
-
-    public String getAddress_3() {
-        return address_3;
-    }
-
-    public InsuranceAgency address_3(String address_3) {
-        this.address_3 = address_3;
-        return this;
-    }
-
-    public void setAddress_3(String address_3) {
-        this.address_3 = address_3;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public InsuranceCompany getInsuranceCompany() {
@@ -162,9 +128,7 @@ public class InsuranceAgency extends AbstractAuditingEntity implements Serializa
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
-            ", address_1='" + getAddress_1() + "'" +
-            ", address_2='" + getAddress_2() + "'" +
-            ", address_3='" + getAddress_3() + "'" +
+            ", address='" + getAddress() + "'" +
             "}";
     }
 }

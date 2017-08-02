@@ -18,14 +18,8 @@ public class InsuranceAgencyDTO implements Serializable {
     @Size(max = 200)
     private String name;
 
-    @Size(max = 200)
-    private String address_1;
-
-    @Size(max = 200)
-    private String address_2;
-
-    @Size(max = 200)
-    private String address_3;
+    @Size(max = 500)
+    private String address;
 
     private Long insuranceCompanyId;
 
@@ -56,28 +50,12 @@ public class InsuranceAgencyDTO implements Serializable {
         this.name = name;
     }
 
-    public String getAddress_1() {
-        return address_1;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddress_1(String address_1) {
-        this.address_1 = address_1;
-    }
-
-    public String getAddress_2() {
-        return address_2;
-    }
-
-    public void setAddress_2(String address_2) {
-        this.address_2 = address_2;
-    }
-
-    public String getAddress_3() {
-        return address_3;
-    }
-
-    public void setAddress_3(String address_3) {
-        this.address_3 = address_3;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Long getInsuranceCompanyId() {
@@ -123,9 +101,7 @@ public class InsuranceAgencyDTO implements Serializable {
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
-            ", address_1='" + getAddress_1() + "'" +
-            ", address_2='" + getAddress_2() + "'" +
-            ", address_3='" + getAddress_3() + "'" +
+            ", address='" + getAddress() + "'" +
             "}";
     }
 }

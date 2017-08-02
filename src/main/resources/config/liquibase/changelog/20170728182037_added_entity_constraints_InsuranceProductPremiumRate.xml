@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity InsuranceProductPremiumRate.
+    -->
+    <changeSet id="20170728182037-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="insurance_product_id"
+                                 baseTableName="insurance_product_premium_rate"
+                                 constraintName="fk_insurance_product_premium_rate_insurance_product_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="insurance_product"/>
+
+    </changeSet>
+</databaseChangeLog>

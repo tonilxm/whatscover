@@ -1,0 +1,58 @@
+<div style="margin-top: 10px">
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ng-click="vm.addRow()" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs-down"  data-translate="Add Row">
+                        Add Row
+                    </span>
+                </button>
+            </div>
+            
+        </div>
+    </div>
+    <br/>
+    <!-- <form editable-form id="editableForm" name="editableForm" onaftersave="vm.savePremiumRate()"> -->
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th class="hidden" jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th><span data-translate="whatscoverApp.insuranceProductPremiumRate.entryAge">Entry Age</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th><span data-translate="whatscoverApp.insuranceProductPremiumRate.malePremiumRate">Male Premium Rate</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th><span data-translate="whatscoverApp.insuranceProductPremiumRate.femalePremiumRate">Female Premium Rate</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th><span data-translate="whatscoverApp.insuranceProductPremiumRate.plan">Plan</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th class="hidden" jh-sort-by="insuranceProductId"><span data-translate="whatscoverApp.insuranceProductPremiumRate.insuranceProduct">Insurance Product</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="insuranceProductPremiumRate in vm.insuranceProductPremiumRates | filter:{ status: '!DELETE'} track by $index">
+                    <td class="hidden">{{insuranceProductPremiumRate.id}}</td>
+                    <td><a e-required e-placeholder="This Field is Required" e-form="entryAgeForm" onbeforesave="vm.checkEmptyData($data)" e-clickable="true" editable-number="insuranceProductPremiumRate.entryAge" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.entryAge || 'whatscoverApp.insuranceProductPremiumRate.enter.entryAge'|translate }}</a></td>
+                    <td><a e-required e-placeholder="This Field is Required" e-form="maleRateForm" e-clickable="true" editable-number="insuranceProductPremiumRate.malePremiumRate" e-step="any" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.malePremiumRate || 'whatscoverApp.insuranceProductPremiumRate.enter.malePremiumRate'|translate}}</a></td>
+                    <td><a e-required e-placeholder="This Field is Required" e-form="femaleRateForm" e-clickable="true" editable-number="insuranceProductPremiumRate.femalePremiumRate" e-step="any" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.femalePremiumRate || 'whatscoverApp.insuranceProductPremiumRate.enter.femalePremiumRate'|translate}}</td>
+                    <td><a editable-text="insuranceProductPremiumRate.plan" e-max="5" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{insuranceProductPremiumRate.plan || 'whatscoverApp.insuranceProductPremiumRate.enter.plan'|translate}}</td>
+                    <td class="hidden">
+                        <a ui-sref="insurance-product-detail({id:insuranceProductPremiumRate.insuranceProductId})">{{insuranceProductPremiumRate.insuranceProductId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit" ng-click="vm.removeRow(insuranceProductPremiumRate.id, insuranceProductPremiumRate.index)"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                        <button type="button" id="{{ 'buttonEntryAgeForm-' + insuranceProductPremiumRate.id + insuranceProductPremiumRate.index }}" class="btn btn-default hidden" ng-click="entryAgeForm.$show()"></button>
+						<button type="button" id="{{ 'buttonMaleRateForm-' + insuranceProductPremiumRate.id + insuranceProductPremiumRate.index }}" class="btn btn-default hidden" ng-click="maleRateForm.$show()"></button>
+						<button type="button" id="{{ 'buttonFemaleRateForm-' + insuranceProductPremiumRate.id + insuranceProductPremiumRate.index }}" class="btn btn-default hidden" ng-click="femaleRateForm.$show()"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- </form> -->
+</div>

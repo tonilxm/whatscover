@@ -14,16 +14,19 @@
             'ui.bootstrap',
             'ui.bootstrap.datetimepicker',
             'ui.router',
+            'ui.router.tabs',
             'infinite-scroll',
+            'xeditable',
             // jhipster-needle-angularjs-add-module JHipster will add new module here
             'angular-loading-bar'
         ])
         .run(run);
 
-    run.$inject = ['stateHandler', 'translationHandler'];
+    run.$inject = ['stateHandler', 'translationHandler', 'editableOptions'];
 
-    function run(stateHandler, translationHandler) {
+    function run(stateHandler, translationHandler, editableOptions) {
         stateHandler.initialize();
         translationHandler.initialize();
+        editableOptions.theme = 'bs3';
     }
 })();

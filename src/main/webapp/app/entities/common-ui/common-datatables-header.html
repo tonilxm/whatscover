@@ -1,0 +1,16 @@
+<div class="box-header">
+  <div class="navbar-form navbar-left" style="margin-left: -15px;">
+    <button class="btn btn-primary" ng-click="vm.addRow()"">
+      <span class="glyphicon glyphicon-plus"></span><span>Add Row</span>
+    </button>
+  </div>
+  <div class="navbar-form navbar-right">
+    <div class="text-right">
+      <div class="has-feedback input-group-sm">
+        <input type="text" class="form-control" ng-model="vm.searchQuery" size="80"
+               id="searchQuerytes" placeholder="{{ vm.searchPlaceHolder | translate }}" ng-change="vm.search()">
+        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+      </div>
+    </div>
+  </div>
+</div>

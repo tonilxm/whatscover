@@ -206,8 +206,92 @@
                 });
             }]
         })
-        .state(generateFindCompanyStateObj('insurance-product.edit.dialog-find-company', 'insurance-product.edit'))
-        .state(generateFindCompanyStateObj('insurance-product.new.dialog-find-company', 'insurance-product.new'));
+        .state('insurance-product.registration', {
+            parent: 'insurance-product',
+            url: '/registration',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            views: {
+                'content@': {
+                    template: '<tabs data="tabData" type="tabs"></tabs><div ui-view="view1"></div>',
+                    controller: 'InsuranceProductRegistrationController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('insuranceProduct');
+                    $translatePartialLoader.addPart('gender');
+                    $translatePartialLoader.addPart('insuranceProductPremiumRate');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }],
+                entity: function () {
+                    return {
+                        code: null,
+                        name: null,
+                        entryAgeLastBday: null,
+                        gender: null,
+                        premiumTerm: null,
+                        policyTerm: null,
+                        premiumRate: null,
+                        sumAssuredDeath: null,
+                        sumAssuredTPD: null,
+                        sumAssuredADD: null,
+                        sumAssuredHospIncome: null,
+                        sumAssuredCI: null,
+                        sumAssuredMedic: null,
+                        sumAssuredCancer: null,
+                        productWeightDeath: null,
+                        productWeightPA: null,
+                        productWeightHospIncome: null,
+                        productWeightCI: null,
+                        productWeightMedic: null,
+                        productWeightCancer: null,
+                        id: null
+                    };
+                },
+                pagingParams: ['PaginationUtil', function (PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage('1'),
+                        sort: 'id,asc',
+                        predicate: PaginationUtil.parsePredicate('id,asc'),
+                        ascending: PaginationUtil.parseAscending('id,asc'),
+                        search: null
+                    };
+                }],
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'insurance-product',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
+        })
+        .state('insurance-product.registration.general', {
+        	parent: 'insurance-product.registration',
+            url:         '/general',
+            views: {
+                "view1": {
+                    //controller: "InsuranceProductRegistrationController as vm",
+                    templateUrl: "app/entities/insurance-product/insurance-product-registration.html",
+                }
+            }
+        })
+        .state('insurance-product.registration.premiumrate', {
+        	parent: 'insurance-product.registration',
+            url:         '/premiumrate',
+            views: {
+                "view1": {
+                    //controller: "InsuranceProductRegistrationController as vm",
+                    templateUrl: "app/entities/insurance-product/premium-rate/premium-rates.html",
+                }
+            }
+        })       
+        .state(generateFindCompanyStateObj('insurance-product.registration.dialog-find-company', 'insurance-product.registration.general'));
     }
 
     function generateFindCompanyStateObj(name, parent){
@@ -251,7 +335,7 @@
 	                     }]
 	                 }
 	             }).result.then(function() {
-	                 $state.go('insurance-product', null, { reload: 'insurance-product' });
+	                 $state.go(parent, null, { reload: parent });
 	             }, function() {
 	                 $state.go('^');
 	             });

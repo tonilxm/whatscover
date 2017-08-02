@@ -1,0 +1,32 @@
+{
+    "whatscoverApp": {
+        "insuranceProductPremiumRate" : {
+            "home": {
+                "title": "Insurance Product Premium Rates",
+                "createLabel": "Thêm mới một Insurance Product Premium Rate",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Insurance Product Premium Rate",
+                "search": "Tìm Insurance Product Premium Rate"
+            },
+            "created": "Một Insurance Product Premium Rate mới được tạo với định danh {{ param }}",
+            "updated": "Một Insurance Product Premium Rate cập nhật với định danh {{ param }}",
+            "deleted": "Một Insurance Product Premium Rate đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Insurance Product Premium Rate {{ id }}?"
+            },
+            "detail": {
+                "title": "Insurance Product Premium Rate"
+            },
+            "entryAge": "Entry Age",
+            "malePremiumRate": "Male Premium Rate",
+            "femalePremiumRate": "Female Premium Rate",
+            "plan": "Plan",
+            "insuranceProduct": "Insurance Product",
+            "enter":{
+            	"entryAge": "empty age",
+	            "malePremiumRate": "empty rate",
+	            "femalePremiumRate": "empty rate",
+	            "plan": "empty plan"
+            }
+        }
+    }
+}

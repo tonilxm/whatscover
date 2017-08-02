@@ -1,0 +1,32 @@
+{
+    "whatscoverApp": {
+        "insuranceProductPremiumRate" : {
+            "home": {
+                "title": "Insurance Product Premium Rates",
+                "createLabel": "Create a new Insurance Product Premium Rate",
+                "createOrEditLabel": "Create or edit a Insurance Product Premium Rate",
+                "search": "Search for Insurance Product Premium Rate"
+            },
+            "created": "A new Insurance Product Premium Rate is created with identifier {{ param }}",
+            "updated": "A Insurance Product Premium Rate is updated with identifier {{ param }}",
+            "deleted": "A Insurance Product Premium Rate is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Insurance Product Premium Rate {{ id }}?"
+            },
+            "detail": {
+                "title": "Insurance Product Premium Rate"
+            },
+            "entryAge": "Entry Age",
+            "malePremiumRate": "Male Premium Rate",
+            "femalePremiumRate": "Female Premium Rate",
+            "plan": "Plan",
+            "insuranceProduct": "Insurance Product",
+            "enter":{
+            	"entryAge": "empty age",
+	            "malePremiumRate": "empty rate",
+	            "femalePremiumRate": "empty rate",
+	            "plan": "empty plan"
+            }
+        }
+    }
+}

@@ -14,6 +14,7 @@
                 "customerProfile": "Customer Profile",
                 "appointment": "Appointment",
                 "productCategory": "Product Category",
+                "insuranceProductPremiumRate": "Insurance Product Premium Rate",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

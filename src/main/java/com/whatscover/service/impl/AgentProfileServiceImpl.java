@@ -179,4 +179,19 @@ public class AgentProfileServiceImpl implements AgentProfileService{
 		
 		return result;
 	}
+
+    /**
+     * Search for the customerProfile corresponding by name to the query.
+     *
+     *  @param query the query of the search
+     *  @param pageable the pagination information
+     *  @return the list of entitiess
+     */
+    @Override
+    public Page<AgentProfileDTO> searchByName(String [] queryData, Pageable pageable) {
+        log.debug("Request to search for a page of CustomerProfiles by name for query {}", queryData);
+        Page<AgentProfile> result = agentProfileSearchRepository.searchByName(queryData, pageable);
+        return result.map(agentProfileMapper::toDto);
+    }
+
 }

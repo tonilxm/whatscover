@@ -61,4 +61,16 @@ public interface AgentProfileService {
      *  @return the list of entities
      */
     Page<AgentProfileDTO> search(String [] queryData, Pageable pageable);
+    
+
+    /**
+     * Search for the agentProfile by name corresponding to the query.
+     *
+     *  @param query the query of the search
+     *
+     *  @param pageable the pagination information
+     *  @return the list of entities
+     */
+    Page<AgentProfileDTO> searchByName(String [] queryData, Pageable pageable);
+
 }

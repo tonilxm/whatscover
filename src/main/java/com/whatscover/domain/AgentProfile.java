@@ -69,6 +69,12 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
     @Column(name = "phone", length = 100)
     private String phone;
 
+    @Column(name = "insurance_company_id", nullable=false, updatable=false, insertable=false)
+    private Long insurance_company_id;
+    
+    @Column(name = "insurance_agency_id", nullable=false, updatable=false, insertable=false)
+    private Long insurance_agency_id;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -83,9 +89,25 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getInsurance_company_id() {
+		return insurance_company_id;
+	}
+
+	public void setInsurance_company_id(Long insurance_company_id) {
+		this.insurance_company_id = insurance_company_id;
+	}
+
+	public Long getInsurance_agency_id() {
+		return insurance_agency_id;
+	}
+
+	public void setInsurance_agency_id(Long insurance_agency_id) {
+		this.insurance_agency_id = insurance_agency_id;
+	}
 
     public String getAgent_code() {
         return agentCode;

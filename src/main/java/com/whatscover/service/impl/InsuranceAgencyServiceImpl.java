@@ -97,19 +97,33 @@ public class InsuranceAgencyServiceImpl implements InsuranceAgencyService{
 	/**
      * Search for the insuranceAgency corresponding to the query.
      *
-     *  @param query the query of the search
+     *  @param name the name to be search
      *  
      *  @param pageable the pagination information
      *  @return the list of entities
      */
 	@Override
     @Transactional(readOnly = true)
-	public Page<InsuranceAgencyDTO> search(String query, Pageable pageable) {
-		log.debug("Request to search for a page of InsuranceAgencies for query {}", query);
+	public Page<InsuranceAgencyDTO> search(String name, Pageable pageable) {
+		log.debug("Request to search for a page of InsuranceAgencies for query {}", name);
         Page<InsuranceAgency> result = insuranceAgencySearchRepository.search(
-        		queryStringQuery(query).field(Constants.INSURANCE_AGENCY_NAME)
-        		.minimumShouldMatch(String.valueOf(query.trim().length())),
+        		queryStringQuery(name).field(Constants.INSURANCE_AGENCY_NAME)
+        		.minimumShouldMatch(String.valueOf(name.trim().length())),
         		pageable);
+        return result.map(insuranceAgencyMapper::toDto);
+	}
+
+	/**
+     * Search for the insuranceAgency corresponding by name to the query.
+     *
+     *  @param query the query of the search
+     *  @param pageable the pagination information
+     *  @return the list of entitiess
+     */
+	@Override
+	public Page<InsuranceAgencyDTO> searchByName(String query, Pageable pageable) {
+		log.debug("Request to search for a page of InsuranceAgencies by name for query {}", query);
+        Page<InsuranceAgency> result = insuranceAgencySearchRepository.searchByName(query, pageable);
         return result.map(insuranceAgencyMapper::toDto);
 	}
 }

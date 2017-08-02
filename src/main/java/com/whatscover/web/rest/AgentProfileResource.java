@@ -36,6 +36,7 @@ import com.whatscover.service.AgentProfileService;
 import com.whatscover.service.MailService;
 import com.whatscover.service.UserService;
 import com.whatscover.service.dto.AgentProfileDTO;
+import com.whatscover.service.dto.CustomerProfileDTO;
 import com.whatscover.service.util.RandomUtil;
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
@@ -248,5 +249,23 @@ public class AgentProfileResource {
         		queryData.toString(), page, "/api/_search/agent-profiles");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    /**
+     * SEARCH  /_search-name/agent-profiles?query=:query : search for the agentProfile corresponding
+     * to the query.
+     *
+     * @param queryData the query of the agentProfile search
+     * @param pageable the pagination information
+     * @return the result of the search
+     */
+    @GetMapping("/_search-name/agent-profiles")
+    @Timed
+    public ResponseEntity<List<AgentProfileDTO>> searchAgentProfilesByName(
+    		@RequestParam(value="queryData") String[] queryData,
+    		@ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of AgentProfiles for query {}", queryData.toString());
+        Page<AgentProfileDTO> page = agentProfileService.searchByName(queryData, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(
+        		queryData.toString(), page, "/api/_search-name/agent-profiles");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 }

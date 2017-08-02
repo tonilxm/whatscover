@@ -5,6 +5,7 @@
                 "title": "Agent Profiles",
                 "createLabel": "Thêm mới một Agent Profile",
                 "createOrEditLabel": "Thêm mới hoặc cập nhật Agent Profile",
+                "EditLabel": "Edit Agent Profile",
                 "search": "Tìm Agent Profile",
                 "searchByFirstName": "Tìm First Name",
                 "searchByMiddleName": "Tìm Middle Name",

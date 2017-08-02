@@ -5,6 +5,7 @@
                 "title": "Agent Profiles",
                 "createLabel": "Create a new Agent Profile",
                 "createOrEditLabel": "Agent Registration",
+                "EditLabel": "Edit Agent Profile",
                 "search": "Search for Agent Profile",
                 "searchByFirstName": "Search By First Name",
                 "searchByMiddleName": "Search By Middle Name",

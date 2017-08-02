@@ -104,6 +104,12 @@ public class MailService {
     }
 
     @Async
+    public void sendAgentProfileActivationEmail(User user, String rawPassword) {
+        log.debug("Sending activation email to '{}'", user.getEmail());
+        sendEmailFromTemplateWithPassword(user, rawPassword, "activationAgentProfileEmail", "email.activation.title");
+    }
+
+    @Async
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "activationEmail", "email.activation.title");

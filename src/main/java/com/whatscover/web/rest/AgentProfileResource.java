@@ -100,18 +100,18 @@ public class AgentProfileResource {
 					"messages.error.insuranceAgencyIdBlank", "You have to choose Insurance Agency")).body(null);
 		}
         User user = new User();
-        String login = loginUser(agentProfileDTO);
+
+    	String randomPassword = RandomUtil.generatePassword();
         if(userService.checkUserExistByEmail(email)) {
         	user = userService.findUserByEmail(email);
     		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
         }else {
-        	String randomPassword = RandomUtil.generatePassword();
-    		user = userService.createUser(login, randomPassword, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , Constants.DEFAULT_LANG_KEY, AuthoritiesConstants.AGENT);
+    		user = userService.createUser(email, randomPassword, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , Constants.DEFAULT_LANG_KEY, AuthoritiesConstants.AGENT);
         }
         
     	agentProfileDTO.setUserId(user.getId());
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
-        mailService.sendActivationEmail(user);
+        mailService.sendAgentProfileActivationEmail(user, randomPassword);
         return ResponseEntity.created(new URI("/api/agent-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -224,12 +224,6 @@ public class AgentProfileResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    public String loginUser(AgentProfileDTO agentProfileDTO) {
-        String email = agentProfileDTO.getEmail();
-        int index = email.indexOf("@");
-        String login = email.substring(0, index);
-        return login;
-    }
     /**
      * SEARCH  /_search/agent-profiles?query=:query : search for the agentProfile corresponding
      * to the query.

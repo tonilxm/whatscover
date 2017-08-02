@@ -1,13 +1,9 @@
 package com.whatscover.repository;
 
 import com.whatscover.domain.InsuranceAgency;
-import com.whatscover.domain.InsuranceCompany;
-
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.*;
+import java.util.Optional;
 
 
 /**
@@ -16,5 +12,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface InsuranceAgencyRepository extends JpaRepository<InsuranceAgency,Long> {
     
-	Optional<InsuranceCompany> findOneByCode(String code);
+	Optional<InsuranceAgency> findOneByCode(String code);
 }

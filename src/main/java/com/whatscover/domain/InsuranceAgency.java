@@ -36,7 +36,7 @@ public class InsuranceAgency extends AbstractAuditingEntity implements Serializa
     private String name;
 
     @Size(max = 500)
-    @Column(name = "address", length = 200)
+    @Column(name = "address", length = 500)
     private String address;
 
     @ManyToOne

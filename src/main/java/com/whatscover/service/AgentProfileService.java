@@ -1,17 +1,23 @@
 package com.whatscover.service;
 
-import java.util.Map;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.whatscover.service.dto.AgentProfileDTO;
+import com.whatscover.service.exception.BusinessException;
 
 /**
  * Service Interface for managing AgentProfile.
  */
 public interface AgentProfileService {
+
+    /**
+     * Create agentProfile.
+     *
+     * @param agentProfileDTO the entity to save
+     * @return the persisted entity
+     */
+	AgentProfileDTO create(AgentProfileDTO agentProfileDTO, String randomPassword) throws BusinessException;
 
     /**
      * Save a agentProfile.

@@ -121,31 +121,39 @@ public class UserService {
         return newUser;
     }
 
-    public User createUser(String login, String password, String firstName, String lastName, String email,
-        String imageUrl, String langKey, String role) {
 
-        User newUser = new User();
-        Authority authority = authorityRepository.findOne(role);
-        Set<Authority> authorities = new HashSet<>();
+    /**
+     * Create user only by knowing firstName, lastName and Email.
+     * Normally this is done by administrator where given minimal information regarding the user.
+     * User login is user email.
+     *
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @return
+     */
+    public User createUser(String firstName, String lastName, String email, String password, String role) {
+        User user = new User();
+        user.setLogin(email);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
         String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(login);
-        // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
-        newUser.setEmail(email);
-        newUser.setImageUrl(imageUrl);
-        newUser.setLangKey(langKey);
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
+        user.setPassword(encryptedPassword);
+        user.setActivated(false);
+        user.setActivationKey(RandomUtil.generateActivationKey());
+        user.setLangKey("en");
+
+        Set<Authority> authorities = new HashSet<>();
+        Authority authority = authorityRepository.findOne(role);
         authorities.add(authority);
-        newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
-        userSearchRepository.save(newUser);
-        log.debug("Created Information for User: {}", newUser);
-        return newUser;
+        user.setAuthorities(authorities);
+
+        user = userRepository.save(user);
+        userSearchRepository.save(user);
+        log.debug("Created Information for User: {}", user);
+
+        return user;
     }
 
     public User createUser(UserDTO userDTO) {

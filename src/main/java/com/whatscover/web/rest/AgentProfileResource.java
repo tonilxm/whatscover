@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import javax.validation.Valid;
 
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,13 +29,13 @@ import com.codahale.metrics.annotation.Timed;
 import com.whatscover.config.Constants;
 import com.whatscover.domain.User;
 import com.whatscover.repository.AgentProfileRepository;
-import com.whatscover.security.AuthoritiesConstants;
 import com.whatscover.service.AgentProfileService;
 import com.whatscover.service.MailService;
 import com.whatscover.service.UserService;
 import com.whatscover.service.dto.AgentProfileDTO;
-import com.whatscover.service.dto.CustomerProfileDTO;
+import com.whatscover.service.exception.BusinessException;
 import com.whatscover.service.util.RandomUtil;
+import com.whatscover.web.rest.errors.BusinessErrorVM;
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
 
@@ -99,19 +97,22 @@ public class AgentProfileResource {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.insuranceAgencyIdBlank", "You have to choose Insurance Agency")).body(null);
 		}
-        User user = new User();
 
-    	String randomPassword = RandomUtil.generatePassword();
-        if(userService.checkUserExistByEmail(email)) {
-        	user = userService.findUserByEmail(email);
-    		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
-        }else {
-    		user = userService.createUser(email, randomPassword, agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), email, "" , Constants.DEFAULT_LANG_KEY, AuthoritiesConstants.AGENT);
+		AgentProfileDTO result = null;
+
+        try {
+            // produce random password
+            String randomPassword = RandomUtil.generatePassword();
+            result = agentProfileService.create(agentProfileDTO, randomPassword);
+            // Get recently created user
+            User user = userService.findUserByEmail(agentProfileDTO.getEmail());
+            // send activation email
+            mailService.sendAgentProfileActivationEmail(user,randomPassword);
+        } catch (BusinessException be) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.accountexists", "This Account already created")).body(null);
         }
         
-    	agentProfileDTO.setUserId(user.getId());
-        AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
-        mailService.sendAgentProfileActivationEmail(user, randomPassword);
         return ResponseEntity.created(new URI("/api/agent-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

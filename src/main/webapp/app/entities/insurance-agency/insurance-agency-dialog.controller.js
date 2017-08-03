@@ -31,7 +31,6 @@
             } else {
                 InsuranceAgency.save(vm.insuranceAgency, onSaveSuccess, onSaveError);
             }
-            $state.go('insurance-agency', {}, { reload: true});
         }
 
         function onSaveSuccess (result) {
@@ -39,6 +38,7 @@
             $state.reload();
 //            $uibModalInstance.close(result);
             vm.isSaving = false;
+            $state.go('insurance-agency', {}, { reload: true});
         }
 
         function onSaveError () {

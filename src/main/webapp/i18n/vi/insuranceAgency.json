@@ -19,7 +19,12 @@
             "code": "Code",
             "name": "Name",
             "address": "Address",
-            "insuranceCompany": "Insurance Company"
+            "insuranceCompany": "Insurance Company",
+            "messages": {
+            	"error": {
+                	"agencycodeexists": "Agency Code is already in use!, Please choose another one."
+            	}
+        	}
         }
     }
 }

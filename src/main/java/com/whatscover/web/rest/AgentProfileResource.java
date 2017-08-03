@@ -1,8 +1,13 @@
 package com.whatscover.web.rest;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.channels.FileChannel;
 import java.util.List;
 import java.util.Optional;
 
@@ -144,21 +149,39 @@ public class AgentProfileResource {
             .body(result);
     }
 
-    protected void processImgUpload(AgentProfileDTO agentProfileDTO, File files) {
-    	createDirectory(files);
-    	String photo_dir =  agentProfileDTO.getUserId() + "_" + agentProfileDTO.getId() + ".JPG";
-    	agentProfileDTO.setPhoto_dir(files.getPath() + "\\" +photo_dir);
-    }
-    
-    protected void createDirectory(File files) {
-		if (!files.exists()) {
-			if (files.mkdirs()) {
-				System.out.println("Multiple directories are created!");
-			} else {
-				System.out.println("Failed to create multiple directories!");
+	protected void processImgUpload(AgentProfileDTO agentProfileDTO, File files) {
+		createDirectory(files);
+		agentProfileDTO.setPhoto_dir(destination(files, newFormatImg(agentProfileDTO)));
+	}
+
+	protected String destination(File files, String newFormatImg) {
+		StringBuilder destination = new StringBuilder();
+		destination.append(files.getPath()).append("\\").append(newFormatImg);
+
+		return destination.toString();
+	}
+
+	protected String newFormatImg(AgentProfileDTO agentProfileDTO) {
+		StringBuilder photo_dir = new StringBuilder();
+		photo_dir.append(agentProfileDTO.getUserId()).append("_").append(agentProfileDTO.getId()).append(".JPG");
+		return photo_dir.toString();
+	}
+
+	protected void createDirectory(File files) {
+		try {
+			if (!files.exists()) {
+				if (files.mkdirs()) {
+					System.out.println("Multiple directories are created!");
+				} else {
+					System.out.println("Failed to create multiple directories!");
+				}
 			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
-    }
+	}
+
     /**
      * GET  /agent-profiles : get all the agentProfiles.
      *

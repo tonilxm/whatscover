@@ -5,11 +5,13 @@ import com.whatscover.WhatscoverApp;
 import com.whatscover.domain.InsuranceProduct;
 import com.whatscover.domain.InsuranceCompany;
 import com.whatscover.repository.InsuranceProductRepository;
+import com.whatscover.service.InsuranceProductPremiumRateService;
 import com.whatscover.service.InsuranceProductService;
 import com.whatscover.repository.search.InsuranceProductSearchRepository;
 import com.whatscover.service.dto.InsuranceProductDTO;
 import com.whatscover.service.mapper.InsuranceProductMapper;
 import com.whatscover.web.rest.errors.ExceptionTranslator;
+import com.whatscover.web.rest.util.JsonConverter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -130,11 +132,17 @@ public class InsuranceProductResourceIntTest {
     private MockMvc restInsuranceProductMockMvc;
 
     private InsuranceProduct insuranceProduct;
+    
+    @Autowired
+    private JsonConverter converter;
+    
+    @Autowired
+    private InsuranceProductPremiumRateService insuranceProductPremiumRateService;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        InsuranceProductResource insuranceProductResource = new InsuranceProductResource(insuranceProductService);
+        InsuranceProductResource insuranceProductResource = new InsuranceProductResource(insuranceProductService, insuranceProductPremiumRateService, converter);
         this.restInsuranceProductMockMvc = MockMvcBuilders.standaloneSetup(insuranceProductResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

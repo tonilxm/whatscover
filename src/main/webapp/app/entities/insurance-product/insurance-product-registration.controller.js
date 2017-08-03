@@ -32,6 +32,8 @@
         vm.checkEmptyData = checkEmptyData;
         vm.savePremiumRate = savePremiumRate;
         
+        vm.cancel = cancel;
+        
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -62,14 +64,15 @@
         	if(vm.isValid){
         		//vm.insuranceProductPremiumRates.splice(index, 1);
         		//vm.insuranceProductPremiumRates[vm.insuranceProductPremiumRates.findIndex(el => el.id === id)].status = "DELETE";
-        		vm.insuranceProductPremiumRates = $.grep(vm.insuranceProductPremiumRates, function(element, index){return element.status !== "DELETE" || element.id !== null});
+        		vm.insuranceProductPremiumRates = $.grep(vm.insuranceProductPremiumRates, function(element, index){return (element.status !== "DELETE" || element.id !== null) && element.status !== "DEFAULT"});
         		console.log(vm.insuranceProductPremiumRates);
         		
-        		//vm.isSaving = true;
-                if (vm.insuranceProduct.id !== null) {
-                    //InsuranceProduct.update(vm.insuranceProduct, onSaveSuccess, onSaveError);
+        		vm.isSaving = true;
+        		vm.insuranceProduct["premiumRates"] = vm.insuranceProductPremiumRates;
+        		if (vm.insuranceProduct.id !== null) {
+                    InsuranceProduct.updateInsuranceProduct(vm.insuranceProduct, onSaveSuccess, onSaveError);
                 } else {
-                    //InsuranceProduct.save(vm.insuranceProduct, onSaveSuccess, onSaveError);
+                    InsuranceProduct.saveInsuranceProduct(vm.insuranceProduct, onSaveSuccess, onSaveError);
                 }
         	}
         	
@@ -88,9 +91,9 @@
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('whatscoverApp:insuranceProductUpdate', result);
-            $uibModalInstance.close(result);
+            //$scope.$emit('whatscoverApp:insuranceProductUpdate', result);
             vm.isSaving = false;
+            vm.cancel();
         }
 
         function onSaveError () {
@@ -242,6 +245,10 @@
           
           function savePremiumRate(){
         	  console.log('tes');
+          }
+          
+          function cancel(){
+        	  $state.go('insurance-product');
           }
     }
 })();

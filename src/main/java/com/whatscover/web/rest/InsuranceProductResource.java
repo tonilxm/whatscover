@@ -1,10 +1,17 @@
 package com.whatscover.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.whatscover.service.InsuranceProductPremiumRateService;
 import com.whatscover.service.InsuranceProductService;
 import com.whatscover.web.rest.util.HeaderUtil;
+import com.whatscover.web.rest.util.JsonConverter;
 import com.whatscover.web.rest.util.PaginationUtil;
 import com.whatscover.service.dto.InsuranceProductDTO;
+import com.whatscover.service.dto.InsuranceProductPremiumRateDTO;
+
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -13,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +30,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -38,9 +47,14 @@ public class InsuranceProductResource {
     private static final String ENTITY_NAME = "insuranceProduct";
 
     private final InsuranceProductService insuranceProductService;
+    private final InsuranceProductPremiumRateService insuranceProductPremiumRateService;
+    private final JsonConverter converter;
 
-    public InsuranceProductResource(InsuranceProductService insuranceProductService) {
+    public InsuranceProductResource(InsuranceProductService insuranceProductService, 
+    		InsuranceProductPremiumRateService insuranceProductPremiumRateService, JsonConverter converter) {
         this.insuranceProductService = insuranceProductService;
+        this.insuranceProductPremiumRateService = insuranceProductPremiumRateService;
+        this.converter = converter;
     }
 
     /**
@@ -60,6 +74,53 @@ public class InsuranceProductResource {
         InsuranceProductDTO result = insuranceProductService.save(insuranceProductDTO);
         return ResponseEntity.created(new URI("/api/insurance-products/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+    
+    @PostMapping("/saveInsuranceProduct")
+    @ResponseBody
+    public ResponseEntity<InsuranceProductDTO> saveInsuranceProduct(@RequestBody ObjectNode data) throws URISyntaxException {
+    	log.debug("REST request to save InsuranceProduct : {}", data);
+    	InsuranceProductDTO insuranceProductDTO = (InsuranceProductDTO) converter.fromJson(converter.toJson(data), InsuranceProductDTO.class);
+    	log.debug("insurance product : {}", insuranceProductDTO);
+    	if (insuranceProductDTO.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new insuranceProduct cannot already have an ID")).body(null);
+        }
+    	InsuranceProductDTO result = insuranceProductService.save(insuranceProductDTO);
+    	
+    	List<InsuranceProductPremiumRateDTO> premiumRateDTOs = (List<InsuranceProductPremiumRateDTO>) converter.fromJson(converter.toJson(data.get("premiumRates")), 
+    			converter.constructParametricType(List.class, InsuranceProductPremiumRateDTO.class));
+    	log.debug("Premium Rate : {}", premiumRateDTOs);
+    	insuranceProductPremiumRateService.saveEntities(premiumRateDTOs, result.getId());
+        
+        return ResponseEntity.created(new URI("/api/insurance-products/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+        
+        //InsuranceProductDTO result = insuranceProductService.save(insuranceProductDTO);
+        /*return ResponseEntity.created(new URI("/api/insurance-products/" + 100))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, "100"))
+            .body(new InsuranceProductDTO());*/
+    }
+    
+    @PutMapping("/saveInsuranceProduct")
+    @Timed
+    public ResponseEntity<InsuranceProductDTO> updateInsuranceProduct(@RequestBody ObjectNode data) throws URISyntaxException {
+    	log.debug("REST request to save InsuranceProduct : {}", data);
+    	InsuranceProductDTO insuranceProductDTO = (InsuranceProductDTO) converter.fromJson(converter.toJson(data), InsuranceProductDTO.class);
+    	log.debug("insurance product : {}", insuranceProductDTO);
+        if (insuranceProductDTO.getId() == null) {
+            return createInsuranceProduct(insuranceProductDTO);
+        }
+        InsuranceProductDTO result = insuranceProductService.save(insuranceProductDTO);
+        
+        List<InsuranceProductPremiumRateDTO> premiumRateDTOs = (List<InsuranceProductPremiumRateDTO>) converter.fromJson(converter.toJson(data.get("premiumRates")), 
+    			converter.constructParametricType(List.class, InsuranceProductPremiumRateDTO.class));
+    	log.debug("Premium Rate : {}", premiumRateDTOs);
+    	insuranceProductPremiumRateService.saveEntities(premiumRateDTOs, result.getId());
+    	
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, insuranceProductDTO.getId().toString()))
             .body(result);
     }
 

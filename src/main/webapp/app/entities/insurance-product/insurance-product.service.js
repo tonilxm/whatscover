@@ -20,7 +20,15 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'saveInsuranceProduct':{
+                url:'api/saveInsuranceProduct',
+                method:'POST'
+            },
+            'updateInsuranceProduct':{
+                url:'api/saveInsuranceProduct',
+                method:'PUT'
+            }
         });
     }
 })();

@@ -2,6 +2,7 @@ package com.whatscover.service.impl;
 
 import com.whatscover.service.InsuranceProductPremiumRateService;
 import com.whatscover.domain.InsuranceProductPremiumRate;
+import com.whatscover.domain.enumeration.ProductPremiumRateEntityStatus;
 import com.whatscover.repository.InsuranceProductPremiumRateRepository;
 import com.whatscover.repository.search.InsuranceProductPremiumRateSearchRepository;
 import com.whatscover.service.dto.InsuranceProductPremiumRateDTO;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
+
+import java.util.List;
 
 /**
  * Service Implementation for managing InsuranceProductPremiumRate.
@@ -107,4 +110,28 @@ public class InsuranceProductPremiumRateServiceImpl implements InsuranceProductP
         Page<InsuranceProductPremiumRate> result = insuranceProductPremiumRateSearchRepository.search(queryStringQuery(query), pageable);
         return result.map(insuranceProductPremiumRateMapper::toDto);
     }
+
+    /**
+     * Save Entities
+     */
+	@Override
+	public void saveEntities(List<InsuranceProductPremiumRateDTO> insuranceProductPremiumRateDTOs, 
+			Long insuranceProductId) {
+		for(InsuranceProductPremiumRateDTO dto : insuranceProductPremiumRateDTOs) {
+			switch (dto.getStatus()) {
+				case DELETE:
+					delete(dto.getId());
+					break;
+				case UPDATE:
+					save(dto);
+					break;
+				case NEW:
+					dto.setInsuranceProductId(insuranceProductId);
+					save(dto);
+					break;
+				default:
+					break;
+			}
+		}
+	}
 }

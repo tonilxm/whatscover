@@ -2,11 +2,14 @@ package com.whatscover.service.dto;
 
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.whatscover.domain.enumeration.Gender;
 
 /**
@@ -249,7 +252,7 @@ public class InsuranceProductDTO implements Serializable {
         this.insuranceCompanyName = insuranceCompanyName;
     }
 
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

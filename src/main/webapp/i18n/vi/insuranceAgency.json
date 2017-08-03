@@ -18,10 +18,13 @@
             },
             "code": "Code",
             "name": "Name",
-            "address_1": "Address 1",
-            "address_2": "Address 2",
-            "address_3": "Address 3",
-            "insuranceCompany": "Insurance Company"
+            "address": "Address",
+            "insuranceCompany": "Insurance Company",
+            "messages": {
+            	"error": {
+                	"agencycodeexists": "Agency Code is already in use!, Please choose another one."
+            	}
+        	}
         }
     }
 }

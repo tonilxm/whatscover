@@ -93,7 +93,7 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/agent-profile/agent-profile-dialog.html',
+                    templateUrl: 'app/entities/agent-profile/agent-profile-edit-dialog.html',
                     controller: 'AgentProfileDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -116,7 +116,35 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/agent-profile/agent-profile-dialog.html',
+                    controller: 'AgentProfileDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('agentProfile');
+                    return $translate.refresh();
+                }],
+                entity: function () {
+                    return {
+                        agent_code: null,
+                        first_name: null,
+                        middle_name: null,
+                        last_name: null,
+                        gender: null,
+                        email: null,
+                        dob: null,
+                        address: null,
+                        photo_dir: null,
+                        phone: null,
+                        id: null
+                    };
+                }
+            }
+            /*onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/agent-profile/agent-profile-dialog.html',
                     controller: 'AgentProfileDialogController',
@@ -133,6 +161,9 @@
                                 gender: null,
                                 email: null,
                                 dob: null,
+                                address: null,
+                                photo_dir: null,
+                                phone: null,
                                 id: null
                             };
                         }
@@ -142,7 +173,7 @@
                 }, function() {
                     $state.go('agent-profile');
                 });
-            }]
+            }]*/
         })
         .state('agent-profile.edit', {
             parent: 'agent-profile',
@@ -150,9 +181,25 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/agent-profile/agent-profile-edit-dialog.html',
+                    controller: 'AgentProfileDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('agentProfile');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'AgentProfile', function($stateParams, AgentProfile) {
+                    return AgentProfile.get({id : $stateParams.id}).$promise;
+                }]
+            }
+            /*onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/agent-profile/agent-profile-dialog.html',
+                    templateUrl: 'app/entities/agent-profile/agent-profile-edit-dialog.html',
                     controller: 'AgentProfileDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -167,7 +214,7 @@
                 }, function() {
                     $state.go('^');
                 });
-            }]
+            }]*/
         })
         .state('agent-profile.delete', {
             parent: 'agent-profile',

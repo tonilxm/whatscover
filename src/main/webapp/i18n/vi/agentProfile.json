@@ -5,6 +5,7 @@
                 "title": "Agent Profiles",
                 "createLabel": "Thêm mới một Agent Profile",
                 "createOrEditLabel": "Thêm mới hoặc cập nhật Agent Profile",
+                "EditLabel": "Edit Agent Profile",
                 "search": "Tìm Agent Profile",
                 "searchByFirstName": "Tìm First Name",
                 "searchByMiddleName": "Tìm Middle Name",
@@ -28,14 +29,21 @@
             "last_name": "Last Name",
             "gender": "Gender",
             "email": "Email",
-            "dob": "Dob",
+            "dob": "Date of Birth",
+            "address": "Address",
+            "photo_dir": "Photo Dir",
+            "phone": "Phone",
             "user": "User",
             "insuranceCompany": "Insurance Company",
             "insuranceAgency": "Insurance Agency",
             "messages": {
             	"error": {
                 	"agentcodeexists": "Agent Code is already in use!, Please choose another one.",
-                	"agentemailexists": "Agent Email is already in use!, Please choose another one."
+                	"agentemailexists": "Agent Email is already in use!, Please choose another one.",
+                	"agentemailformat": "Agent Email was wrong fortmat. Example: Correct email abc@gmail.com",
+                	"insuranceCompanyIdBlank": "You have to choose Insurance Company",
+                	"insuranceAgencyIdBlank": "You have to choose Insurance Agency",
+                    "accountexists": "This Account already created"
             	}
             }
         }

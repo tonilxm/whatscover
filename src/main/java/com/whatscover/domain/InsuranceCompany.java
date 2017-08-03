@@ -5,7 +5,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -36,18 +37,6 @@ public class InsuranceCompany extends AbstractAuditingEntity implements Serializ
     @Size(max = 200)
     @Column(name = "description", length = 200)
     private String description;
-
-    @Size(max = 200)
-    @Column(name = "address_1", length = 200)
-    private String address_1;
-
-    @Size(max = 200)
-    @Column(name = "address_2", length = 200)
-    private String address_2;
-
-    @Size(max = 200)
-    @Column(name = "address_3", length = 200)
-    private String address_3;
 
     public Long getId() {
         return id;
@@ -96,45 +85,6 @@ public class InsuranceCompany extends AbstractAuditingEntity implements Serializ
         this.description = description;
     }
 
-    public String getAddress_1() {
-        return address_1;
-    }
-
-    public InsuranceCompany address_1(String address_1) {
-        this.address_1 = address_1;
-        return this;
-    }
-
-    public void setAddress_1(String address_1) {
-        this.address_1 = address_1;
-    }
-
-    public String getAddress_2() {
-        return address_2;
-    }
-
-    public InsuranceCompany address_2(String address_2) {
-        this.address_2 = address_2;
-        return this;
-    }
-
-    public void setAddress_2(String address_2) {
-        this.address_2 = address_2;
-    }
-
-    public String getAddress_3() {
-        return address_3;
-    }
-
-    public InsuranceCompany address_3(String address_3) {
-        this.address_3 = address_3;
-        return this;
-    }
-
-    public void setAddress_3(String address_3) {
-        this.address_3 = address_3;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -162,9 +112,6 @@ public class InsuranceCompany extends AbstractAuditingEntity implements Serializ
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", address_1='" + getAddress_1() + "'" +
-            ", address_2='" + getAddress_2() + "'" +
-            ", address_3='" + getAddress_3() + "'" +
             "}";
     }
 }

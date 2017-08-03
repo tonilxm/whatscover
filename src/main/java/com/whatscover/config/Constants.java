@@ -10,6 +10,9 @@ public final class Constants {
 
     public static final String SYSTEM_ACCOUNT = "system";
     public static final String ANONYMOUS_USER = "anonymoususer";
+    
+    public static final String DEFAULT_LANG_KEY = "en";
+    public static final String DEFAULT_SYSTEM_DIRECTORY = "C:\\Directory";
 
     private Constants() {
     }
@@ -21,6 +24,8 @@ public final class Constants {
     public static final String AGENT_PROFILE_LAST_NAME = "last_name";
     public static final String AGENT_PROFILE_INSURANCE_COMPANY = "insuranceCompany.name";
     public static final String AGENT_PROFILE_INSURANCE_AGENCY = "insuranceAgency.name";
+    public static final String AGENT_EMAIL_SUBJECT_REGISTRATION = "Create New Agent Profiles";
+    public static final String AGENT_EMAIL_CONTENT_REGISTRATION = "Your user registration has been created. Please click link below to activate your account.";
     
     // INSURANCE AGENCY
     public static final String INSURANCE_AGENCY_NAME = "name";

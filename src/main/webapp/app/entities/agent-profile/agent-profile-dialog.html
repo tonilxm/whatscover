@@ -14,30 +14,22 @@
                     ng-model="vm.agentProfile.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.agentProfile.agent_code" for="field_agent_code">Agent Code</label>
-            <input type="text" class="form-control" name="agent_code" id="field_agent_code"
-                    ng-model="vm.agentProfile.agent_code"
-                    required ng-maxlength="100"/>
-            <div ng-show="editForm.agent_code.$invalid">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.first_name" for="field_agent_code">Agent Code</label>
+            <input type="text" class="form-control" name="first_name" id="field_first_name"
+                    ng-model="vm.agentProfile.first_name"
+                    required ng-maxlength="50"/>
+            <div ng-show="editForm.first_name.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.agent_code.$error.required" data-translate="entity.validation.required">
+                    ng-show="editForm.first_name.$error.required" data-translate="entity.validation.required">
                     This field is required.
                 </p>
                 <p class="help-block"
-                    ng-show="editForm.agent_code.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
-                    This field cannot be longer than 100 characters.
+                    ng-show="editForm.first_name.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="1">
+                    This field cannot be smaller than 1 characters.
                 </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.agentProfile.first_name" for="field_first_name">First Name</label>
-            <input type="text" class="form-control" name="first_name" id="field_first_name"
-                    ng-model="vm.agentProfile.first_name"
-                    ng-maxlength="100"/>
-            <div ng-show="editForm.first_name.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.first_name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
-                    This field cannot be longer than 100 characters.
+                    ng-show="editForm.first_name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="50">
+                    This field cannot be longer than 50 characters.
                 </p>
             </div>
         </div>
@@ -45,11 +37,11 @@
             <label class="control-label" data-translate="whatscoverApp.agentProfile.middle_name" for="field_middle_name">Middle Name</label>
             <input type="text" class="form-control" name="middle_name" id="field_middle_name"
                     ng-model="vm.agentProfile.middle_name"
-                    ng-maxlength="100"/>
+                    ng-maxlength="50"/>
             <div ng-show="editForm.middle_name.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.middle_name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
-                    This field cannot be longer than 100 characters.
+                    ng-show="editForm.middle_name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="50">
+                    This field cannot be longer than 50 characters.
                 </p>
             </div>
         </div>
@@ -57,11 +49,11 @@
             <label class="control-label" data-translate="whatscoverApp.agentProfile.last_name" for="field_last_name">Last Name</label>
             <input type="text" class="form-control" name="last_name" id="field_last_name"
                     ng-model="vm.agentProfile.last_name"
-                    ng-maxlength="100"/>
+                    ng-maxlength="50"/>
             <div ng-show="editForm.last_name.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.last_name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
-                    This field cannot be longer than 100 characters.
+                    ng-show="editForm.last_name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="50">
+                    This field cannot be longer than 50 characters.
                 </p>
             </div>
         </div>
@@ -73,22 +65,6 @@
             </select>
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.agentProfile.email" for="field_email">Email</label>
-            <input type="text" class="form-control" name="email" id="field_email"
-                    ng-model="vm.agentProfile.email"
-                    required ng-maxlength="100"/>
-            <div ng-show="editForm.email.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.email.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.email.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
-                    This field cannot be longer than 100 characters.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.agentProfile.dob" for="field_dob">Dob</label>
                 <div class="input-group">
                     <input id="field_dob" type="text" class="form-control" name="dob" uib-datepicker-popup="{{dateformat}}" ng-model="vm.agentProfile.dob" is-open="vm.datePickerOpenStatus.dob"
@@ -98,30 +74,79 @@
                     </span>
                 </div>
         </div>
-
         <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.email" for="field_email">Email</label>
+            <input type="email" class="form-control" name="email" id="field_email"
+                    ng-model="vm.agentProfile.email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.email.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.email.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+				<p ng-message="pattern">Please enter a valid email address!</p>
+                <p class="help-block"
+                    ng-show="editForm.email.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+
+        <!-- div class="form-group">
             <label data-translate="whatscoverApp.agentProfile.user" for="field_user">User</label>
             <select class="form-control" id="field_user" name="user" ng-model="vm.agentProfile.userId" ng-options="user.id as user.login for user in vm.users"            >
                 <option value=""></option>
             </select>
-        </div>
+        </div-->
         <div class="form-group">
             <label data-translate="whatscoverApp.agentProfile.insuranceCompany" for="field_insuranceCompany">Insurance Company</label>
-            <input type="text" class="form-control" id="field_insuranceCompany" name="insuranceCompany"
-                    ng-bind="vm.agentProfile.insuranceCompanyId" ng-value="vm.agentProfile.insuranceCompanyName" readonly />
-            <button type="submit" ui-sref="{{vm.insuranceCompanyState}}" class="btn btn-info btn-sm">
-                <span class="glyphicon glyphicon-eye-open"></span>
-                <span class="hidden-sm-down" data-translate="Find Company"></span>
-            </button>
+            <div class="form-inline">
+	            <input type="text" class="form-control" id="field_insuranceCompany" name="insuranceCompany"
+	                    ng-bind="vm.agentProfile.insuranceCompanyId" ng-value="vm.agentProfile.insuranceCompanyName" readonly required />
+	            <button type="submit" ui-sref="{{vm.insuranceCompanyState}}" class="btn btn-info btn-sm">
+	                <span class="glyphicon glyphicon-eye-open"></span>
+	                <span class="hidden-sm-down" data-translate="Find Company"></span>
+	            </button>
+            </div>
+        </div>
+        <div ng-show="editForm.insuranceCompany.$invalid">
+            <p class="help-block"
+                ng-show="editForm.insuranceCompany.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.agentProfile.agent_code" for="field_agent_code">Agent Code</label>
+            <input type="text" class="form-control" name="agent_code" id="field_agent_code"
+                    ng-model="vm.agentProfile.agent_code"
+                    required ng-maxlength="50"/>
+            <div ng-show="editForm.agent_code.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.agent_code.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.agent_code.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="50">
+                    This field cannot be longer than 50 characters.
+                </p>
+            </div>
         </div>
         <div class="form-group">
             <label data-translate="whatscoverApp.agentProfile.insuranceAgency" for="field_insuranceAgency">Insurance Agency</label>
-            <input type="text" class="form-control" id="field_insuranceAgency" name="insuranceAgency"
-                    ng-bind="vm.agentProfile.insuranceAgencyId" ng-value="vm.agentProfile.insuranceAgencyName" readonly />
-            <button type="submit" ui-sref="{{vm.insuranceAgencyState}}" class="btn btn-info btn-sm">
-                <span class="glyphicon glyphicon-eye-open"></span>
-                <span class="hidden-sm-down" data-translate="Find Agency"></span>
-            </button>
+            <div class="form-inline">
+	            <input type="text" class="form-control" id="field_insuranceAgency" name="insuranceAgency"
+	                    ng-bind="vm.agentProfile.insuranceAgencyId" ng-value="vm.agentProfile.insuranceAgencyName" readonly required />
+	            <button type="submit" ui-sref="{{vm.insuranceAgencyState}}" class="btn btn-info btn-sm">
+	                <span class="glyphicon glyphicon-eye-open"></span>
+	                <span class="hidden-sm-down" data-translate="Find Agency"></span>
+	            </button>
+            </div>
+        </div>
+        <div ng-show="editForm.insuranceAgency.$invalid">
+            <p class="help-block"
+                ng-show="editForm.insuranceAgency.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
         </div>
     </div>
     <div class="modal-footer">
@@ -131,8 +156,8 @@
         <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
         </button>
-        <button type="button" class="btn btn-primary" ng-disabled="editForm.$invalid || vm.isSendEmail" ng-click="vm.sendEmail()">
+        <!-- button type="button" class="btn btn-primary" ng-disabled="editForm.$invalid || vm.isSendEmail" ng-click="vm.sendEmail()">
             <span class="glyphicons glyphicons-message-out"></span>&nbsp;<span>Send Email</span>
-        </button>
+        </button-->
     </div>
 </form>

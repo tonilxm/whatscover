@@ -6,6 +6,7 @@ import com.whatscover.domain.User;
 import com.whatscover.repository.UserRepository;
 import com.whatscover.repository.search.UserSearchRepository;
 import com.whatscover.security.AuthoritiesConstants;
+import com.whatscover.service.AgentProfileService;
 import com.whatscover.service.MailService;
 import com.whatscover.service.UserService;
 import com.whatscover.service.dto.UserDTO;
@@ -105,11 +106,13 @@ public class UserResourceIntTest {
     private MockMvc restUserMockMvc;
 
     private User user;
-
+ 
+    private AgentProfileService agentProfileService;
+ 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        UserResource userResource = new UserResource(userRepository, mailService, userService, userSearchRepository);
+        UserResource userResource = new UserResource(userRepository, mailService, userService, userSearchRepository, agentProfileService);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

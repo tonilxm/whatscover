@@ -2,12 +2,15 @@ package com.whatscover.web.rest;
 
 import com.whatscover.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import com.whatscover.domain.AgentProfile;
 import com.whatscover.domain.User;
 import com.whatscover.repository.UserRepository;
 import com.whatscover.repository.search.UserSearchRepository;
 import com.whatscover.security.AuthoritiesConstants;
+import com.whatscover.service.AgentProfileService;
 import com.whatscover.service.MailService;
 import com.whatscover.service.UserService;
+import com.whatscover.service.dto.AgentProfileDTO;
 import com.whatscover.service.dto.UserDTO;
 import com.whatscover.web.rest.vm.ManagedUserVM;
 import com.whatscover.web.rest.util.HeaderUtil;
@@ -74,13 +77,16 @@ public class UserResource {
 
     private final UserSearchRepository userSearchRepository;
 
+    private final AgentProfileService agentProfileService;
+
     public UserResource(UserRepository userRepository, MailService mailService,
-            UserService userService, UserSearchRepository userSearchRepository) {
+            UserService userService, UserSearchRepository userSearchRepository, AgentProfileService agentProfileService) {
 
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userService = userService;
         this.userSearchRepository = userSearchRepository;
+        this.agentProfileService = agentProfileService;
     }
 
     /**
@@ -200,6 +206,11 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
+        User user = userService.findUserByLogin(login);
+        AgentProfileDTO agentProfileDTO = agentProfileService.findOneByEmail(user.getEmail());
+        if(agentProfileDTO.getId() != null) {
+        	agentProfileService.delete(agentProfileDTO.getId());
+        }
         userService.deleteUser(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
     }

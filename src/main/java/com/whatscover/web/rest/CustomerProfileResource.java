@@ -1,14 +1,21 @@
 package com.whatscover.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.whatscover.domain.User;
 import com.whatscover.service.CustomerProfileService;
+import com.whatscover.service.MailService;
+import com.whatscover.service.UserService;
 import com.whatscover.service.dto.CustomerProfileDTO;
+import com.whatscover.service.exception.BusinessException;
+import com.whatscover.service.util.RandomUtil;
+import com.whatscover.web.rest.errors.BusinessErrorVM;
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +42,12 @@ public class CustomerProfileResource {
 
     private final CustomerProfileService customerProfileService;
 
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private UserService userService;
+
     public CustomerProfileResource(CustomerProfileService customerProfileService) {
         this.customerProfileService = customerProfileService;
     }
@@ -48,12 +61,27 @@ public class CustomerProfileResource {
      */
     @PostMapping("/customer-profiles")
     @Timed
-    public ResponseEntity<CustomerProfileDTO> createCustomerProfile(@Valid @RequestBody CustomerProfileDTO customerProfileDTO) throws URISyntaxException {
+    public ResponseEntity createCustomerProfile(@Valid @RequestBody CustomerProfileDTO customerProfileDTO) throws URISyntaxException {
         log.debug("REST request to save CustomerProfile : {}", customerProfileDTO);
         if (customerProfileDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new customerProfile cannot already have an ID")).body(null);
         }
-        CustomerProfileDTO result = customerProfileService.save(customerProfileDTO);
+
+        CustomerProfileDTO result = null;
+
+        try {
+            // produce random password
+            String randomPassword = RandomUtil.generatePassword();
+            result = customerProfileService.create(customerProfileDTO, randomPassword);
+            // Get recently created user
+            User user = userService.findUserByEmail(customerProfileDTO.getEmail());
+            // send activation email
+            mailService.sendCustomerProfileActivationEmail(user,randomPassword);
+        } catch (BusinessException be) {
+            BusinessErrorVM beVM = new BusinessErrorVM(be.getMessage(), be.getMessage());
+            return ResponseEntity.badRequest().body(beVM);
+        }
+
         return ResponseEntity.created(new URI("/api/customer-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -132,12 +160,12 @@ public class CustomerProfileResource {
      * @param pageable the pagination information
      * @return the result of the search
      */
-    @GetMapping("/_search/customer-profiles")
+    @GetMapping("/_search-name/customer-profiles")
     @Timed
-    public ResponseEntity<List<CustomerProfileDTO>> searchCustomerProfiles(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<CustomerProfileDTO>> searchCustomerProfilesByName(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of CustomerProfiles for query {}", query);
-        Page<CustomerProfileDTO> page = customerProfileService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/customer-profiles");
+        Page<CustomerProfileDTO> page = customerProfileService.searchByName(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search-name/customer-profiles");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

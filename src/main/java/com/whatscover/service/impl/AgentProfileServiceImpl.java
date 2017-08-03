@@ -3,11 +3,14 @@ package com.whatscover.service.impl;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
+import java.util.Optional;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,10 +18,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.whatscover.config.Constants;
 import com.whatscover.domain.AgentProfile;
+import com.whatscover.domain.CustomerProfile;
+import com.whatscover.domain.User;
 import com.whatscover.repository.AgentProfileRepository;
 import com.whatscover.repository.search.AgentProfileSearchRepository;
+import com.whatscover.security.AuthoritiesConstants;
 import com.whatscover.service.AgentProfileService;
+import com.whatscover.service.UserService;
 import com.whatscover.service.dto.AgentProfileDTO;
+import com.whatscover.service.dto.CustomerProfileDTO;
+import com.whatscover.service.exception.BusinessException;
 import com.whatscover.service.mapper.AgentProfileMapper;
 
 /**
@@ -35,6 +44,9 @@ public class AgentProfileServiceImpl implements AgentProfileService{
     private final AgentProfileMapper agentProfileMapper;
 
     private final AgentProfileSearchRepository agentProfileSearchRepository;
+
+    @Autowired
+    private UserService userService;
 
     public AgentProfileServiceImpl(AgentProfileRepository agentProfileRepository, AgentProfileMapper agentProfileMapper, AgentProfileSearchRepository agentProfileSearchRepository) {
         this.agentProfileRepository = agentProfileRepository;
@@ -99,6 +111,23 @@ public class AgentProfileServiceImpl implements AgentProfileService{
     }
 
     /**
+     *  Get one agentProfile by email.
+     *
+     *  @param email the email of the entity
+     *  @return the entity
+     */
+	@Override
+	public AgentProfileDTO findOneByEmail(String email) {
+        log.debug("Request to get AgentProfile : {}", email);
+        Optional<AgentProfile> optAgentProfile = agentProfileRepository.findOneByEmail(email);
+        AgentProfile agentProfile = new AgentProfile();
+        if(optAgentProfile.isPresent()) {
+            agentProfile = optAgentProfile.get();
+        }
+        return agentProfileMapper.toDto(agentProfile);
+	}
+
+    /**
      * Search for the agentProfile corresponding to the query.
      *
      *  @param query the query of the search
@@ -159,5 +188,47 @@ public class AgentProfileServiceImpl implements AgentProfileService{
 		result = agentProfileSearchRepository.search(queryBuilders, pageable);
 		
 		return result;
+	}
+
+    /**
+     * Search for the customerProfile corresponding by name to the query.
+     *
+     *  @param query the query of the search
+     *  @param pageable the pagination information
+     *  @return the list of entitiess
+     */
+    @Override
+    public Page<AgentProfileDTO> searchByName(String [] queryData, Pageable pageable) {
+        log.debug("Request to search for a page of CustomerProfiles by name for query {}", queryData);
+        Page<AgentProfile> result = agentProfileSearchRepository.searchByName(queryData, pageable);
+        return result.map(agentProfileMapper::toDto);
+    }
+
+    /**
+     * Create agent profile and user info and link them both as ROLE_AGENT
+     * @param agentProfileDTO the entity to save
+     * @return
+     */
+	@Override
+	public AgentProfileDTO create(AgentProfileDTO agentProfileDTO, String randomPassword) throws BusinessException{
+        log.debug("Request to save CustomerProfile : {}", agentProfileDTO);
+        // check email not empty
+        if (agentProfileDTO.getEmail().isEmpty()) new BusinessException("Email is required.");
+
+        // check user with existing email
+        boolean userExist = userService.checkUserExistByEmail(agentProfileDTO.getEmail());
+        if (userExist) throw new BusinessException("User with email : " + agentProfileDTO.getEmail() + " already exist.");
+
+        // create user
+        User newUser = userService.createUser(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), randomPassword, AuthoritiesConstants.AGENT);
+
+        // then customer profile
+        AgentProfile agentProfile = agentProfileMapper.toEntity(agentProfileDTO);
+        agentProfile.setUser(newUser);
+        agentProfile = agentProfileRepository.save(agentProfile);
+        AgentProfileDTO result = agentProfileMapper.toDto(agentProfile);
+        agentProfileSearchRepository.save(agentProfile);
+
+        return result;
 	}
 }

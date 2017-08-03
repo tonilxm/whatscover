@@ -8,7 +8,7 @@
     ProductCategorySearch.$inject = ['$resource'];
 
     function ProductCategorySearch($resource) {
-        var resourceUrl =  'api/_search/product-categories/:id';
+        var resourceUrl =  'api/_search-name/product-categories/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true}

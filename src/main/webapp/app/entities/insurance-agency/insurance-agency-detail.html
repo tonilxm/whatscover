@@ -12,21 +12,13 @@
         <dd>
             <span>{{vm.insuranceAgency.name}}</span>
         </dd>
-        <dt><span data-translate="whatscoverApp.insuranceAgency.address_1">Address 1</span></dt>
+        <dt><span data-translate="whatscoverApp.insuranceAgency.address">Address</span></dt>
         <dd>
-            <span>{{vm.insuranceAgency.address_1}}</span>
-        </dd>
-        <dt><span data-translate="whatscoverApp.insuranceAgency.address_2">Address 2</span></dt>
-        <dd>
-            <span>{{vm.insuranceAgency.address_2}}</span>
-        </dd>
-        <dt><span data-translate="whatscoverApp.insuranceAgency.address_3">Address 3</span></dt>
-        <dd>
-            <span>{{vm.insuranceAgency.address_3}}</span>
+            <span>{{vm.insuranceAgency.address}}</span>
         </dd>
         <dt><span data-translate="whatscoverApp.insuranceAgency.insuranceCompany">Insurance Company</span></dt>
         <dd>
-            <a ui-sref="insurance-company-detail({id:vm.insuranceAgency.insuranceCompanyId})">{{vm.insuranceAgency.insuranceCompanyId}}</a>
+            <span>{{vm.insuranceAgency.insuranceCompanyName}}</span>
         </dd>
     </dl>
 
@@ -36,8 +28,10 @@
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
     </button>
 
+	<!-- 
     <button type="button" ui-sref="insurance-agency-detail.edit({id:vm.insuranceAgency.id})" class="btn btn-primary">
         <span class="glyphicon glyphicon-pencil"></span>
         <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
     </button>
+    -->
 </div>

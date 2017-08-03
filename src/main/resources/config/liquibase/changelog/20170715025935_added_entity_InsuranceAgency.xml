@@ -31,15 +31,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="address_1" type="varchar(200)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="address_2" type="varchar(200)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="address_3" type="varchar(200)">
+            <column name="address" type="varchar(500)">
                 <constraints nullable="true" />
             </column>
 

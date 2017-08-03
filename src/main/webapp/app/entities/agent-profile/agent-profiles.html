@@ -54,6 +54,9 @@
                     <th jh-sort-by="gender"><span data-translate="whatscoverApp.agentProfile.gender">Gender</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="email"><span data-translate="whatscoverApp.agentProfile.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="dob"><span data-translate="whatscoverApp.agentProfile.dob">Dob</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="address"><span data-translate="whatscoverApp.agentProfile.address">Address</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="phone"><span data-translate="whatscoverApp.agentProfile.phone">Phone</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="photo_dir"><span data-translate="whatscoverApp.agentProfile.photo_dir">Photo Dir</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="userLogin"><span data-translate="whatscoverApp.agentProfile.user">User</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="insuranceCompanyId"><span data-translate="whatscoverApp.agentProfile.insuranceCompany">Insurance Company</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="insuranceAgencyId"><span data-translate="whatscoverApp.agentProfile.insuranceAgency">Insurance Agency</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -70,6 +73,9 @@
                     <td data-translate="{{'whatscoverApp.Gender.' + agentProfile.gender}}">{{agentProfile.gender}}</td>
                     <td>{{agentProfile.email}}</td>
                         <td>{{agentProfile.dob | date:'mediumDate'}}</td>
+                    <td>{{agentProfile.address}}</td>
+                    <td>{{agentProfile.phone}}</td>
+                    <td>{{agentProfile.photo_dir}}</td>
                     <td>
                         {{agentProfile.userLogin}}
                     </td>

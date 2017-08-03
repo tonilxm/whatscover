@@ -29,20 +29,20 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
     private Long id;
 
     @NotNull
-    @Size(max = 100)
-    @Column(name = "agent_code", length = 100, nullable = false)
+    @Size(min = 1, max = 50)
+    @Column(name = "agent_code", length = 50, nullable = false)
     private String agentCode;
 
-    @Size(max = 100)
-    @Column(name = Constants.AGENT_PROFILE_FIRST_NAME, length = 100)
+    @Size(min = 1, max = 50)
+    @Column(name = Constants.AGENT_PROFILE_FIRST_NAME, length = 50, nullable = false)
     private String first_name;
 
-    @Size(max = 100)
-    @Column(name = Constants.AGENT_PROFILE_MIDDLE_NAME, length = 100)
+    @Size(max = 50)
+    @Column(name = Constants.AGENT_PROFILE_MIDDLE_NAME, length = 50)
     private String middle_name;
 
-    @Size(max = 100)
-    @Column(name = Constants.AGENT_PROFILE_LAST_NAME, length = 100)
+    @Size(max = 50)
+    @Column(name = Constants.AGENT_PROFILE_LAST_NAME, length = 50)
     private String last_name;
 
     @Enumerated(EnumType.STRING)
@@ -56,6 +56,24 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
 
     @Column(name = "dob")
     private LocalDate dob;
+
+    @Size(max = 500)
+    @Column(name = "address", length = 500)
+    private String address;
+
+    @Size(max = 500)
+    @Column(name = "photo_dir", length = 500)
+    private String photo_dir;
+
+    @Size(max = 100)
+    @Column(name = "phone", length = 100)
+    private String phone;
+
+    @Column(name = "insurance_company_id", nullable=false, updatable=false, insertable=false)
+    private Long insurance_company_id;
+    
+    @Column(name = "insurance_agency_id", nullable=false, updatable=false, insertable=false)
+    private Long insurance_agency_id;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -71,9 +89,25 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getInsurance_company_id() {
+		return insurance_company_id;
+	}
+
+	public void setInsurance_company_id(Long insurance_company_id) {
+		this.insurance_company_id = insurance_company_id;
+	}
+
+	public Long getInsurance_agency_id() {
+		return insurance_agency_id;
+	}
+
+	public void setInsurance_agency_id(Long insurance_agency_id) {
+		this.insurance_agency_id = insurance_agency_id;
+	}
 
     public String getAgent_code() {
         return agentCode;
@@ -166,6 +200,45 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
         this.dob = dob;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public AgentProfile address(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoto_dir() {
+        return photo_dir;
+    }
+
+    public AgentProfile photo_dir(String photo_dir) {
+        this.photo_dir = photo_dir;
+        return this;
+    }
+
+    public void setPhoto_dir(String photo_dir) {
+        this.photo_dir = photo_dir;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public AgentProfile phone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public User getUser() {
         return user;
     }
@@ -236,6 +309,9 @@ public class AgentProfile extends AbstractAuditingEntity implements Serializable
             ", gender='" + getGender() + "'" +
             ", email='" + getEmail() + "'" +
             ", dob='" + getDob() + "'" +
+            ", address='" + getAddress() + "'" +
+            ", photo_dir='" + getPhoto_dir() + "'" +
+            ", phone='" + getPhone() + "'" +
             "}";
     }
 }

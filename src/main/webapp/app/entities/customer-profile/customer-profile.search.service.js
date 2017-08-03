@@ -8,7 +8,7 @@
     CustomerProfileSearch.$inject = ['$resource'];
 
     function CustomerProfileSearch($resource) {
-        var resourceUrl =  'api/_search/customer-profiles/:id';
+        var resourceUrl =  'api/_search-name/customer-profiles/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true}

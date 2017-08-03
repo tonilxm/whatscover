@@ -147,13 +147,13 @@ public class InsuranceAgencyResource {
      * @param pageable the pagination information
      * @return the result of the search
      */
-    @GetMapping("/_search/insurance-agencies")
+    @GetMapping("/_search-name/insurance-agencies")
     @Timed
-    public ResponseEntity<List<InsuranceAgencyDTO>> searchInsuranceAgencies(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of InsuranceAgencies for query {}", query);
-        Page<InsuranceAgencyDTO> page = insuranceAgencyService.search(query, pageable);
+    public ResponseEntity<List<InsuranceAgencyDTO>> searchInsuranceAgenciesByName(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of InsuranceAgencies by name {}", query);
+        Page<InsuranceAgencyDTO> page = insuranceAgencyService.searchByName(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(
-        		query, page, "/api/_search/insurance-agencies");
+        		query, page, "/api/_search-name/insurance-agencies");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

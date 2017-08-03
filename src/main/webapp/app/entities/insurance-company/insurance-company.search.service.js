@@ -8,7 +8,7 @@
     InsuranceCompanySearch.$inject = ['$resource'];
 
     function InsuranceCompanySearch($resource) {
-        var resourceUrl =  'api/_search/insurance-companies/:id';
+        var resourceUrl =  'api/_search-name/insurance-companies/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true}

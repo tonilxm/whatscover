@@ -5,39 +5,37 @@
         .module('whatscoverApp')
         .controller('InsuranceAgencyController', InsuranceAgencyController);
 
-    InsuranceAgencyController.$inject = ['InsuranceAgency', 'InsuranceAgencySearch', 'ParseLinks', 'AlertService', 'paginationConstants'];
+    InsuranceAgencyController.$inject = ['$state', 'InsuranceAgency', 'InsuranceAgencySearch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function InsuranceAgencyController(InsuranceAgency, InsuranceAgencySearch, ParseLinks, AlertService, paginationConstants) {
+    function InsuranceAgencyController($state, InsuranceAgency, InsuranceAgencySearch, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
 
         vm.insuranceAgencies = [];
         vm.loadPage = loadPage;
+        vm.predicate = pagingParams.predicate;
+        vm.reverse = pagingParams.ascending;
+        vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.page = 0;
-        vm.links = {
-            last: 0
-        };
-        vm.predicate = 'id';
-        vm.reset = reset;
-        vm.reverse = true;
         vm.clear = clear;
-        vm.loadAll = loadAll;
         vm.search = search;
+        vm.loadAll = loadAll;
+        vm.searchQuery = pagingParams.search;
+        vm.currentSearch = pagingParams.search;
 
         loadAll();
 
         function loadAll () {
-            if (vm.currentSearch) {
+            if (pagingParams.search) {
                 InsuranceAgencySearch.query({
-                    query: vm.currentSearch,
-                    page: vm.page,
+                    query: pagingParams.search,
+                    page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
                     sort: sort()
                 }, onSuccess, onError);
             } else {
                 InsuranceAgency.query({
-                    page: vm.page,
+                    page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
                     sort: sort()
                 }, onSuccess, onError);
@@ -53,9 +51,11 @@
             function onSuccess(data, headers) {
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
+                vm.queryCount = vm.totalItems;
                 for (var i = 0; i < data.length; i++) {
                     vm.insuranceAgencies.push(data[i]);
                 }
+                vm.page = pagingParams.page;
             }
 
             function onError(error) {
@@ -63,43 +63,39 @@
             }
         }
 
-        function reset () {
-            vm.page = 0;
-            vm.insuranceAgencies = [];
-            loadAll();
-        }
-
         function loadPage(page) {
             vm.page = page;
-            loadAll();
+            vm.transition();
         }
 
-        function clear () {
-            vm.insuranceAgencies = [];
-            vm.links = {
-                last: 0
-            };
-            vm.page = 0;
-            vm.predicate = 'id';
-            vm.reverse = true;
-            vm.searchQuery = null;
-            vm.currentSearch = null;
-            vm.loadAll();
+        function transition() {
+            $state.transitionTo($state.$current, {
+                page: vm.page,
+                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
+                search: vm.currentSearch
+            });
         }
 
-        function search (searchQuery) {
+        function search(searchQuery) {
             if (!searchQuery){
                 return vm.clear();
             }
-            vm.insuranceAgencies = [];
-            vm.links = {
-                last: 0
-            };
-            vm.page = 0;
+            vm.links = null;
+            vm.page = 1;
             vm.predicate = '_score';
             vm.reverse = false;
             vm.currentSearch = searchQuery;
-            vm.loadAll();
+            vm.transition();
+        }
+
+        function clear() {
+            vm.insuranceAgencies = [];
+            vm.links = null;
+            vm.page = 1;
+            vm.predicate = 'id';
+            vm.reverse = true;
+            vm.currentSearch = null;
+            vm.transition();
         }
     }
 })();

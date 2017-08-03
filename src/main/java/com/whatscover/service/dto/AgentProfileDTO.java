@@ -15,16 +15,17 @@ public class AgentProfileDTO implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(max = 100)
+    @Size(max = 50)
     private String agent_code;
 
-    @Size(max = 100)
+    @NotNull
+    @Size(max = 50)
     private String first_name;
 
-    @Size(max = 100)
+    @Size(max = 50)
     private String middle_name;
 
-    @Size(max = 100)
+    @Size(max = 50)
     private String last_name;
 
     private Gender gender;
@@ -34,6 +35,15 @@ public class AgentProfileDTO implements Serializable {
     private String email;
 
     private LocalDate dob;
+
+    @Size(max = 500)
+    private String address;
+
+    @Size(max = 500)
+    private String photo_dir;
+
+    @Size(max = 100)
+    private String phone;
 
     private Long userId;
 
@@ -111,6 +121,30 @@ public class AgentProfileDTO implements Serializable {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoto_dir() {
+        return photo_dir;
+    }
+
+    public void setPhoto_dir(String photo_dir) {
+        this.photo_dir = photo_dir;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Long getUserId() {
@@ -193,6 +227,11 @@ public class AgentProfileDTO implements Serializable {
             ", gender='" + getGender() + "'" +
             ", email='" + getEmail() + "'" +
             ", dob='" + getDob() + "'" +
+            ", address='" + getAddress() + "'" +
+            ", photo_dir='" + getPhoto_dir() + "'" +
+            ", phone='" + getPhone() + "'" +
+            ", insuranceCompanyId='" + getInsuranceCompanyId() + "'" +
+            ", insuranceAgencyId='" + getInsuranceAgencyId() + "'" +            
             "}";
     }
 }

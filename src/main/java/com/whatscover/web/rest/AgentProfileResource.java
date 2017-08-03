@@ -1,16 +1,17 @@
 package com.whatscover.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.channels.FileChannel;
+import java.util.List;
+import java.util.Optional;
 
-import com.whatscover.web.rest.util.HeaderUtil;
-import com.whatscover.web.rest.util.PaginationUtil;
-import com.whatscover.repository.AgentProfileRepository;
-import com.whatscover.repository.InsuranceCompanyRepository;
-import com.whatscover.service.AgentProfileService;
-import com.whatscover.service.MailService;
-import com.whatscover.service.dto.AgentProfileDTO;
-import io.swagger.annotations.ApiParam;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +20,32 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
+import com.whatscover.config.Constants;
+import com.whatscover.domain.User;
+import com.whatscover.repository.AgentProfileRepository;
+import com.whatscover.service.AgentProfileService;
+import com.whatscover.service.MailService;
+import com.whatscover.service.UserService;
+import com.whatscover.service.dto.AgentProfileDTO;
+import com.whatscover.service.exception.BusinessException;
+import com.whatscover.service.util.RandomUtil;
+import com.whatscover.web.rest.errors.BusinessErrorVM;
+import com.whatscover.web.rest.util.HeaderUtil;
+import com.whatscover.web.rest.util.PaginationUtil;
 
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 
 /**
  * REST controller for managing AgentProfile.
@@ -38,20 +57,20 @@ public class AgentProfileResource {
     private final Logger log = LoggerFactory.getLogger(AgentProfileResource.class);
 
     private static final String ENTITY_NAME = "agentProfile";
-    private static final String EMAIL_SUBJECT = "Create New Agent Profiles";
 
-    private static final String EMAIL_CONTENT = "Congratulations, you've successfully created an Agent Profile";
-    
     private final AgentProfileService agentProfileService;
     
 	private final AgentProfileRepository agentProfileRepository;
     
     private final MailService mailService;
-
-    public AgentProfileResource(AgentProfileService agentProfileService, AgentProfileRepository agentProfileRepository, MailService mailService) {
+    
+    private final UserService userService;
+ 
+    public AgentProfileResource(AgentProfileService agentProfileService, AgentProfileRepository agentProfileRepository, MailService mailService, UserService userService) {
         this.agentProfileService = agentProfileService;
         this.agentProfileRepository = agentProfileRepository;
         this.mailService = mailService;
+        this.userService = userService;
     }
 
     /**
@@ -65,15 +84,45 @@ public class AgentProfileResource {
     @Timed
     public ResponseEntity<AgentProfileDTO> createAgentProfile(@Valid @RequestBody AgentProfileDTO agentProfileDTO) throws URISyntaxException {
         log.debug("REST request to save AgentProfile : {}", agentProfileDTO);
-        if (agentProfileDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new agentProfile cannot already have an ID")).body(null);
+        String email = agentProfileDTO.getEmail();
+
+		if (agentProfileDTO.getId() != null) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists",
+					"A new Agent Profile cannot already have an ID")).body(null);
+		} else if (agentProfileRepository.findOneByAgentCode(agentProfileDTO.getAgent_code()).isPresent()) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.agentcodeexists", "Agent Code already in use")).body(null);
+		} else if (agentProfileRepository.findOneByEmail(email).isPresent()) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.agentemailexists", "Agent Email already in use")).body(null);
+		} else if (agentProfileDTO.getInsuranceCompanyId() == null) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.insuranceCompanyIdBlank", "You have to choose Insurance Company")).body(null);
+		} else if (agentProfileDTO.getInsuranceAgencyId() == null) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.insuranceAgencyIdBlank", "You have to choose Insurance Agency")).body(null);
+		}
+
+		AgentProfileDTO result = null;
+
+        try {
+            // produce random password
+            String randomPassword = RandomUtil.generatePassword();
+            result = agentProfileService.create(agentProfileDTO, randomPassword);
+            // Get recently created user
+            User user = userService.findUserByEmail(agentProfileDTO.getEmail());
+            // send activation email
+            mailService.sendAgentProfileActivationEmail(user,randomPassword);
+        } catch (BusinessException be) {
+			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.accountexists", "This Account already created")).body(null);
         }
-        AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
+        
         return ResponseEntity.created(new URI("/api/agent-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
+    
     /**
      * PUT  /agent-profiles : Updates an existing agentProfile.
      *
@@ -90,11 +139,48 @@ public class AgentProfileResource {
         if (agentProfileDTO.getId() == null) {
             return createAgentProfile(agentProfileDTO);
         }
+		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
+
+		File files = new File(Constants.DEFAULT_SYSTEM_DIRECTORY);
+		processImgUpload(agentProfileDTO, files);
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, agentProfileDTO.getId().toString()))
             .body(result);
     }
+
+	protected void processImgUpload(AgentProfileDTO agentProfileDTO, File files) {
+		createDirectory(files);
+		agentProfileDTO.setPhoto_dir(destination(files, newFormatImg(agentProfileDTO)));
+	}
+
+	protected String destination(File files, String newFormatImg) {
+		StringBuilder destination = new StringBuilder();
+		destination.append(files.getPath()).append("\\").append(newFormatImg);
+
+		return destination.toString();
+	}
+
+	protected String newFormatImg(AgentProfileDTO agentProfileDTO) {
+		StringBuilder photo_dir = new StringBuilder();
+		photo_dir.append(agentProfileDTO.getUserId()).append("_").append(agentProfileDTO.getId()).append(".JPG");
+		return photo_dir.toString();
+	}
+
+	protected void createDirectory(File files) {
+		try {
+			if (!files.exists()) {
+				if (files.mkdirs()) {
+					System.out.println("Multiple directories are created!");
+				} else {
+					System.out.println("Failed to create multiple directories!");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 
     /**
      * GET  /agent-profiles : get all the agentProfiles.
@@ -122,12 +208,12 @@ public class AgentProfileResource {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.agentcodeexists", "Agent Code already in use"))
 					.body(null);
-		}else if(agentProfileRepository.findOneByEmail(agentProfileDTO.getEmail()).isPresent()) {
+		} else if(agentProfileRepository.findOneByEmail(agentProfileDTO.getEmail()).isPresent()) {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.agentemailexists", "Agent Email already in use"))
 					.body(null);
 		}
-        mailService.sendEmail(agentProfileDTO.getEmail(), EMAIL_SUBJECT, EMAIL_CONTENT, false, true);
+        mailService.sendEmail(agentProfileDTO.getEmail(), Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, false, true);
         return ResponseEntity.ok().headers(HeaderUtil.createEntitySendEmailAlert(ENTITY_NAME, "Send Email Alert")).build();
     }
 
@@ -155,7 +241,10 @@ public class AgentProfileResource {
     @Timed
     public ResponseEntity<Void> deleteAgentProfile(@PathVariable Long id) {
         log.debug("REST request to delete AgentProfile : {}", id);
+        AgentProfileDTO agentProfileDTO = agentProfileService.findOne(id);
         agentProfileService.delete(id);
+        User user = userService.findUserByEmail(agentProfileDTO.getEmail());
+        userService.deleteUser(user.getLogin());
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -178,5 +267,23 @@ public class AgentProfileResource {
         		queryData.toString(), page, "/api/_search/agent-profiles");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    /**
+     * SEARCH  /_search-name/agent-profiles?query=:query : search for the agentProfile corresponding
+     * to the query.
+     *
+     * @param queryData the query of the agentProfile search
+     * @param pageable the pagination information
+     * @return the result of the search
+     */
+    @GetMapping("/_search-name/agent-profiles")
+    @Timed
+    public ResponseEntity<List<AgentProfileDTO>> searchAgentProfilesByName(
+    		@RequestParam(value="queryData") String[] queryData,
+    		@ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of AgentProfiles for query {}", queryData.toString());
+        Page<AgentProfileDTO> page = agentProfileService.searchByName(queryData, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(
+        		queryData.toString(), page, "/api/_search-name/agent-profiles");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 }

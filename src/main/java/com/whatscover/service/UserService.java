@@ -1,18 +1,18 @@
 package com.whatscover.service;
 
+import com.whatscover.config.Constants;
 import com.whatscover.domain.Authority;
 import com.whatscover.domain.User;
 import com.whatscover.repository.AuthorityRepository;
-import com.whatscover.config.Constants;
 import com.whatscover.repository.UserRepository;
 import com.whatscover.repository.search.UserSearchRepository;
 import com.whatscover.security.AuthoritiesConstants;
 import com.whatscover.security.SecurityUtils;
-import com.whatscover.service.util.RandomUtil;
 import com.whatscover.service.dto.UserDTO;
-
+import com.whatscover.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,7 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +46,9 @@ public class UserService {
     private final UserSearchRepository userSearchRepository;
 
     private final AuthorityRepository authorityRepository;
+
+    @Autowired
+    private CustomerProfileService customerProfileService;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
@@ -115,6 +121,41 @@ public class UserService {
         return newUser;
     }
 
+
+    /**
+     * Create user only by knowing firstName, lastName and Email.
+     * Normally this is done by administrator where given minimal information regarding the user.
+     * User login is user email.
+     *
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @return
+     */
+    public User createUser(String firstName, String lastName, String email, String password, String role) {
+        User user = new User();
+        user.setLogin(email);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        String encryptedPassword = passwordEncoder.encode(password);
+        user.setPassword(encryptedPassword);
+        user.setActivated(false);
+        user.setActivationKey(RandomUtil.generateActivationKey());
+        user.setLangKey("en");
+
+        Set<Authority> authorities = new HashSet<>();
+        Authority authority = authorityRepository.findOne(role);
+        authorities.add(authority);
+        user.setAuthorities(authorities);
+
+        user = userRepository.save(user);
+        userSearchRepository.save(user);
+        log.debug("Created Information for User: {}", user);
+
+        return user;
+    }
+
     public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
@@ -146,6 +187,40 @@ public class UserService {
     }
 
     /**
+     * Create user only by knowing firstName, lastName and Email.
+     * Normally this is done by administrator where given minimal information regarding the user.
+     * User login is user email.
+     *
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @return
+     */
+    public User createUser(String firstName, String lastName, String email, String password) {
+        User user = new User();
+        user.setLogin(email);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        String encryptedPassword = passwordEncoder.encode(password);
+        user.setPassword(encryptedPassword);
+        user.setActivated(false);
+        user.setActivationKey(RandomUtil.generateActivationKey());
+        user.setLangKey("en");
+
+        Set<Authority> authorities = new HashSet<>();
+        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+        authorities.add(authority);
+        user.setAuthorities(authorities);
+
+        user = userRepository.save(user);
+        userSearchRepository.save(user);
+        log.debug("Created Information for User: {}", user);
+
+        return user;
+    }
+
+    /**
      * Update basic information (first name, last name, email, language) for the current user.
      *
      * @param firstName first name of user
@@ -166,6 +241,40 @@ public class UserService {
         });
     }
 
+    public void updateUser(String login, String firstName, String lastName, String email, String langKey, String imageUrl) {
+        userRepository.findOneByLogin(login).ifPresent(user -> {
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setLangKey(langKey);
+            user.setImageUrl(imageUrl);
+            userSearchRepository.save(user);
+            log.debug("Changed Information for User: {}", user);
+        });
+    }
+
+    public void updateUserByEmail(String firstName, String lastName, String email, String langKey, String imageUrl) {
+        userRepository.findOneByEmail(email).ifPresent(user -> {
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setLangKey(langKey);
+            user.setImageUrl(imageUrl);
+            userSearchRepository.save(user);
+            log.debug("Changed Information for User: {}", user);
+        });
+    }
+
+    public boolean checkUserExistByLogin(String login) {
+    	return userRepository.findOneByLogin(login).isPresent();
+    }
+    /**
+     * Find user by login
+     * @param login
+     * @return User object if exist, null otherwise
+     */
+    public User findUserByLogin(String login) {
+    	return userRepository.findOneByLogin(login).get();
+    }
     /**
      * Update all information for a specific user, and return the modified user.
      *
@@ -196,6 +305,11 @@ public class UserService {
     }
 
     public void deleteUser(String login) {
+        // delete Customer Profile linked to user Id
+        userRepository.findOneByLogin(login).ifPresent(user -> {
+            customerProfileService.deleteByUserId(user.getId());
+        });
+
         userRepository.findOneByLogin(login).ifPresent(user -> {
             socialService.deleteUserSocialConnection(user.getLogin());
             userRepository.delete(user);
@@ -254,5 +368,18 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public boolean checkUserExistByEmail(String email) {
+        return userRepository.findOneByEmail(email).isPresent();
+    }
+
+    /**
+     * Find user by email
+     * @param email
+     * @return User object if exist, null otherwise
+     */
+    public User findUserByEmail(String email) {
+        return userRepository.findOneByEmail(email).get();
     }
 }

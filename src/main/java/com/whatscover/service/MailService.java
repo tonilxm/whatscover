@@ -1,10 +1,9 @@
 package com.whatscover.service;
 
 import com.whatscover.domain.User;
-
 import io.github.jhipster.config.JHipsterProperties;
-
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -14,7 +13,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.internet.MimeMessage;
 import java.util.Locale;
@@ -85,6 +83,30 @@ public class MailService {
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
 
+    }
+
+    @Async
+    public void sendEmailFromTemplateWithPassword(User user, String rawPassword, String templateName, String titleKey) {
+        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Context context = new Context(locale);
+        context.setVariable(USER, user);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        context.setVariable("password", rawPassword);
+        String content = templateEngine.process(templateName, context);
+        String subject = messageSource.getMessage(titleKey, null, locale);
+        sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendCustomerProfileActivationEmail(User user, String rawPassword) {
+        log.debug("Sending activation email to '{}'", user.getEmail());
+        sendEmailFromTemplateWithPassword(user, rawPassword, "activationCustomerProfileEmail", "email.activation.title");
+    }
+
+    @Async
+    public void sendAgentProfileActivationEmail(User user, String rawPassword) {
+        log.debug("Sending activation email to '{}'", user.getEmail());
+        sendEmailFromTemplateWithPassword(user, rawPassword, "activationAgentProfileEmail", "email.activation.title");
     }
 
     @Async

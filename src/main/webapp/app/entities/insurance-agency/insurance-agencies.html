@@ -34,25 +34,21 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="code"><span data-translate="whatscoverApp.insuranceAgency.code">Code</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="name"><span data-translate="whatscoverApp.insuranceAgency.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="address_1"><span data-translate="whatscoverApp.insuranceAgency.address_1">Address 1</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="address_2"><span data-translate="whatscoverApp.insuranceAgency.address_2">Address 2</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="address_3"><span data-translate="whatscoverApp.insuranceAgency.address_3">Address 3</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="address"><span data-translate="whatscoverApp.insuranceAgency.address">Address</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="insuranceCompanyName"><span data-translate="whatscoverApp.insuranceAgency.insuranceCompany">Insurance Company</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+            <tbody>
                 <tr ng-repeat="insuranceAgency in vm.insuranceAgencies track by insuranceAgency.id">
                     <td><a ui-sref="insurance-agency-detail({id:insuranceAgency.id})">{{insuranceAgency.id}}</a></td>
                     <td>{{insuranceAgency.code}}</td>
                     <td>{{insuranceAgency.name}}</td>
-                    <td>{{insuranceAgency.address_1}}</td>
-                    <td>{{insuranceAgency.address_2}}</td>
-                    <td>{{insuranceAgency.address_3}}</td>
+                    <td>{{insuranceAgency.address}}</td>
                     <td>{{insuranceAgency.insuranceCompanyName}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
@@ -79,5 +75,9 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
     </div>
 </div>

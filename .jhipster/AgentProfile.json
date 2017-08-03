@@ -13,13 +13,18 @@
             "relationshipName": "insuranceCompany",
             "otherEntityName": "insuranceCompany",
             "relationshipType": "many-to-one",
-            "relationshipValidateRules": [],
+            "relationshipValidateRules": [
+                "required"
+            ],
             "otherEntityField": "id"
         },
         {
             "relationshipName": "insuranceAgency",
             "otherEntityName": "insuranceAgency",
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
             "otherEntityField": "id"
         }
     ],
@@ -31,15 +36,16 @@
                 "required",
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": "100"
+            "fieldValidateRulesMaxlength": "50"
         },
         {
             "fieldName": "first_name",
             "fieldType": "String",
             "fieldValidateRules": [
+                "required",
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": "100"
+            "fieldValidateRulesMaxlength": "50"
         },
         {
             "fieldName": "middle_name",
@@ -47,7 +53,7 @@
             "fieldValidateRules": [
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": "100"
+            "fieldValidateRulesMaxlength": "50"
         },
         {
             "fieldName": "last_name",
@@ -55,7 +61,7 @@
             "fieldValidateRules": [
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": "100"
+            "fieldValidateRulesMaxlength": "50"
         },
         {
             "fieldName": "gender",
@@ -74,6 +80,30 @@
         {
             "fieldName": "dob",
             "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "address",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "500"
+        },
+        {
+            "fieldName": "phone",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "100"
+        },
+        {
+            "fieldName": "photo_dir",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "500"
         }
     ],
     "changelogDate": "20170715022321",

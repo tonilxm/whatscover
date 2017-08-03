@@ -112,11 +112,17 @@
 
             if(!tempLength < 1)
             {
-            	var sIndex = tempValue.lastIndexOf('\\');
-            	tempValue = tempValue.substr(sIndex + 1, tempLength);
+            	var dIndex = tempValue.lastIndexOf(".");
+                var fileName = tempValue.substring(dIndex, tempLength);
+                if( fileName == '.jpg'){
+                	var sIndex = tempValue.lastIndexOf('\\');
+            		tempValue = tempValue.substr(sIndex + 1, tempLength);
+                    document.getElementById("field_photo_dir").value = tempValue;
+                    vm.agentProfile.photo_dir = tempValue;
+                }else{
+                	alert('Please upload correct File Name, File extension should be .jpg');
+                }
             }
-            document.getElementById("field_photo_dir").value = tempValue;
-            vm.agentProfile.photo_dir = tempValue;
         }
     }
 })();

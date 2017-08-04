@@ -35,7 +35,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="jhi_plan" type="varchar(5)">
+            <column name="jhi_plan" type="varchar(100)">
                 <constraints nullable="true" />
             </column>
 

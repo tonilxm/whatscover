@@ -1,11 +1,11 @@
 package com.whatscover.service;
 
-import com.whatscover.service.dto.InsuranceProductPremiumRateDTO;
-
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import com.whatscover.service.dto.InsuranceProductPremiumRateDTO;
 
 /**
  * Service Interface for managing InsuranceProductPremiumRate.
@@ -61,4 +61,14 @@ public interface InsuranceProductPremiumRateService {
      */
     void saveEntities(List<InsuranceProductPremiumRateDTO> insuranceProductPremiumRateDTOs, 
     		Long insuranceProductId);
+    
+    /**
+     * Search for the premiumrate by product id corresponding to the query.
+     *
+     *  @param query the query of the search
+     *
+     *  @param pageable the pagination information
+     *  @return the list of entities
+     */
+    Page<InsuranceProductPremiumRateDTO> searchByInsuranceProductId(Long insuranceProductId, Pageable pageable);
 }

@@ -11,10 +11,11 @@
         var vm = this;
        
         vm.insuranceProduct = entity;
+        console.log(entity);
+        vm.insuranceProductPremiumRates = [];
         vm.clear = clear;
         vm.save = save;
-        //vm.childState = $state.current.name + '.dialog-find-company';
-        vm.childState = 'insurance-product.registration.dialog-find-company';
+        vm.childState = $state.current.parent + '.dialog-find-company';
 
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -30,7 +31,6 @@
         vm.removedEntity = [];
         vm.onUpdateField = onUpdateField;
         vm.checkEmptyData = checkEmptyData;
-        vm.savePremiumRate = savePremiumRate;
         
         vm.cancel = cancel;
         
@@ -46,7 +46,6 @@
          	vm.isValid = true;
         	vm.insuranceProductPremiumRates.every(function(data){
         		if(data.status === 'NEW'){
-        			//console.log(data.id + " --- " +data.index);
         			if(data.entryAge === null){
         				triggerEForm(data.id, data.index, "EntryAgeForm");
         				return false;
@@ -62,8 +61,6 @@
         	});
         	
         	if(vm.isValid){
-        		//vm.insuranceProductPremiumRates.splice(index, 1);
-        		//vm.insuranceProductPremiumRates[vm.insuranceProductPremiumRates.findIndex(el => el.id === id)].status = "DELETE";
         		vm.insuranceProductPremiumRates = $.grep(vm.insuranceProductPremiumRates, function(element, index){return (element.status !== "DELETE" || element.id !== null) && element.status !== "DEFAULT"});
         		console.log(vm.insuranceProductPremiumRates);
         		
@@ -79,19 +76,16 @@
         	
         	function triggerEForm(id, index, name){
         		vm.isValid = false;
-        		$state.go('insurance-product.registration.premiumrate');
+        		$state.go($state.current.parent + '.premiumrate');
         		
         		$timeout(function() {
 				    angular.element('#button'+ name + '-' + id + index).triggerHandler('click');
-    				//console.log(angular.element('form button[type="submit"]'));
 				}, 0);
 				
-				//console.log('#button-' + data.id + data.index);
         	}
         }
 
         function onSaveSuccess (result) {
-            //$scope.$emit('whatscoverApp:insuranceProductUpdate', result);
             vm.isSaving = false;
             vm.cancel();
         }
@@ -115,11 +109,11 @@
             $scope.tabData   = [
               {
                 heading: '<i>General</i>',
-                route:   'insurance-product.registration.general'
+                route:   $state.current.parent + '.general'
               },
               {
                 heading: '<i>Premium Rate</i>',
-                route:   'insurance-product.registration.premiumrate'
+                route:   $state.current.parent + '.premiumrate'
               }
             ];
           };
@@ -129,20 +123,13 @@
           loadInsuranceProductPremiumRate();
 
           function loadInsuranceProductPremiumRate () {
-          	if (pagingParams.search) {
-          		InsuranceProductPremiumRateSearch.query({
-                      query: pagingParams.search,
-                      page: pagingParams.page - 1,
-                      size: vm.itemsPerPage,
+        	  if(vm.insuranceProduct.id != null){
+        		  InsuranceProductPremiumRateSearch.searchByProductId({
+            		  query: vm.insuranceProduct.id,
                       sort: sort()
                   }, onSuccess, onError);
-              } else {
-            	  InsuranceProductPremiumRate.query({
-                      //page: pagingParams.page - 1,
-                      //size: vm.itemsPerPage,
-                      sort: sort()
-                  }, onSuccess, onError);
-              }
+        	  }
+        	  
               function sort() {
                   var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                   if (vm.predicate !== 'id') {
@@ -211,22 +198,16 @@
     			  "index" : vm.insuranceProductPremiumRates.length
         	  }
         	  vm.insuranceProductPremiumRates.push(newPremiumRate);
-        	 // console.log(vm.insuranceProductPremiumRates);
           }
           
           function removeRow(id, index){
         	  if(id != null){
-        		  //vm.insuranceProductPremiumRates[index].status = "DELETE";
         		  vm.insuranceProductPremiumRates[vm.insuranceProductPremiumRates.findIndex(el => el.id === id)].status = "DELETE";
         	  }else{
-        		  console.log(index);
-        		  //vm.insuranceProductPremiumRates.splice(index, 1);
+        		  //console.log(index);
         		  vm.insuranceProductPremiumRates[index].status = "DELETE";
         	  }
         	  
-        	 // vm.removedEntity.push(vm.insuranceProductPremiumRates[index]);
-        	 // vm.insuranceProductPremiumRates.slice(index, 0);
-        	//  console.log(vm.insuranceProductPremiumRates);
           }
           
           function onUpdateField(id){
@@ -242,10 +223,6 @@
         	      return "Please fill the field";
         	  }
           };
-          
-          function savePremiumRate(){
-        	  console.log('tes');
-          }
           
           function cancel(){
         	  $state.go('insurance-product');

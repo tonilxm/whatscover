@@ -1,12 +1,9 @@
 package com.whatscover.service.impl;
 
-import com.whatscover.service.InsuranceProductPremiumRateService;
-import com.whatscover.domain.InsuranceProductPremiumRate;
-import com.whatscover.domain.enumeration.ProductPremiumRateEntityStatus;
-import com.whatscover.repository.InsuranceProductPremiumRateRepository;
-import com.whatscover.repository.search.InsuranceProductPremiumRateSearchRepository;
-import com.whatscover.service.dto.InsuranceProductPremiumRateDTO;
-import com.whatscover.service.mapper.InsuranceProductPremiumRateMapper;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,10 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
-import java.util.List;
+import com.whatscover.domain.InsuranceProductPremiumRate;
+import com.whatscover.repository.InsuranceProductPremiumRateRepository;
+import com.whatscover.repository.search.InsuranceProductPremiumRateSearchRepository;
+import com.whatscover.service.InsuranceProductPremiumRateService;
+import com.whatscover.service.dto.InsuranceProductPremiumRateDTO;
+import com.whatscover.service.mapper.InsuranceProductPremiumRateMapper;
 
 /**
  * Service Implementation for managing InsuranceProductPremiumRate.
@@ -133,5 +132,16 @@ public class InsuranceProductPremiumRateServiceImpl implements InsuranceProductP
 					break;
 			}
 		}
+	}
+
+	/**
+	 * search by insurance product id
+	 */
+	@Override
+	public Page<InsuranceProductPremiumRateDTO> searchByInsuranceProductId(Long insuranceProductId,
+			Pageable pageable) {
+		log.debug("Request to search for a page of InsuranceProductPremiumRate by productid for query {}", insuranceProductId);
+        Page<InsuranceProductPremiumRate> result = insuranceProductPremiumRateSearchRepository.searchByInsuranceProductId(insuranceProductId, pageable);
+        return result.map(insuranceProductPremiumRateMapper::toDto);
 	}
 }

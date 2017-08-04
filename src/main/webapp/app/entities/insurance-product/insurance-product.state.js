@@ -163,25 +163,63 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/insurance-product/insurance-product-dialog.html',
-                    controller: 'InsuranceProductDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['InsuranceProduct', function(InsuranceProduct) {
-                            return InsuranceProduct.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('insurance-product', null, { reload: 'insurance-product' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
+            views: {
+                'content@': {
+                    template: '<tabs data="tabData" type="tabs"></tabs><div ui-view="view1"></div>',
+                    controller: 'InsuranceProductRegistrationController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('insuranceProduct');
+                    $translatePartialLoader.addPart('gender');
+                    $translatePartialLoader.addPart('insuranceProductPremiumRate');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams','InsuranceProduct', function($stateParams, InsuranceProduct) {
+                    return InsuranceProduct.get({id : $stateParams.id}).$promise;
+                }],
+                pagingParams: ['PaginationUtil', function (PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage('1'),
+                        sort: 'id,asc',
+                        predicate: PaginationUtil.parsePredicate('id,asc'),
+                        ascending: PaginationUtil.parseAscending('id,asc'),
+                        search: null
+                    };
+                }],
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'insurance-product',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
         })
+        .state('insurance-product.edit.general', {
+        	parent: 'insurance-product.edit',
+            url:         '/general',
+            views: {
+                "view1": {
+                    //controller: "InsuranceProductRegistrationController as vm",
+                    templateUrl: "app/entities/insurance-product/insurance-product-registration.html",
+                }
+            }
+        })
+        .state('insurance-product.edit.premiumrate', {
+        	parent: 'insurance-product.edit',
+            url:         '/premiumrate',
+            views: {
+                "view1": {
+                    //controller: "InsuranceProductRegistrationController as vm",
+                    templateUrl: "app/entities/insurance-product/premium-rate/premium-rates.html",
+                }
+            }
+        })       
         .state('insurance-product.delete', {
             parent: 'insurance-product',
             url: '/{id}/delete',
@@ -291,7 +329,8 @@
                 }
             }
         })       
-        .state(generateFindCompanyStateObj('insurance-product.registration.dialog-find-company', 'insurance-product.registration.general'));
+        .state(generateFindCompanyStateObj('insurance-product.registration.dialog-find-company', 'insurance-product.registration.general'))
+        .state(generateFindCompanyStateObj('insurance-product.edit.dialog-find-company', 'insurance-product.edit.general'));
     }
 
     function generateFindCompanyStateObj(name, parent){

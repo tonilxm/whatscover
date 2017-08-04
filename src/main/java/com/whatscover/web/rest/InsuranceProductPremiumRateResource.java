@@ -144,5 +144,22 @@ public class InsuranceProductPremiumRateResource {
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/insurance-product-premium-rates");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    
+    /**
+     * SEARCH  /_search-by-productid/insurance-product-premium-rates?query=:query : search for the insuranceProductPremiumRate corresponding
+     * to the query.
+     *
+     * @param query the query of the insuranceProductPremiumRate search
+     * @param pageable the pagination information
+     * @return the result of the search
+     */
+    @GetMapping("/_search-by-productid/insurance-product-premium-rates")
+    @Timed
+    public ResponseEntity<List<InsuranceProductPremiumRateDTO>> searchInsuranceProductPremiumRatesByProductId(@RequestParam Long query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of InsuranceProductPremiumRatesByProductId for query {}", query);
+        Page<InsuranceProductPremiumRateDTO> page = insuranceProductPremiumRateService.searchByInsuranceProductId(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(String.valueOf(query), page, "/_search-by-productid/insurance-product-premium-rates");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
 }

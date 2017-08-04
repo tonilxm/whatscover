@@ -36,8 +36,8 @@ public class InsuranceProductPremiumRate extends AbstractAuditingEntity implemen
     @Column(name = "female_premium_rate", nullable = false)
     private Double femalePremiumRate;
 
-    @Size(max = 5)
-    @Column(name = "jhi_plan", length = 5)
+    @Size(max = 100)
+    @Column(name = "jhi_plan", length = 100)
     private String plan;
 
     @ManyToOne(optional = false)

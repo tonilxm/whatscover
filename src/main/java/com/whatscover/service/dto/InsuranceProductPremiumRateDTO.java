@@ -24,7 +24,7 @@ public class InsuranceProductPremiumRateDTO extends AbstractAuditingDTO {
     @NotNull
     private Double femalePremiumRate;
 
-    @Size(max = 5)
+    @Size(max = 100)
     private String plan;
 
     private Long insuranceProductId;

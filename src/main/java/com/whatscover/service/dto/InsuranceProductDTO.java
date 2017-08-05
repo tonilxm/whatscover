@@ -67,6 +67,11 @@ public class InsuranceProductDTO implements Serializable {
     
     @Size(max = 100)
     private String insuranceCompanyName;
+    
+    private Long productCategoryId;
+    
+    @Size(max = 100)
+    private String productCategoryName;
 
     public Long getId() {
         return id;
@@ -251,6 +256,22 @@ public class InsuranceProductDTO implements Serializable {
     public void setInsuranceCompanyName(String insuranceCompanyName) {
         this.insuranceCompanyName = insuranceCompanyName;
     }
+
+	public Long getProductCategoryId() {
+		return productCategoryId;
+	}
+
+	public void setProductCategoryId(Long productCategoryId) {
+		this.productCategoryId = productCategoryId;
+	}
+
+	public String getProductCategoryName() {
+		return productCategoryName;
+	}
+
+	public void setProductCategoryName(String productCategoryName) {
+		this.productCategoryName = productCategoryName;
+	}
 
 	@Override
     public boolean equals(Object o) {

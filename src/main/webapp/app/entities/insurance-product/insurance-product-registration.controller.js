@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('InsuranceProductRegistrationController', InsuranceProductRegistrationController);
 
-    InsuranceProductRegistrationController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'InsuranceProduct', 'InsuranceCompany', '$state', '$rootScope', 'InsuranceProductPremiumRate', 'InsuranceProductPremiumRateSearch', 'AlertService', 'paginationConstants', 'pagingParams', 'ParseLinks'];
+    InsuranceProductRegistrationController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'InsuranceProduct', 'InsuranceCompany', '$state', '$rootScope', 'InsuranceProductPremiumRate', 'InsuranceProductPremiumRateSearch', 'AlertService', 'paginationConstants', 'pagingParams', 'ParseLinks', 'ProductCategory'];
 
-    function InsuranceProductRegistrationController ($timeout, $scope, $stateParams, entity, InsuranceProduct, InsuranceCompany, $state, $rootScope, InsuranceProductPremiumRate, InsuranceProductPremiumRateSearch, AlertService, paginationConstants, pagingParams, ParseLinks) {
+    function InsuranceProductRegistrationController ($timeout, $scope, $stateParams, entity, InsuranceProduct, InsuranceCompany, $state, $rootScope, InsuranceProductPremiumRate, InsuranceProductPremiumRateSearch, AlertService, paginationConstants, pagingParams, ParseLinks, ProductCategory) {
         var vm = this;
        
         vm.insuranceProduct = entity;
@@ -15,7 +15,8 @@
         vm.insuranceProductPremiumRates = [];
         vm.clear = clear;
         vm.save = save;
-        vm.childState = $state.current.parent + '.dialog-find-company';
+        vm.childStateCompany = $state.current.parent + '.dialog-find-company';
+        vm.childStateProductCategory = $state.current.parent + '.dialog-find-product-category';
 
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -94,11 +95,17 @@
             vm.isSaving = false;
         }
         
-        var unsubscribe = $rootScope.$on('whatscoverApp:insuranceProductCompanyUpdate', function(event, result) {
+        var unsubscribeCompany = $rootScope.$on('whatscoverApp:insuranceProductCompanyUpdate', function(event, result) {
         	vm.insuranceProduct.insuranceCompanyId = result.id;
             vm.insuranceProduct.insuranceCompanyName = result.name;
         });
-        $scope.$on('$destroy', unsubscribe);
+        $scope.$on('$destroy', unsubscribeCompany);
+        
+        var unsubscribeProductCategory = $rootScope.$on('whatscoverApp:insuranceProductCategoryUpdate', function(event, result) {
+        	vm.insuranceProduct.productCategoryId = result.id;
+            vm.insuranceProduct.productCategoryName = result.name;
+        });
+        $scope.$on('$destroy', unsubscribeProductCategory);
 
         $scope.initialise = function() {
 

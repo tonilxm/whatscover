@@ -36,7 +36,8 @@
             "productWeightCI": "Product Weight CI",
             "productWeightMedic": "Product Weight Medic",
             "productWeightCancer": "Product Weight Cancer",
-            "insuranceCompany": "Insurance Company"
+            "insuranceCompany": "Insurance Company",
+            "productCategory": "Product Category"
         }
     }
 }

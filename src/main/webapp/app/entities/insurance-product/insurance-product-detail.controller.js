@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('InsuranceProductDetailController', InsuranceProductDetailController);
 
-    InsuranceProductDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'InsuranceProduct', 'InsuranceCompany'];
+    InsuranceProductDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'InsuranceProduct', 'InsuranceCompany', 'ProductCategory'];
 
-    function InsuranceProductDetailController($scope, $rootScope, $stateParams, previousState, entity, InsuranceProduct, InsuranceCompany) {
+    function InsuranceProductDetailController($scope, $rootScope, $stateParams, previousState, entity, InsuranceProduct, InsuranceCompany, ProductCategory) {
         var vm = this;
 
         vm.insuranceProduct = entity;

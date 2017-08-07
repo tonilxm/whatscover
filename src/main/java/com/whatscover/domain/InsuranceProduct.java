@@ -36,45 +36,38 @@ public class InsuranceProduct extends AbstractAuditingEntity implements Serializ
     @Column(name = "name", length = 200, nullable = false)
     private String name;
 
-    @Column(name = "entry_age_last_bday")
-    private Integer entryAgeLastBday;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private Gender gender;
+    
+    @Size(max = 250)
+    @Column(name = "short_description", length = 250)
+    private String shortDescription;
 
-    @Column(name = "premium_term")
-    private Integer premiumTerm;
+    @Size(max = 500)
+    @Column(name = "long_description", length = 500)
+    private String longDescription;
 
-    @Column(name = "policy_term")
-    private Integer policyTerm;
+    @Column(name = "min_entry_age_last_bday")
+    private Integer minEntryAgeLastBday;
 
-    @Column(name = "premium_rate")
-    private Double premiumRate;
+    @Column(name = "max_entry_age_last_bday")
+    private Integer maxEntryAgeLastBday;
 
-    @Column(name = "sum_assured_death")
-    private Double sumAssuredDeath;
+    @Column(name = "min_sum_assured")
+    private Double minSumAssured;
 
-    @Column(name = "sum_assured_tpd")
-    private Double sumAssuredTPD;
+    @Column(name = "max_sum_assured")
+    private Double maxSumAssured;
 
-    @Column(name = "sum_assured_add")
-    private Double sumAssuredADD;
+    @Column(name = "prem_unit")
+    private Double premUnit;
 
-    @Column(name = "sum_assured_hosp_income")
-    private Double sumAssuredHospIncome;
+    @Column(name = "prod_weight_life")
+    private Double prodWeightLife;
 
-    @Column(name = "sum_assured_ci")
-    private Double sumAssuredCI;
-
-    @Column(name = "sum_assured_medic")
-    private Double sumAssuredMedic;
-
-    @Column(name = "sum_assured_cancer")
-    private Double sumAssuredCancer;
-
-    @Column(name = "product_weight_death")
-    private Double productWeightDeath;
+    @Column(name = "prod_weight_medical")
+    private Double prodWeightMedical;
 
     @Column(name = "product_weight_pa")
     private Double productWeightPA;
@@ -84,9 +77,6 @@ public class InsuranceProduct extends AbstractAuditingEntity implements Serializ
 
     @Column(name = "product_weight_ci")
     private Double productWeightCI;
-
-    @Column(name = "product_weight_medic")
-    private Double productWeightMedic;
 
     @Column(name = "product_weight_cancer")
     private Double productWeightCancer;
@@ -133,19 +123,6 @@ public class InsuranceProduct extends AbstractAuditingEntity implements Serializ
         this.name = name;
     }
 
-    public Integer getEntryAgeLastBday() {
-        return entryAgeLastBday;
-    }
-
-    public InsuranceProduct entryAgeLastBday(Integer entryAgeLastBday) {
-        this.entryAgeLastBday = entryAgeLastBday;
-        return this;
-    }
-
-    public void setEntryAgeLastBday(Integer entryAgeLastBday) {
-        this.entryAgeLastBday = entryAgeLastBday;
-    }
-
     public Gender getGender() {
         return gender;
     }
@@ -157,149 +134,6 @@ public class InsuranceProduct extends AbstractAuditingEntity implements Serializ
 
     public void setGender(Gender gender) {
         this.gender = gender;
-    }
-
-    public Integer getPremiumTerm() {
-        return premiumTerm;
-    }
-
-    public InsuranceProduct premiumTerm(Integer premiumTerm) {
-        this.premiumTerm = premiumTerm;
-        return this;
-    }
-
-    public void setPremiumTerm(Integer premiumTerm) {
-        this.premiumTerm = premiumTerm;
-    }
-
-    public Integer getPolicyTerm() {
-        return policyTerm;
-    }
-
-    public InsuranceProduct policyTerm(Integer policyTerm) {
-        this.policyTerm = policyTerm;
-        return this;
-    }
-
-    public void setPolicyTerm(Integer policyTerm) {
-        this.policyTerm = policyTerm;
-    }
-
-    public Double getPremiumRate() {
-        return premiumRate;
-    }
-
-    public InsuranceProduct premiumRate(Double premiumRate) {
-        this.premiumRate = premiumRate;
-        return this;
-    }
-
-    public void setPremiumRate(Double premiumRate) {
-        this.premiumRate = premiumRate;
-    }
-
-    public Double getSumAssuredDeath() {
-        return sumAssuredDeath;
-    }
-
-    public InsuranceProduct sumAssuredDeath(Double sumAssuredDeath) {
-        this.sumAssuredDeath = sumAssuredDeath;
-        return this;
-    }
-
-    public void setSumAssuredDeath(Double sumAssuredDeath) {
-        this.sumAssuredDeath = sumAssuredDeath;
-    }
-
-    public Double getSumAssuredTPD() {
-        return sumAssuredTPD;
-    }
-
-    public InsuranceProduct sumAssuredTPD(Double sumAssuredTPD) {
-        this.sumAssuredTPD = sumAssuredTPD;
-        return this;
-    }
-
-    public void setSumAssuredTPD(Double sumAssuredTPD) {
-        this.sumAssuredTPD = sumAssuredTPD;
-    }
-
-    public Double getSumAssuredADD() {
-        return sumAssuredADD;
-    }
-
-    public InsuranceProduct sumAssuredADD(Double sumAssuredADD) {
-        this.sumAssuredADD = sumAssuredADD;
-        return this;
-    }
-
-    public void setSumAssuredADD(Double sumAssuredADD) {
-        this.sumAssuredADD = sumAssuredADD;
-    }
-
-    public Double getSumAssuredHospIncome() {
-        return sumAssuredHospIncome;
-    }
-
-    public InsuranceProduct sumAssuredHospIncome(Double sumAssuredHospIncome) {
-        this.sumAssuredHospIncome = sumAssuredHospIncome;
-        return this;
-    }
-
-    public void setSumAssuredHospIncome(Double sumAssuredHospIncome) {
-        this.sumAssuredHospIncome = sumAssuredHospIncome;
-    }
-
-    public Double getSumAssuredCI() {
-        return sumAssuredCI;
-    }
-
-    public InsuranceProduct sumAssuredCI(Double sumAssuredCI) {
-        this.sumAssuredCI = sumAssuredCI;
-        return this;
-    }
-
-    public void setSumAssuredCI(Double sumAssuredCI) {
-        this.sumAssuredCI = sumAssuredCI;
-    }
-
-    public Double getSumAssuredMedic() {
-        return sumAssuredMedic;
-    }
-
-    public InsuranceProduct sumAssuredMedic(Double sumAssuredMedic) {
-        this.sumAssuredMedic = sumAssuredMedic;
-        return this;
-    }
-
-    public void setSumAssuredMedic(Double sumAssuredMedic) {
-        this.sumAssuredMedic = sumAssuredMedic;
-    }
-
-    public Double getSumAssuredCancer() {
-        return sumAssuredCancer;
-    }
-
-    public InsuranceProduct sumAssuredCancer(Double sumAssuredCancer) {
-        this.sumAssuredCancer = sumAssuredCancer;
-        return this;
-    }
-
-    public void setSumAssuredCancer(Double sumAssuredCancer) {
-        this.sumAssuredCancer = sumAssuredCancer;
-    }
-
-    public Double getProductWeightDeath() {
-        return productWeightDeath;
-    }
-
-    public InsuranceProduct productWeightDeath(Double productWeightDeath) {
-        this.productWeightDeath = productWeightDeath;
-        return this;
-    }
-
-    public void setProductWeightDeath(Double productWeightDeath) {
-        this.productWeightDeath = productWeightDeath;
     }
 
     public Double getProductWeightPA() {
@@ -341,19 +175,6 @@ public class InsuranceProduct extends AbstractAuditingEntity implements Serializ
         this.productWeightCI = productWeightCI;
     }
 
-    public Double getProductWeightMedic() {
-        return productWeightMedic;
-    }
-
-    public InsuranceProduct productWeightMedic(Double productWeightMedic) {
-        this.productWeightMedic = productWeightMedic;
-        return this;
-    }
-
-    public void setProductWeightMedic(Double productWeightMedic) {
-        this.productWeightMedic = productWeightMedic;
-    }
-
     public Double getProductWeightCancer() {
         return productWeightCancer;
     }
@@ -365,6 +186,123 @@ public class InsuranceProduct extends AbstractAuditingEntity implements Serializ
 
     public void setProductWeightCancer(Double productWeightCancer) {
         this.productWeightCancer = productWeightCancer;
+    }
+    
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public InsuranceProduct shortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+        return this;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public InsuranceProduct longDescription(String longDescription) {
+        this.longDescription = longDescription;
+        return this;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
+    }
+
+    public Integer getMinEntryAgeLastBday() {
+        return minEntryAgeLastBday;
+    }
+
+    public InsuranceProduct minEntryAgeLastBday(Integer minEntryAgeLastBday) {
+        this.minEntryAgeLastBday = minEntryAgeLastBday;
+        return this;
+    }
+
+    public void setMinEntryAgeLastBday(Integer minEntryAgeLastBday) {
+        this.minEntryAgeLastBday = minEntryAgeLastBday;
+    }
+
+    public Integer getMaxEntryAgeLastBday() {
+        return maxEntryAgeLastBday;
+    }
+
+    public InsuranceProduct maxEntryAgeLastBday(Integer maxEntryAgeLastBday) {
+        this.maxEntryAgeLastBday = maxEntryAgeLastBday;
+        return this;
+    }
+
+    public void setMaxEntryAgeLastBday(Integer maxEntryAgeLastBday) {
+        this.maxEntryAgeLastBday = maxEntryAgeLastBday;
+    }
+
+    public Double getMinSumAssured() {
+        return minSumAssured;
+    }
+
+    public InsuranceProduct minSumAssured(Double minSumAssured) {
+        this.minSumAssured = minSumAssured;
+        return this;
+    }
+
+    public void setMinSumAssured(Double minSumAssured) {
+        this.minSumAssured = minSumAssured;
+    }
+
+    public Double getMaxSumAssured() {
+        return maxSumAssured;
+    }
+
+    public InsuranceProduct maxSumAssured(Double maxSumAssured) {
+        this.maxSumAssured = maxSumAssured;
+        return this;
+    }
+
+    public void setMaxSumAssured(Double maxSumAssured) {
+        this.maxSumAssured = maxSumAssured;
+    }
+
+    public Double getPremUnit() {
+        return premUnit;
+    }
+
+    public InsuranceProduct premUnit(Double premUnit) {
+        this.premUnit = premUnit;
+        return this;
+    }
+
+    public void setPremUnit(Double premUnit) {
+        this.premUnit = premUnit;
+    }
+
+    public Double getProdWeightLife() {
+        return prodWeightLife;
+    }
+
+    public InsuranceProduct prodWeightLife(Double prodWeightLife) {
+        this.prodWeightLife = prodWeightLife;
+        return this;
+    }
+
+    public void setProdWeightLife(Double prodWeightLife) {
+        this.prodWeightLife = prodWeightLife;
+    }
+
+    public Double getProdWeightMedical() {
+        return prodWeightMedical;
+    }
+
+    public InsuranceProduct prodWeightMedical(Double prodWeightMedical) {
+        this.prodWeightMedical = prodWeightMedical;
+        return this;
+    }
+
+    public void setProdWeightMedical(Double prodWeightMedical) {
+        this.prodWeightMedical = prodWeightMedical;
     }
 
     public InsuranceCompany getInsuranceCompany() {
@@ -419,24 +357,20 @@ public class InsuranceProduct extends AbstractAuditingEntity implements Serializ
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
-            ", entryAgeLastBday='" + getEntryAgeLastBday() + "'" +
             ", gender='" + getGender() + "'" +
-            ", premiumTerm='" + getPremiumTerm() + "'" +
-            ", policyTerm='" + getPolicyTerm() + "'" +
-            ", premiumRate='" + getPremiumRate() + "'" +
-            ", sumAssuredDeath='" + getSumAssuredDeath() + "'" +
-            ", sumAssuredTPD='" + getSumAssuredTPD() + "'" +
-            ", sumAssuredADD='" + getSumAssuredADD() + "'" +
-            ", sumAssuredHospIncome='" + getSumAssuredHospIncome() + "'" +
-            ", sumAssuredCI='" + getSumAssuredCI() + "'" +
-            ", sumAssuredMedic='" + getSumAssuredMedic() + "'" +
-            ", sumAssuredCancer='" + getSumAssuredCancer() + "'" +
-            ", productWeightDeath='" + getProductWeightDeath() + "'" +
             ", productWeightPA='" + getProductWeightPA() + "'" +
             ", productWeightHospIncome='" + getProductWeightHospIncome() + "'" +
             ", productWeightCI='" + getProductWeightCI() + "'" +
-            ", productWeightMedic='" + getProductWeightMedic() + "'" +
             ", productWeightCancer='" + getProductWeightCancer() + "'" +
+            ", shortDescription='" + getShortDescription() + "'" +
+            ", longDescription='" + getLongDescription() + "'" +
+            ", minEntryAgeLastBday='" + getMinEntryAgeLastBday() + "'" +
+            ", maxEntryAgeLastBday='" + getMaxEntryAgeLastBday() + "'" +
+            ", minSumAssured='" + getMinSumAssured() + "'" +
+            ", maxSumAssured='" + getMaxSumAssured() + "'" +
+            ", premUnit='" + getPremUnit() + "'" +
+            ", prodWeightLife='" + getProdWeightLife() + "'" +
+            ", prodWeightMedical='" + getProdWeightMedical() + "'" +
             "}";
     }
 }

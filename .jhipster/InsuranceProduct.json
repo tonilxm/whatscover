@@ -40,57 +40,9 @@
             "fieldValidateRulesMaxlength": "200"
         },
         {
-            "fieldName": "entryAgeLastBday",
-            "fieldType": "Integer"
-        },
-        {
             "fieldName": "gender",
             "fieldType": "Gender",
             "fieldValues": "MALE,FEMALE"
-        },
-        {
-            "fieldName": "premiumTerm",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "policyTerm",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "premiumRate",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "sumAssuredDeath",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "sumAssuredTPD",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "sumAssuredADD",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "sumAssuredHospIncome",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "sumAssuredCI",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "sumAssuredMedic",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "sumAssuredCancer",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "productWeightDeath",
-            "fieldType": "Double"
         },
         {
             "fieldName": "productWeightPA",
@@ -105,11 +57,51 @@
             "fieldType": "Double"
         },
         {
-            "fieldName": "productWeightMedic",
+            "fieldName": "productWeightCancer",
             "fieldType": "Double"
         },
         {
-            "fieldName": "productWeightCancer",
+            "fieldName": "shortDescription",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "250"
+        },
+        {
+            "fieldName": "longDescription",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "500"
+        },{
+            "fieldName": "minEntryAgeLastBday",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "maxEntryAgeLastBday",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "minSumAssured",
+            "fieldType": "Double",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "maxSumAssured",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "premUnit",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "prodWeightLife",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "prodWeightMedical",
             "fieldType": "Double"
         }
     ],

@@ -30,56 +30,44 @@
             <column name="name" type="varchar(200)">
                 <constraints nullable="false" />
             </column>
+            
+            <column name="short_description" type="varchar(250)">
+                <constraints nullable="true" />
+            </column>
 
-            <column name="entry_age_last_bday" type="integer">
+            <column name="long_description" type="varchar(500)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="min_entry_age_last_bday" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="max_entry_age_last_bday" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="min_sum_assured" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="max_sum_assured" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="prem_unit" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="prod_weight_life" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="prod_weight_medical" type="double">
                 <constraints nullable="true" />
             </column>
 
             <column name="gender" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="premium_term" type="integer">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="policy_term" type="integer">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="premium_rate" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="sum_assured_death" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="sum_assured_tpd" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="sum_assured_add" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="sum_assured_hosp_income" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="sum_assured_ci" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="sum_assured_medic" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="sum_assured_cancer" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="product_weight_death" type="double">
                 <constraints nullable="true" />
             </column>
 
@@ -92,10 +80,6 @@
             </column>
 
             <column name="product_weight_ci" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="product_weight_medic" type="double">
                 <constraints nullable="true" />
             </column>
 

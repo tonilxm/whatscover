@@ -52,44 +52,8 @@ public class InsuranceProductResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_ENTRY_AGE_LAST_BDAY = 1;
-    private static final Integer UPDATED_ENTRY_AGE_LAST_BDAY = 2;
-
     private static final Gender DEFAULT_GENDER = Gender.MALE;
     private static final Gender UPDATED_GENDER = Gender.FEMALE;
-
-    private static final Integer DEFAULT_PREMIUM_TERM = 1;
-    private static final Integer UPDATED_PREMIUM_TERM = 2;
-
-    private static final Integer DEFAULT_POLICY_TERM = 1;
-    private static final Integer UPDATED_POLICY_TERM = 2;
-
-    private static final Double DEFAULT_PREMIUM_RATE = 1D;
-    private static final Double UPDATED_PREMIUM_RATE = 2D;
-
-    private static final Double DEFAULT_SUM_ASSURED_DEATH = 1D;
-    private static final Double UPDATED_SUM_ASSURED_DEATH = 2D;
-
-    private static final Double DEFAULT_SUM_ASSURED_TPD = 1D;
-    private static final Double UPDATED_SUM_ASSURED_TPD = 2D;
-
-    private static final Double DEFAULT_SUM_ASSURED_ADD = 1D;
-    private static final Double UPDATED_SUM_ASSURED_ADD = 2D;
-
-    private static final Double DEFAULT_SUM_ASSURED_HOSP_INCOME = 1D;
-    private static final Double UPDATED_SUM_ASSURED_HOSP_INCOME = 2D;
-
-    private static final Double DEFAULT_SUM_ASSURED_CI = 1D;
-    private static final Double UPDATED_SUM_ASSURED_CI = 2D;
-
-    private static final Double DEFAULT_SUM_ASSURED_MEDIC = 1D;
-    private static final Double UPDATED_SUM_ASSURED_MEDIC = 2D;
-
-    private static final Double DEFAULT_SUM_ASSURED_CANCER = 1D;
-    private static final Double UPDATED_SUM_ASSURED_CANCER = 2D;
-
-    private static final Double DEFAULT_PRODUCT_WEIGHT_DEATH = 1D;
-    private static final Double UPDATED_PRODUCT_WEIGHT_DEATH = 2D;
 
     private static final Double DEFAULT_PRODUCT_WEIGHT_PA = 1D;
     private static final Double UPDATED_PRODUCT_WEIGHT_PA = 2D;
@@ -100,11 +64,35 @@ public class InsuranceProductResourceIntTest {
     private static final Double DEFAULT_PRODUCT_WEIGHT_CI = 1D;
     private static final Double UPDATED_PRODUCT_WEIGHT_CI = 2D;
 
-    private static final Double DEFAULT_PRODUCT_WEIGHT_MEDIC = 1D;
-    private static final Double UPDATED_PRODUCT_WEIGHT_MEDIC = 2D;
-
     private static final Double DEFAULT_PRODUCT_WEIGHT_CANCER = 1D;
     private static final Double UPDATED_PRODUCT_WEIGHT_CANCER = 2D;
+    
+    private static final String DEFAULT_SHORT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_SHORT_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LONG_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_LONG_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_MIN_ENTRY_AGE_LAST_BDAY = 1;
+    private static final Integer UPDATED_MIN_ENTRY_AGE_LAST_BDAY = 2;
+
+    private static final Integer DEFAULT_MAX_ENTRY_AGE_LAST_BDAY = 1;
+    private static final Integer UPDATED_MAX_ENTRY_AGE_LAST_BDAY = 2;
+
+    private static final Double DEFAULT_MIN_SUM_ASSURED = 1D;
+    private static final Double UPDATED_MIN_SUM_ASSURED = 2D;
+
+    private static final Double DEFAULT_MAX_SUM_ASSURED = 1D;
+    private static final Double UPDATED_MAX_SUM_ASSURED = 2D;
+
+    private static final Double DEFAULT_PREM_UNIT = 1D;
+    private static final Double UPDATED_PREM_UNIT = 2D;
+
+    private static final Double DEFAULT_PROD_WEIGHT_LIFE = 1D;
+    private static final Double UPDATED_PROD_WEIGHT_LIFE = 2D;
+
+    private static final Double DEFAULT_PROD_WEIGHT_MEDICAL = 1D;
+    private static final Double UPDATED_PROD_WEIGHT_MEDICAL = 2D;
 
     @Autowired
     private InsuranceProductRepository insuranceProductRepository;
@@ -160,24 +148,20 @@ public class InsuranceProductResourceIntTest {
         InsuranceProduct insuranceProduct = new InsuranceProduct()
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
-            .entryAgeLastBday(DEFAULT_ENTRY_AGE_LAST_BDAY)
             .gender(DEFAULT_GENDER)
-            .premiumTerm(DEFAULT_PREMIUM_TERM)
-            .policyTerm(DEFAULT_POLICY_TERM)
-            .premiumRate(DEFAULT_PREMIUM_RATE)
-            .sumAssuredDeath(DEFAULT_SUM_ASSURED_DEATH)
-            .sumAssuredTPD(DEFAULT_SUM_ASSURED_TPD)
-            .sumAssuredADD(DEFAULT_SUM_ASSURED_ADD)
-            .sumAssuredHospIncome(DEFAULT_SUM_ASSURED_HOSP_INCOME)
-            .sumAssuredCI(DEFAULT_SUM_ASSURED_CI)
-            .sumAssuredMedic(DEFAULT_SUM_ASSURED_MEDIC)
-            .sumAssuredCancer(DEFAULT_SUM_ASSURED_CANCER)
-            .productWeightDeath(DEFAULT_PRODUCT_WEIGHT_DEATH)
             .productWeightPA(DEFAULT_PRODUCT_WEIGHT_PA)
             .productWeightHospIncome(DEFAULT_PRODUCT_WEIGHT_HOSP_INCOME)
             .productWeightCI(DEFAULT_PRODUCT_WEIGHT_CI)
-            .productWeightMedic(DEFAULT_PRODUCT_WEIGHT_MEDIC)
-            .productWeightCancer(DEFAULT_PRODUCT_WEIGHT_CANCER);
+            .productWeightCancer(DEFAULT_PRODUCT_WEIGHT_CANCER)
+            .shortDescription(DEFAULT_SHORT_DESCRIPTION)
+            .longDescription(DEFAULT_LONG_DESCRIPTION)
+            .minEntryAgeLastBday(DEFAULT_MIN_ENTRY_AGE_LAST_BDAY)
+            .maxEntryAgeLastBday(DEFAULT_MAX_ENTRY_AGE_LAST_BDAY)
+            .minSumAssured(DEFAULT_MIN_SUM_ASSURED)
+            .maxSumAssured(DEFAULT_MAX_SUM_ASSURED)
+            .premUnit(DEFAULT_PREM_UNIT)
+            .prodWeightLife(DEFAULT_PROD_WEIGHT_LIFE)
+            .prodWeightMedical(DEFAULT_PROD_WEIGHT_MEDICAL);
         // Add required entity
         InsuranceCompany insuranceCompany = InsuranceCompanyResourceIntTest.createEntity(em);
         em.persist(insuranceCompany);
@@ -215,24 +199,20 @@ public class InsuranceProductResourceIntTest {
         InsuranceProduct testInsuranceProduct = insuranceProductList.get(insuranceProductList.size() - 1);
         assertThat(testInsuranceProduct.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testInsuranceProduct.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testInsuranceProduct.getEntryAgeLastBday()).isEqualTo(DEFAULT_ENTRY_AGE_LAST_BDAY);
         assertThat(testInsuranceProduct.getGender()).isEqualTo(DEFAULT_GENDER);
-        assertThat(testInsuranceProduct.getPremiumTerm()).isEqualTo(DEFAULT_PREMIUM_TERM);
-        assertThat(testInsuranceProduct.getPolicyTerm()).isEqualTo(DEFAULT_POLICY_TERM);
-        assertThat(testInsuranceProduct.getPremiumRate()).isEqualTo(DEFAULT_PREMIUM_RATE);
-        assertThat(testInsuranceProduct.getSumAssuredDeath()).isEqualTo(DEFAULT_SUM_ASSURED_DEATH);
-        assertThat(testInsuranceProduct.getSumAssuredTPD()).isEqualTo(DEFAULT_SUM_ASSURED_TPD);
-        assertThat(testInsuranceProduct.getSumAssuredADD()).isEqualTo(DEFAULT_SUM_ASSURED_ADD);
-        assertThat(testInsuranceProduct.getSumAssuredHospIncome()).isEqualTo(DEFAULT_SUM_ASSURED_HOSP_INCOME);
-        assertThat(testInsuranceProduct.getSumAssuredCI()).isEqualTo(DEFAULT_SUM_ASSURED_CI);
-        assertThat(testInsuranceProduct.getSumAssuredMedic()).isEqualTo(DEFAULT_SUM_ASSURED_MEDIC);
-        assertThat(testInsuranceProduct.getSumAssuredCancer()).isEqualTo(DEFAULT_SUM_ASSURED_CANCER);
-        assertThat(testInsuranceProduct.getProductWeightDeath()).isEqualTo(DEFAULT_PRODUCT_WEIGHT_DEATH);
         assertThat(testInsuranceProduct.getProductWeightPA()).isEqualTo(DEFAULT_PRODUCT_WEIGHT_PA);
         assertThat(testInsuranceProduct.getProductWeightHospIncome()).isEqualTo(DEFAULT_PRODUCT_WEIGHT_HOSP_INCOME);
         assertThat(testInsuranceProduct.getProductWeightCI()).isEqualTo(DEFAULT_PRODUCT_WEIGHT_CI);
-        assertThat(testInsuranceProduct.getProductWeightMedic()).isEqualTo(DEFAULT_PRODUCT_WEIGHT_MEDIC);
         assertThat(testInsuranceProduct.getProductWeightCancer()).isEqualTo(DEFAULT_PRODUCT_WEIGHT_CANCER);
+        assertThat(testInsuranceProduct.getShortDescription()).isEqualTo(DEFAULT_SHORT_DESCRIPTION);
+        assertThat(testInsuranceProduct.getLongDescription()).isEqualTo(DEFAULT_LONG_DESCRIPTION);
+        assertThat(testInsuranceProduct.getMinEntryAgeLastBday()).isEqualTo(DEFAULT_MIN_ENTRY_AGE_LAST_BDAY);
+        assertThat(testInsuranceProduct.getMaxEntryAgeLastBday()).isEqualTo(DEFAULT_MAX_ENTRY_AGE_LAST_BDAY);
+        assertThat(testInsuranceProduct.getMinSumAssured()).isEqualTo(DEFAULT_MIN_SUM_ASSURED);
+        assertThat(testInsuranceProduct.getMaxSumAssured()).isEqualTo(DEFAULT_MAX_SUM_ASSURED);
+        assertThat(testInsuranceProduct.getPremUnit()).isEqualTo(DEFAULT_PREM_UNIT);
+        assertThat(testInsuranceProduct.getProdWeightLife()).isEqualTo(DEFAULT_PROD_WEIGHT_LIFE);
+        assertThat(testInsuranceProduct.getProdWeightMedical()).isEqualTo(DEFAULT_PROD_WEIGHT_MEDICAL);
 
         // Validate the InsuranceProduct in Elasticsearch
         InsuranceProduct insuranceProductEs = insuranceProductSearchRepository.findOne(testInsuranceProduct.getId());
@@ -310,24 +290,20 @@ public class InsuranceProductResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(insuranceProduct.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].entryAgeLastBday").value(hasItem(DEFAULT_ENTRY_AGE_LAST_BDAY)))
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
-            .andExpect(jsonPath("$.[*].premiumTerm").value(hasItem(DEFAULT_PREMIUM_TERM)))
-            .andExpect(jsonPath("$.[*].policyTerm").value(hasItem(DEFAULT_POLICY_TERM)))
-            .andExpect(jsonPath("$.[*].premiumRate").value(hasItem(DEFAULT_PREMIUM_RATE.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredDeath").value(hasItem(DEFAULT_SUM_ASSURED_DEATH.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredTPD").value(hasItem(DEFAULT_SUM_ASSURED_TPD.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredADD").value(hasItem(DEFAULT_SUM_ASSURED_ADD.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredHospIncome").value(hasItem(DEFAULT_SUM_ASSURED_HOSP_INCOME.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredCI").value(hasItem(DEFAULT_SUM_ASSURED_CI.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredMedic").value(hasItem(DEFAULT_SUM_ASSURED_MEDIC.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredCancer").value(hasItem(DEFAULT_SUM_ASSURED_CANCER.doubleValue())))
-            .andExpect(jsonPath("$.[*].productWeightDeath").value(hasItem(DEFAULT_PRODUCT_WEIGHT_DEATH.doubleValue())))
             .andExpect(jsonPath("$.[*].productWeightPA").value(hasItem(DEFAULT_PRODUCT_WEIGHT_PA.doubleValue())))
             .andExpect(jsonPath("$.[*].productWeightHospIncome").value(hasItem(DEFAULT_PRODUCT_WEIGHT_HOSP_INCOME.doubleValue())))
             .andExpect(jsonPath("$.[*].productWeightCI").value(hasItem(DEFAULT_PRODUCT_WEIGHT_CI.doubleValue())))
-            .andExpect(jsonPath("$.[*].productWeightMedic").value(hasItem(DEFAULT_PRODUCT_WEIGHT_MEDIC.doubleValue())))
-            .andExpect(jsonPath("$.[*].productWeightCancer").value(hasItem(DEFAULT_PRODUCT_WEIGHT_CANCER.doubleValue())));
+            .andExpect(jsonPath("$.[*].productWeightCancer").value(hasItem(DEFAULT_PRODUCT_WEIGHT_CANCER.doubleValue())))
+            .andExpect(jsonPath("$.[*].shortDescription").value(hasItem(DEFAULT_SHORT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].longDescription").value(hasItem(DEFAULT_LONG_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].minEntryAgeLastBday").value(hasItem(DEFAULT_MIN_ENTRY_AGE_LAST_BDAY)))
+            .andExpect(jsonPath("$.[*].maxEntryAgeLastBday").value(hasItem(DEFAULT_MAX_ENTRY_AGE_LAST_BDAY)))
+            .andExpect(jsonPath("$.[*].minSumAssured").value(hasItem(DEFAULT_MIN_SUM_ASSURED.doubleValue())))
+            .andExpect(jsonPath("$.[*].maxSumAssured").value(hasItem(DEFAULT_MAX_SUM_ASSURED.doubleValue())))
+            .andExpect(jsonPath("$.[*].premUnit").value(hasItem(DEFAULT_PREM_UNIT.doubleValue())))
+            .andExpect(jsonPath("$.[*].prodWeightLife").value(hasItem(DEFAULT_PROD_WEIGHT_LIFE.doubleValue())))
+            .andExpect(jsonPath("$.[*].prodWeightMedical").value(hasItem(DEFAULT_PROD_WEIGHT_MEDICAL.doubleValue())));
     }
 
     @Test
@@ -343,24 +319,20 @@ public class InsuranceProductResourceIntTest {
             .andExpect(jsonPath("$.id").value(insuranceProduct.getId().intValue()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.entryAgeLastBday").value(DEFAULT_ENTRY_AGE_LAST_BDAY))
             .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()))
-            .andExpect(jsonPath("$.premiumTerm").value(DEFAULT_PREMIUM_TERM))
-            .andExpect(jsonPath("$.policyTerm").value(DEFAULT_POLICY_TERM))
-            .andExpect(jsonPath("$.premiumRate").value(DEFAULT_PREMIUM_RATE.doubleValue()))
-            .andExpect(jsonPath("$.sumAssuredDeath").value(DEFAULT_SUM_ASSURED_DEATH.doubleValue()))
-            .andExpect(jsonPath("$.sumAssuredTPD").value(DEFAULT_SUM_ASSURED_TPD.doubleValue()))
-            .andExpect(jsonPath("$.sumAssuredADD").value(DEFAULT_SUM_ASSURED_ADD.doubleValue()))
-            .andExpect(jsonPath("$.sumAssuredHospIncome").value(DEFAULT_SUM_ASSURED_HOSP_INCOME.doubleValue()))
-            .andExpect(jsonPath("$.sumAssuredCI").value(DEFAULT_SUM_ASSURED_CI.doubleValue()))
-            .andExpect(jsonPath("$.sumAssuredMedic").value(DEFAULT_SUM_ASSURED_MEDIC.doubleValue()))
-            .andExpect(jsonPath("$.sumAssuredCancer").value(DEFAULT_SUM_ASSURED_CANCER.doubleValue()))
-            .andExpect(jsonPath("$.productWeightDeath").value(DEFAULT_PRODUCT_WEIGHT_DEATH.doubleValue()))
             .andExpect(jsonPath("$.productWeightPA").value(DEFAULT_PRODUCT_WEIGHT_PA.doubleValue()))
             .andExpect(jsonPath("$.productWeightHospIncome").value(DEFAULT_PRODUCT_WEIGHT_HOSP_INCOME.doubleValue()))
             .andExpect(jsonPath("$.productWeightCI").value(DEFAULT_PRODUCT_WEIGHT_CI.doubleValue()))
-            .andExpect(jsonPath("$.productWeightMedic").value(DEFAULT_PRODUCT_WEIGHT_MEDIC.doubleValue()))
-            .andExpect(jsonPath("$.productWeightCancer").value(DEFAULT_PRODUCT_WEIGHT_CANCER.doubleValue()));
+            .andExpect(jsonPath("$.productWeightCancer").value(DEFAULT_PRODUCT_WEIGHT_CANCER.doubleValue()))
+            .andExpect(jsonPath("$.shortDescription").value(DEFAULT_SHORT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.longDescription").value(DEFAULT_LONG_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.minEntryAgeLastBday").value(DEFAULT_MIN_ENTRY_AGE_LAST_BDAY))
+            .andExpect(jsonPath("$.maxEntryAgeLastBday").value(DEFAULT_MAX_ENTRY_AGE_LAST_BDAY))
+            .andExpect(jsonPath("$.minSumAssured").value(DEFAULT_MIN_SUM_ASSURED.doubleValue()))
+            .andExpect(jsonPath("$.maxSumAssured").value(DEFAULT_MAX_SUM_ASSURED.doubleValue()))
+            .andExpect(jsonPath("$.premUnit").value(DEFAULT_PREM_UNIT.doubleValue()))
+            .andExpect(jsonPath("$.prodWeightLife").value(DEFAULT_PROD_WEIGHT_LIFE.doubleValue()))
+            .andExpect(jsonPath("$.prodWeightMedical").value(DEFAULT_PROD_WEIGHT_MEDICAL.doubleValue()));
     }
 
     @Test
@@ -384,24 +356,20 @@ public class InsuranceProductResourceIntTest {
         updatedInsuranceProduct
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
-            .entryAgeLastBday(UPDATED_ENTRY_AGE_LAST_BDAY)
             .gender(UPDATED_GENDER)
-            .premiumTerm(UPDATED_PREMIUM_TERM)
-            .policyTerm(UPDATED_POLICY_TERM)
-            .premiumRate(UPDATED_PREMIUM_RATE)
-            .sumAssuredDeath(UPDATED_SUM_ASSURED_DEATH)
-            .sumAssuredTPD(UPDATED_SUM_ASSURED_TPD)
-            .sumAssuredADD(UPDATED_SUM_ASSURED_ADD)
-            .sumAssuredHospIncome(UPDATED_SUM_ASSURED_HOSP_INCOME)
-            .sumAssuredCI(UPDATED_SUM_ASSURED_CI)
-            .sumAssuredMedic(UPDATED_SUM_ASSURED_MEDIC)
-            .sumAssuredCancer(UPDATED_SUM_ASSURED_CANCER)
-            .productWeightDeath(UPDATED_PRODUCT_WEIGHT_DEATH)
             .productWeightPA(UPDATED_PRODUCT_WEIGHT_PA)
             .productWeightHospIncome(UPDATED_PRODUCT_WEIGHT_HOSP_INCOME)
             .productWeightCI(UPDATED_PRODUCT_WEIGHT_CI)
-            .productWeightMedic(UPDATED_PRODUCT_WEIGHT_MEDIC)
-            .productWeightCancer(UPDATED_PRODUCT_WEIGHT_CANCER);
+            .productWeightCancer(UPDATED_PRODUCT_WEIGHT_CANCER)
+            .shortDescription(UPDATED_SHORT_DESCRIPTION)
+            .longDescription(UPDATED_LONG_DESCRIPTION)
+            .minEntryAgeLastBday(UPDATED_MIN_ENTRY_AGE_LAST_BDAY)
+            .maxEntryAgeLastBday(UPDATED_MAX_ENTRY_AGE_LAST_BDAY)
+            .minSumAssured(UPDATED_MIN_SUM_ASSURED)
+            .maxSumAssured(UPDATED_MAX_SUM_ASSURED)
+            .premUnit(UPDATED_PREM_UNIT)
+            .prodWeightLife(UPDATED_PROD_WEIGHT_LIFE)
+            .prodWeightMedical(UPDATED_PROD_WEIGHT_MEDICAL);
         InsuranceProductDTO insuranceProductDTO = insuranceProductMapper.toDto(updatedInsuranceProduct);
 
         restInsuranceProductMockMvc.perform(put("/api/insurance-products")
@@ -415,25 +383,21 @@ public class InsuranceProductResourceIntTest {
         InsuranceProduct testInsuranceProduct = insuranceProductList.get(insuranceProductList.size() - 1);
         assertThat(testInsuranceProduct.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testInsuranceProduct.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testInsuranceProduct.getEntryAgeLastBday()).isEqualTo(UPDATED_ENTRY_AGE_LAST_BDAY);
         assertThat(testInsuranceProduct.getGender()).isEqualTo(UPDATED_GENDER);
-        assertThat(testInsuranceProduct.getPremiumTerm()).isEqualTo(UPDATED_PREMIUM_TERM);
-        assertThat(testInsuranceProduct.getPolicyTerm()).isEqualTo(UPDATED_POLICY_TERM);
-        assertThat(testInsuranceProduct.getPremiumRate()).isEqualTo(UPDATED_PREMIUM_RATE);
-        assertThat(testInsuranceProduct.getSumAssuredDeath()).isEqualTo(UPDATED_SUM_ASSURED_DEATH);
-        assertThat(testInsuranceProduct.getSumAssuredTPD()).isEqualTo(UPDATED_SUM_ASSURED_TPD);
-        assertThat(testInsuranceProduct.getSumAssuredADD()).isEqualTo(UPDATED_SUM_ASSURED_ADD);
-        assertThat(testInsuranceProduct.getSumAssuredHospIncome()).isEqualTo(UPDATED_SUM_ASSURED_HOSP_INCOME);
-        assertThat(testInsuranceProduct.getSumAssuredCI()).isEqualTo(UPDATED_SUM_ASSURED_CI);
-        assertThat(testInsuranceProduct.getSumAssuredMedic()).isEqualTo(UPDATED_SUM_ASSURED_MEDIC);
-        assertThat(testInsuranceProduct.getSumAssuredCancer()).isEqualTo(UPDATED_SUM_ASSURED_CANCER);
-        assertThat(testInsuranceProduct.getProductWeightDeath()).isEqualTo(UPDATED_PRODUCT_WEIGHT_DEATH);
         assertThat(testInsuranceProduct.getProductWeightPA()).isEqualTo(UPDATED_PRODUCT_WEIGHT_PA);
         assertThat(testInsuranceProduct.getProductWeightHospIncome()).isEqualTo(UPDATED_PRODUCT_WEIGHT_HOSP_INCOME);
         assertThat(testInsuranceProduct.getProductWeightCI()).isEqualTo(UPDATED_PRODUCT_WEIGHT_CI);
-        assertThat(testInsuranceProduct.getProductWeightMedic()).isEqualTo(UPDATED_PRODUCT_WEIGHT_MEDIC);
         assertThat(testInsuranceProduct.getProductWeightCancer()).isEqualTo(UPDATED_PRODUCT_WEIGHT_CANCER);
-
+        assertThat(testInsuranceProduct.getShortDescription()).isEqualTo(UPDATED_SHORT_DESCRIPTION);
+        assertThat(testInsuranceProduct.getLongDescription()).isEqualTo(UPDATED_LONG_DESCRIPTION);
+        assertThat(testInsuranceProduct.getMinEntryAgeLastBday()).isEqualTo(UPDATED_MIN_ENTRY_AGE_LAST_BDAY);
+        assertThat(testInsuranceProduct.getMaxEntryAgeLastBday()).isEqualTo(UPDATED_MAX_ENTRY_AGE_LAST_BDAY);
+        assertThat(testInsuranceProduct.getMinSumAssured()).isEqualTo(UPDATED_MIN_SUM_ASSURED);
+        assertThat(testInsuranceProduct.getMaxSumAssured()).isEqualTo(UPDATED_MAX_SUM_ASSURED);
+        assertThat(testInsuranceProduct.getPremUnit()).isEqualTo(UPDATED_PREM_UNIT);
+        assertThat(testInsuranceProduct.getProdWeightLife()).isEqualTo(UPDATED_PROD_WEIGHT_LIFE);
+        assertThat(testInsuranceProduct.getProdWeightMedical()).isEqualTo(UPDATED_PROD_WEIGHT_MEDICAL);
+        
         // Validate the InsuranceProduct in Elasticsearch
         InsuranceProduct insuranceProductEs = insuranceProductSearchRepository.findOne(testInsuranceProduct.getId());
         assertThat(insuranceProductEs).isEqualToComparingFieldByField(testInsuranceProduct);
@@ -494,24 +458,20 @@ public class InsuranceProductResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(insuranceProduct.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].entryAgeLastBday").value(hasItem(DEFAULT_ENTRY_AGE_LAST_BDAY)))
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
-            .andExpect(jsonPath("$.[*].premiumTerm").value(hasItem(DEFAULT_PREMIUM_TERM)))
-            .andExpect(jsonPath("$.[*].policyTerm").value(hasItem(DEFAULT_POLICY_TERM)))
-            .andExpect(jsonPath("$.[*].premiumRate").value(hasItem(DEFAULT_PREMIUM_RATE.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredDeath").value(hasItem(DEFAULT_SUM_ASSURED_DEATH.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredTPD").value(hasItem(DEFAULT_SUM_ASSURED_TPD.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredADD").value(hasItem(DEFAULT_SUM_ASSURED_ADD.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredHospIncome").value(hasItem(DEFAULT_SUM_ASSURED_HOSP_INCOME.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredCI").value(hasItem(DEFAULT_SUM_ASSURED_CI.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredMedic").value(hasItem(DEFAULT_SUM_ASSURED_MEDIC.doubleValue())))
-            .andExpect(jsonPath("$.[*].sumAssuredCancer").value(hasItem(DEFAULT_SUM_ASSURED_CANCER.doubleValue())))
-            .andExpect(jsonPath("$.[*].productWeightDeath").value(hasItem(DEFAULT_PRODUCT_WEIGHT_DEATH.doubleValue())))
             .andExpect(jsonPath("$.[*].productWeightPA").value(hasItem(DEFAULT_PRODUCT_WEIGHT_PA.doubleValue())))
             .andExpect(jsonPath("$.[*].productWeightHospIncome").value(hasItem(DEFAULT_PRODUCT_WEIGHT_HOSP_INCOME.doubleValue())))
             .andExpect(jsonPath("$.[*].productWeightCI").value(hasItem(DEFAULT_PRODUCT_WEIGHT_CI.doubleValue())))
-            .andExpect(jsonPath("$.[*].productWeightMedic").value(hasItem(DEFAULT_PRODUCT_WEIGHT_MEDIC.doubleValue())))
-            .andExpect(jsonPath("$.[*].productWeightCancer").value(hasItem(DEFAULT_PRODUCT_WEIGHT_CANCER.doubleValue())));
+            .andExpect(jsonPath("$.[*].productWeightCancer").value(hasItem(DEFAULT_PRODUCT_WEIGHT_CANCER.doubleValue())))
+            .andExpect(jsonPath("$.[*].shortDescription").value(hasItem(DEFAULT_SHORT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].longDescription").value(hasItem(DEFAULT_LONG_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].minEntryAgeLastBday").value(hasItem(DEFAULT_MIN_ENTRY_AGE_LAST_BDAY)))
+            .andExpect(jsonPath("$.[*].maxEntryAgeLastBday").value(hasItem(DEFAULT_MAX_ENTRY_AGE_LAST_BDAY)))
+            .andExpect(jsonPath("$.[*].minSumAssured").value(hasItem(DEFAULT_MIN_SUM_ASSURED.doubleValue())))
+            .andExpect(jsonPath("$.[*].maxSumAssured").value(hasItem(DEFAULT_MAX_SUM_ASSURED.doubleValue())))
+            .andExpect(jsonPath("$.[*].premUnit").value(hasItem(DEFAULT_PREM_UNIT.doubleValue())))
+            .andExpect(jsonPath("$.[*].prodWeightLife").value(hasItem(DEFAULT_PROD_WEIGHT_LIFE.doubleValue())))
+            .andExpect(jsonPath("$.[*].prodWeightMedical").value(hasItem(DEFAULT_PROD_WEIGHT_MEDICAL.doubleValue())));
     }
 
     @Test

@@ -2,14 +2,11 @@ package com.whatscover.service.dto;
 
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.whatscover.domain.enumeration.Gender;
 
 /**
@@ -26,40 +23,34 @@ public class InsuranceProductDTO implements Serializable {
     @NotNull
     @Size(max = 200)
     private String name;
+    
+    @Size(max = 250)
+    private String shortDescription;
 
-    private Integer entryAgeLastBday;
+    @Size(max = 500)
+    private String longDescription;
+
+    private Integer minEntryAgeLastBday;
+
+    private Integer maxEntryAgeLastBday;
+
+    private Double minSumAssured;
+
+    private Double maxSumAssured;
+
+    private Double premUnit;
+
+    private Double prodWeightLife;
+
+    private Double prodWeightMedical;
 
     private Gender gender;
-
-    private Integer premiumTerm;
-
-    private Integer policyTerm;
-
-    private Double premiumRate;
-
-    private Double sumAssuredDeath;
-
-    private Double sumAssuredTPD;
-
-    private Double sumAssuredADD;
-
-    private Double sumAssuredHospIncome;
-
-    private Double sumAssuredCI;
-
-    private Double sumAssuredMedic;
-
-    private Double sumAssuredCancer;
-
-    private Double productWeightDeath;
 
     private Double productWeightPA;
 
     private Double productWeightHospIncome;
 
     private Double productWeightCI;
-
-    private Double productWeightMedic;
 
     private Double productWeightCancer;
 
@@ -97,108 +88,12 @@ public class InsuranceProductDTO implements Serializable {
         this.name = name;
     }
 
-    public Integer getEntryAgeLastBday() {
-        return entryAgeLastBday;
-    }
-
-    public void setEntryAgeLastBday(Integer entryAgeLastBday) {
-        this.entryAgeLastBday = entryAgeLastBday;
-    }
-
     public Gender getGender() {
         return gender;
     }
 
     public void setGender(Gender gender) {
         this.gender = gender;
-    }
-
-    public Integer getPremiumTerm() {
-        return premiumTerm;
-    }
-
-    public void setPremiumTerm(Integer premiumTerm) {
-        this.premiumTerm = premiumTerm;
-    }
-
-    public Integer getPolicyTerm() {
-        return policyTerm;
-    }
-
-    public void setPolicyTerm(Integer policyTerm) {
-        this.policyTerm = policyTerm;
-    }
-
-    public Double getPremiumRate() {
-        return premiumRate;
-    }
-
-    public void setPremiumRate(Double premiumRate) {
-        this.premiumRate = premiumRate;
-    }
-
-    public Double getSumAssuredDeath() {
-        return sumAssuredDeath;
-    }
-
-    public void setSumAssuredDeath(Double sumAssuredDeath) {
-        this.sumAssuredDeath = sumAssuredDeath;
-    }
-
-    public Double getSumAssuredTPD() {
-        return sumAssuredTPD;
-    }
-
-    public void setSumAssuredTPD(Double sumAssuredTPD) {
-        this.sumAssuredTPD = sumAssuredTPD;
-    }
-
-    public Double getSumAssuredADD() {
-        return sumAssuredADD;
-    }
-
-    public void setSumAssuredADD(Double sumAssuredADD) {
-        this.sumAssuredADD = sumAssuredADD;
-    }
-
-    public Double getSumAssuredHospIncome() {
-        return sumAssuredHospIncome;
-    }
-
-    public void setSumAssuredHospIncome(Double sumAssuredHospIncome) {
-        this.sumAssuredHospIncome = sumAssuredHospIncome;
-    }
-
-    public Double getSumAssuredCI() {
-        return sumAssuredCI;
-    }
-
-    public void setSumAssuredCI(Double sumAssuredCI) {
-        this.sumAssuredCI = sumAssuredCI;
-    }
-
-    public Double getSumAssuredMedic() {
-        return sumAssuredMedic;
-    }
-
-    public void setSumAssuredMedic(Double sumAssuredMedic) {
-        this.sumAssuredMedic = sumAssuredMedic;
-    }
-
-    public Double getSumAssuredCancer() {
-        return sumAssuredCancer;
-    }
-
-    public void setSumAssuredCancer(Double sumAssuredCancer) {
-        this.sumAssuredCancer = sumAssuredCancer;
-    }
-
-    public Double getProductWeightDeath() {
-        return productWeightDeath;
-    }
-
-    public void setProductWeightDeath(Double productWeightDeath) {
-        this.productWeightDeath = productWeightDeath;
     }
 
     public Double getProductWeightPA() {
@@ -225,20 +120,84 @@ public class InsuranceProductDTO implements Serializable {
         this.productWeightCI = productWeightCI;
     }
 
-    public Double getProductWeightMedic() {
-        return productWeightMedic;
-    }
-
-    public void setProductWeightMedic(Double productWeightMedic) {
-        this.productWeightMedic = productWeightMedic;
-    }
-
     public Double getProductWeightCancer() {
         return productWeightCancer;
     }
 
     public void setProductWeightCancer(Double productWeightCancer) {
         this.productWeightCancer = productWeightCancer;
+    }
+    
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
+    }
+
+    public Integer getMinEntryAgeLastBday() {
+        return minEntryAgeLastBday;
+    }
+
+    public void setMinEntryAgeLastBday(Integer minEntryAgeLastBday) {
+        this.minEntryAgeLastBday = minEntryAgeLastBday;
+    }
+
+    public Integer getMaxEntryAgeLastBday() {
+        return maxEntryAgeLastBday;
+    }
+
+    public void setMaxEntryAgeLastBday(Integer maxEntryAgeLastBday) {
+        this.maxEntryAgeLastBday = maxEntryAgeLastBday;
+    }
+
+    public Double getMinSumAssured() {
+        return minSumAssured;
+    }
+
+    public void setMinSumAssured(Double minSumAssured) {
+        this.minSumAssured = minSumAssured;
+    }
+
+    public Double getMaxSumAssured() {
+        return maxSumAssured;
+    }
+
+    public void setMaxSumAssured(Double maxSumAssured) {
+        this.maxSumAssured = maxSumAssured;
+    }
+
+    public Double getPremUnit() {
+        return premUnit;
+    }
+
+    public void setPremUnit(Double premUnit) {
+        this.premUnit = premUnit;
+    }
+
+    public Double getProdWeightLife() {
+        return prodWeightLife;
+    }
+
+    public void setProdWeightLife(Double prodWeightLife) {
+        this.prodWeightLife = prodWeightLife;
+    }
+
+    public Double getProdWeightMedical() {
+        return prodWeightMedical;
+    }
+
+    public void setProdWeightMedical(Double prodWeightMedical) {
+        this.prodWeightMedical = prodWeightMedical;
     }
 
     public Long getInsuranceCompanyId() {
@@ -300,24 +259,20 @@ public class InsuranceProductDTO implements Serializable {
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
-            ", entryAgeLastBday='" + getEntryAgeLastBday() + "'" +
             ", gender='" + getGender() + "'" +
-            ", premiumTerm='" + getPremiumTerm() + "'" +
-            ", policyTerm='" + getPolicyTerm() + "'" +
-            ", premiumRate='" + getPremiumRate() + "'" +
-            ", sumAssuredDeath='" + getSumAssuredDeath() + "'" +
-            ", sumAssuredTPD='" + getSumAssuredTPD() + "'" +
-            ", sumAssuredADD='" + getSumAssuredADD() + "'" +
-            ", sumAssuredHospIncome='" + getSumAssuredHospIncome() + "'" +
-            ", sumAssuredCI='" + getSumAssuredCI() + "'" +
-            ", sumAssuredMedic='" + getSumAssuredMedic() + "'" +
-            ", sumAssuredCancer='" + getSumAssuredCancer() + "'" +
-            ", productWeightDeath='" + getProductWeightDeath() + "'" +
             ", productWeightPA='" + getProductWeightPA() + "'" +
             ", productWeightHospIncome='" + getProductWeightHospIncome() + "'" +
             ", productWeightCI='" + getProductWeightCI() + "'" +
-            ", productWeightMedic='" + getProductWeightMedic() + "'" +
             ", productWeightCancer='" + getProductWeightCancer() + "'" +
+            ", shortDescription='" + getShortDescription() + "'" +
+            ", longDescription='" + getLongDescription() + "'" +
+            ", minEntryAgeLastBday='" + getMinEntryAgeLastBday() + "'" +
+            ", maxEntryAgeLastBday='" + getMaxEntryAgeLastBday() + "'" +
+            ", minSumAssured='" + getMinSumAssured() + "'" +
+            ", maxSumAssured='" + getMaxSumAssured() + "'" +
+            ", premUnit='" + getPremUnit() + "'" +
+            ", prodWeightLife='" + getProdWeightLife() + "'" +
+            ", prodWeightMedical='" + getProdWeightMedical() + "'" +
             "}";
     }
 }

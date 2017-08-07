@@ -44,84 +44,125 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.entryAgeLastBday" for="field_entryAgeLastBday">Entry Age Last Bday</label>
-            <input type="number" class="form-control" name="entryAgeLastBday" id="field_entryAgeLastBday"
-                    ng-model="vm.insuranceProduct.entryAgeLastBday"
-                    />
-        </div>
-        <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.gender" for="field_gender">Gender</label>
             <select class="form-control" name="gender" ng-model="vm.insuranceProduct.gender" id="field_gender">
                 <option value="MALE" data-translate="whatscoverApp.Gender.MALE">MALE</option>
                 <option value="FEMALE" data-translate="whatscoverApp.Gender.FEMALE">FEMALE</option>
             </select>
         </div>
+        
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.premiumTerm" for="field_premiumTerm">Premium Term</label>
-            <input type="number" class="form-control" name="premiumTerm" id="field_premiumTerm"
-                    ng-model="vm.insuranceProduct.premiumTerm"
+            <label data-translate="whatscoverApp.insuranceProduct.productCategory" for="field_productCategory">Product Category</label>
+            <input type="text" class="form-control" id="field_productCategory" name="productCategory"
+                    ng-bind="vm.insuranceProduct.productCategoryId" ng-value="vm.insuranceProduct.productCategoryName" readonly />
+            <button type="submit" ui-sref="{{vm.childStateProductCategory}}" class="btn btn-info btn-sm">
+                <span class="glyphicon glyphicon-eye-open"></span>
+                <span class="hidden-sm-down" data-translate="Find Product Category"></span>
+            </button>
+        </div>
+        <div ng-show="editForm.productCategory.$invalid">
+            <p class="help-block"
+                ng-show="editForm.productCategory.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+        
+        <div class="form-group">
+            <label data-translate="whatscoverApp.insuranceProduct.insuranceCompany" for="field_insuranceCompany">Insurance Company</label>
+            <input type="text" class="form-control" id="field_insuranceCompany" name="insuranceCompany"
+                    ng-bind="vm.insuranceProduct.insuranceCompanyId" ng-value="vm.insuranceProduct.insuranceCompanyName" readonly />
+            <button type="submit" ui-sref="{{vm.childStateCompany}}" class="btn btn-info btn-sm">
+                <span class="glyphicon glyphicon-eye-open"></span>
+                <span class="hidden-sm-down" data-translate="Find Company"></span>
+            </button>
+        </div>
+        <div ng-show="editForm.insuranceCompany.$invalid">
+            <p class="help-block"
+                ng-show="editForm.insuranceCompany.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.shortDescription" for="field_shortDescription">Short Description</label>
+            <input type="text" class="form-control" name="shortDescription" id="field_shortDescription"
+                    ng-model="vm.insuranceProduct.shortDescription"
+                    ng-maxlength="250"/>
+            <div ng-show="editForm.shortDescription.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.shortDescription.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="250">
+                    This field cannot be longer than 250 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.longDescription" for="field_longDescription">Long Description</label>
+            <input type="text" class="form-control" name="longDescription" id="field_longDescription"
+                    ng-model="vm.insuranceProduct.longDescription"
+                    ng-maxlength="500"/>
+            <div ng-show="editForm.longDescription.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.longDescription.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="500">
+                    This field cannot be longer than 500 characters.
+                </p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.minEntryAgeLastBday" for="field_minEntryAgeLastBday">Min Entry Age Last Bday</label>
+            <input type="number" class="form-control" name="minEntryAgeLastBday" id="field_minEntryAgeLastBday"
+                    ng-model="vm.insuranceProduct.minEntryAgeLastBday"
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.policyTerm" for="field_policyTerm">Policy Term</label>
-            <input type="number" class="form-control" name="policyTerm" id="field_policyTerm"
-                    ng-model="vm.insuranceProduct.policyTerm"
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.maxEntryAgeLastBday" for="field_maxEntryAgeLastBday">Max Entry Age Last Bday</label>
+            <input type="number" class="form-control" name="maxEntryAgeLastBday" id="field_maxEntryAgeLastBday"
+                    ng-model="vm.insuranceProduct.maxEntryAgeLastBday"
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.premiumRate" for="field_premiumRate">Premium Rate</label>
-            <input type="number" class="form-control" name="premiumRate" id="field_premiumRate"
-                    ng-model="vm.insuranceProduct.premiumRate"
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.minSumAssured" for="field_minSumAssured">Min Sum Assured</label>
+            <input type="number" class="form-control" name="minSumAssured" id="field_minSumAssured"
+                    ng-model="vm.insuranceProduct.minSumAssured"
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.sumAssuredDeath" for="field_sumAssuredDeath">Sum Assured Death</label>
-            <input type="number" class="form-control" name="sumAssuredDeath" id="field_sumAssuredDeath"
-                    ng-model="vm.insuranceProduct.sumAssuredDeath"
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.maxSumAssured" for="field_maxSumAssured">Max Sum Assured</label>
+            <input type="number" class="form-control" name="maxSumAssured" id="field_maxSumAssured"
+                    ng-model="vm.insuranceProduct.maxSumAssured"
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.sumAssuredTPD" for="field_sumAssuredTPD">Sum Assured TPD</label>
-            <input type="number" class="form-control" name="sumAssuredTPD" id="field_sumAssuredTPD"
-                    ng-model="vm.insuranceProduct.sumAssuredTPD"
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.premUnit" for="field_premUnit">Prem Unit</label>
+            <input type="number" class="form-control" name="premUnit" id="field_premUnit"
+                    ng-model="vm.insuranceProduct.premUnit"
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.sumAssuredADD" for="field_sumAssuredADD">Sum Assured ADD</label>
-            <input type="number" class="form-control" name="sumAssuredADD" id="field_sumAssuredADD"
-                    ng-model="vm.insuranceProduct.sumAssuredADD"
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.prodWeightLife" for="field_prodWeightLife">Prod Weight Life</label>
+            <input type="number" class="form-control" name="prodWeightLife" id="field_prodWeightLife"
+                    ng-model="vm.insuranceProduct.prodWeightLife"
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.sumAssuredHospIncome" for="field_sumAssuredHospIncome">Sum Assured Hosp Income</label>
-            <input type="number" class="form-control" name="sumAssuredHospIncome" id="field_sumAssuredHospIncome"
-                    ng-model="vm.insuranceProduct.sumAssuredHospIncome"
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightCI" for="field_productWeightCI">Product Weight CI</label>
+            <input type="number" class="form-control" name="productWeightCI" id="field_productWeightCI"
+                    ng-model="vm.insuranceProduct.productWeightCI"
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.sumAssuredCI" for="field_sumAssuredCI">Sum Assured CI</label>
-            <input type="number" class="form-control" name="sumAssuredCI" id="field_sumAssuredCI"
-                    ng-model="vm.insuranceProduct.sumAssuredCI"
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.prodWeightMedical" for="field_prodWeightMedical">Prod Weight Medical</label>
+            <input type="number" class="form-control" name="prodWeightMedical" id="field_prodWeightMedical"
+                    ng-model="vm.insuranceProduct.prodWeightMedical"
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.sumAssuredMedic" for="field_sumAssuredMedic">Sum Assured Medic</label>
-            <input type="number" class="form-control" name="sumAssuredMedic" id="field_sumAssuredMedic"
-                    ng-model="vm.insuranceProduct.sumAssuredMedic"
+            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightCancer" for="field_productWeightCancer">Product Weight Cancer</label>
+            <input type="number" class="form-control" name="productWeightCancer" id="field_productWeightCancer"
+                    ng-model="vm.insuranceProduct.productWeightCancer"
                     />
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.sumAssuredCancer" for="field_sumAssuredCancer">Sum Assured Cancer</label>
-            <input type="number" class="form-control" name="sumAssuredCancer" id="field_sumAssuredCancer"
-                    ng-model="vm.insuranceProduct.sumAssuredCancer"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightDeath" for="field_productWeightDeath">Product Weight Death</label>
-            <input type="number" class="form-control" name="productWeightDeath" id="field_productWeightDeath"
-                    ng-model="vm.insuranceProduct.productWeightDeath"
-                    />
-        </div>
+       
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightPA" for="field_productWeightPA">Product Weight PA</label>
             <input type="number" class="form-control" name="productWeightPA" id="field_productWeightPA"
@@ -134,50 +175,7 @@
                     ng-model="vm.insuranceProduct.productWeightHospIncome"
                     />
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightCI" for="field_productWeightCI">Product Weight CI</label>
-            <input type="number" class="form-control" name="productWeightCI" id="field_productWeightCI"
-                    ng-model="vm.insuranceProduct.productWeightCI"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightMedic" for="field_productWeightMedic">Product Weight Medic</label>
-            <input type="number" class="form-control" name="productWeightMedic" id="field_productWeightMedic"
-                    ng-model="vm.insuranceProduct.productWeightMedic"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightCancer" for="field_productWeightCancer">Product Weight Cancer</label>
-            <input type="number" class="form-control" name="productWeightCancer" id="field_productWeightCancer"
-                    ng-model="vm.insuranceProduct.productWeightCancer"
-                    />
-        </div>
 
-        <div class="form-group">
-            <label data-translate="whatscoverApp.insuranceProduct.insuranceCompany" for="field_insuranceCompany">Insurance Company</label>
-            <input type="text" class="form-control" id="field_insuranceCompany" name="insuranceCompany"
-                    ng-bind="vm.insuranceProduct.insuranceCompanyId" ng-value="vm.insuranceProduct.insuranceCompanyName" readonly />
-            <button type="submit" ui-sref="{{vm.childStateCompany}}" class="btn btn-info btn-sm">
-                <span class="glyphicon glyphicon-eye-open"></span>
-                <span class="hidden-sm-down" data-translate="Find Company"></span>
-            </button>
-        </div>
-        
-        <div class="form-group">
-            <label data-translate="whatscoverApp.insuranceProduct.productCategory" for="field_productCategory">Product Category</label>
-            <input type="text" class="form-control" id="field_productCategory" name="productCategory"
-                    ng-bind="vm.insuranceProduct.productCategoryId" ng-value="vm.insuranceProduct.productCategoryName" readonly />
-            <button type="submit" ui-sref="{{vm.childStateProductCategory}}" class="btn btn-info btn-sm">
-                <span class="glyphicon glyphicon-eye-open"></span>
-                <span class="hidden-sm-down" data-translate="Find Product Category"></span>
-            </button>
-        </div>
-        <div ng-show="editForm.insuranceCompany.$invalid">
-            <p class="help-block"
-                ng-show="editForm.insuranceCompany.$error.required" data-translate="entity.validation.required">
-                This field is required.
-            </p>
-        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.cancel()">

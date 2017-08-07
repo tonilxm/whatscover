@@ -1,18 +1,25 @@
 package com.whatscover.web.rest;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.channels.FileChannel;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.validation.Valid;
 
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -40,7 +47,6 @@ import com.whatscover.service.UserService;
 import com.whatscover.service.dto.AgentProfileDTO;
 import com.whatscover.service.exception.BusinessException;
 import com.whatscover.service.util.RandomUtil;
-import com.whatscover.web.rest.errors.BusinessErrorVM;
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
 
@@ -150,7 +156,9 @@ public class AgentProfileResource {
     }
 
 	protected void processImgUpload(AgentProfileDTO agentProfileDTO, File files) {
-		createDirectory(files);
+		File oldFile = new File(Constants.DEFAULT_SYSTEM_DIRECTORY + "\\test.JPG");
+		File newFile = new File(Constants.DEFAULT_SYSTEM_DIRECTORY + "\\" + newFormatImg(agentProfileDTO));
+		renameFile(oldFile, newFile);
 		agentProfileDTO.setPhoto_dir(destination(files, newFormatImg(agentProfileDTO)));
 	}
 
@@ -177,11 +185,20 @@ public class AgentProfileResource {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("Cannot create multiple directories " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
+	protected void renameFile(File oldFile, File newFile) {
+        if(oldFile.renameTo(newFile)){
+            System.out.println("File rename success");;
+        }else{
+        	newFile.delete();
+        	oldFile.renameTo(newFile);
+            System.out.println("File rename failed");
+        }
+	}
     /**
      * GET  /agent-profiles : get all the agentProfiles.
      *
@@ -215,6 +232,32 @@ public class AgentProfileResource {
 		}
         mailService.sendEmail(agentProfileDTO.getEmail(), Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, false, true);
         return ResponseEntity.ok().headers(HeaderUtil.createEntitySendEmailAlert(ENTITY_NAME, "Send Email Alert")).build();
+    }
+    
+    @PostMapping("/upload-file")
+    @Timed
+    public String handleFormUpload( @RequestParam(value="uploadFile") String uploadFile) throws IOException {
+    	log.debug("REST request to Email AgentProfile : {}", uploadFile.length());
+    	File files = new File(Constants.DEFAULT_SYSTEM_DIRECTORY);
+		createDirectory(files);
+		wireBase64ToNewImg(uploadFile, Constants.DEFAULT_SYSTEM_DIRECTORY + "\\test.JPG");
+    	return "";
+    }
+
+    protected void wireBase64ToNewImg (String completeImageData, String destination) {
+    	try{
+    		String imageDataBytes = completeImageData.substring(completeImageData.indexOf(",")+1);
+    		byte byteArray[] = new byte[(int)imageDataBytes.length()];
+
+    		FileOutputStream fos = new FileOutputStream(destination); 
+    		byteArray = Base64.decodeBase64(imageDataBytes);
+    		fos.write(byteArray);
+    		fos.close();
+        }
+        catch (Exception e) {
+        	System.err.println(e.getMessage());
+        }
+    	
     }
 
     /**

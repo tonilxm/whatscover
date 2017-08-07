@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('AgentProfileDialogController', AgentProfileDialogController);
 
-    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$window', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency', 'AgentProfileSendEmail', '$state', '$rootScope'];
+    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$window', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency', 'AgentProfileSendEmail', 'Upload', '$state', '$rootScope'];
 
-    function AgentProfileDialogController ($timeout, $scope, $stateParams, $window, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency, AgentProfileSendEmail, $state, $rootScope) {
+    function AgentProfileDialogController ($timeout, $scope, $stateParams, $window, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency, AgentProfileSendEmail, Upload, $state, $rootScope) {
         var vm = this;
 
         vm.agentProfile = entity;
@@ -100,44 +100,36 @@
         function uploadFile(){
             var fileinput = document.getElementById("browse");
             fileinput.click();
-            //document.getElementById("field_photo_dir").value = fileinput.value;
-            //vm.agentProfile.photo_dir = document.getElementById("field_photo_dir").value;
         }
-        
-        $scope.fileNameChanged = function() {
-        	console.log("select file");
-            document.getElementById("tmp_photo_dir").value =  document.getElementById("browse").value;
-            var tempValue = $("#tmp_photo_dir").val().trim();
-            var tempLength = tempValue.length;
 
-            if(!tempLength < 1)
-            {
-            	var dIndex = tempValue.lastIndexOf(".");
-                var fileName = tempValue.substring(dIndex, tempLength);
-                if( fileName == '.jpg'){
-                	var sIndex = tempValue.lastIndexOf('\\');
-            		tempValue = tempValue.substr(sIndex + 1, tempLength);
-                    document.getElementById("field_photo_dir").value = tempValue;
-                    vm.agentProfile.photo_dir = tempValue;
-                }else{
-                	alert('Please upload correct File Name, File extension should be .jpg');
-                }
-            }
-        }
-        
-        // upload on file select or drop
-        $scope.upload = function (file) {
-            Upload.upload({
-                url: 'upload/url',
-                data: {file: file, 'username': $scope.username}
-            }).then(function (resp) {
-                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-            }, function (resp) {
-                console.log('Error status: ' + resp.status);
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        $scope.fileNameChanged = function(element){
+            document.getElementById("tmp_photo_dir").value =  document.getElementById("browse").value;
+       	     var uploadForm = new FormData();
+
+       	     $scope.$apply(function(scope) {
+                 var photofile = element.files[0];
+                 var reader = new FileReader();
+                 reader.onload = function(e) {
+                	 var tempValue = $("#tmp_photo_dir").val().trim();
+                     var tempLength = tempValue.length;
+
+                     if(!tempLength < 1)
+                     {
+                     	var dIndex = tempValue.lastIndexOf(".");
+                         var fileName = tempValue.substring(dIndex, tempLength);
+                         if( fileName == '.jpg'){
+                         	var sIndex = tempValue.lastIndexOf('\\');
+                     		tempValue = tempValue.substr(sIndex + 1, tempLength);
+                             document.getElementById("field_photo_dir").value = tempValue;
+                             vm.agentProfile.photo_dir = tempValue;
+                             Upload.upload({uploadFile: event.target.result}, true, false);
+                         }else{
+                         	alert('Please upload correct File Name, File extension should be .jpg');
+                         }
+                     }
+                 };
+                 reader.readAsDataURL(photofile);
             });
-        };
+       }
     }
 })();

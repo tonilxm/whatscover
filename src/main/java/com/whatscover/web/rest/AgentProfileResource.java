@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 import com.whatscover.config.Constants;
+import com.whatscover.config.PropertiesReader;
 import com.whatscover.domain.User;
 import com.whatscover.repository.AgentProfileRepository;
 import com.whatscover.service.AgentProfileService;
@@ -146,8 +147,7 @@ public class AgentProfileResource {
             return createAgentProfile(agentProfileDTO);
         }
 		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
-
-		File files = new File(Constants.DEFAULT_SYSTEM_DIRECTORY);
+		File files = new File(PropertiesReader.getPropertiesValue("directory"));
 		processImgUpload(agentProfileDTO, files);
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         return ResponseEntity.ok()
@@ -156,8 +156,9 @@ public class AgentProfileResource {
     }
 
 	protected void processImgUpload(AgentProfileDTO agentProfileDTO, File files) {
-		File oldFile = new File(Constants.DEFAULT_SYSTEM_DIRECTORY + "\\test.JPG");
-		File newFile = new File(Constants.DEFAULT_SYSTEM_DIRECTORY + "\\" + newFormatImg(agentProfileDTO));
+		String directory = PropertiesReader.getPropertiesValue("directory");
+		File oldFile = new File(directory + "\\test.JPG");
+		File newFile = new File(directory + "\\" + newFormatImg(agentProfileDTO));
 		renameFile(oldFile, newFile);
 		agentProfileDTO.setPhoto_dir(destination(files, newFormatImg(agentProfileDTO)));
 	}
@@ -238,9 +239,10 @@ public class AgentProfileResource {
     @Timed
     public String handleFormUpload( @RequestParam(value="uploadFile") String uploadFile) throws IOException {
     	log.debug("REST request to Email AgentProfile : {}", uploadFile.length());
-    	File files = new File(Constants.DEFAULT_SYSTEM_DIRECTORY);
+    	String directory = PropertiesReader.getPropertiesValue("directory");
+    	File files = new File(directory);
 		createDirectory(files);
-		wireBase64ToNewImg(uploadFile, Constants.DEFAULT_SYSTEM_DIRECTORY + "\\test.JPG");
+		wireBase64ToNewImg(uploadFile, directory + "\\test.JPG");
     	return "";
     }
 

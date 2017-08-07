@@ -94,6 +94,10 @@ public class InsuranceProduct extends AbstractAuditingEntity implements Serializ
     @ManyToOne(optional = false)
     @NotNull
     private InsuranceCompany insuranceCompany;
+    
+    @ManyToOne(optional = false)
+    @NotNull
+    private ProductCategory productCategory;
 
     public Long getId() {
         return id;
@@ -374,6 +378,19 @@ public class InsuranceProduct extends AbstractAuditingEntity implements Serializ
 
     public void setInsuranceCompany(InsuranceCompany insuranceCompany) {
         this.insuranceCompany = insuranceCompany;
+    }
+    
+    public ProductCategory getProductCategory() {
+        return productCategory;
+    }
+
+    public InsuranceProduct productCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
+        return this;
+    }
+
+    public void setProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
     }
 
     @Override

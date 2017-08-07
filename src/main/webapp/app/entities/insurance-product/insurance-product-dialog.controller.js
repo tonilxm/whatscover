@@ -5,15 +5,17 @@
         .module('whatscoverApp')
         .controller('InsuranceProductDialogController', InsuranceProductDialogController);
 
-    InsuranceProductDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'InsuranceProduct', 'InsuranceCompany', '$state', '$rootScope'];
+    InsuranceProductDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'InsuranceProduct', 'InsuranceCompany', '$state', '$rootScope', 'ProductCategory'];
 
-    function InsuranceProductDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, InsuranceProduct, InsuranceCompany, $state, $rootScope) {
+    function InsuranceProductDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, InsuranceProduct, InsuranceCompany, $state, $rootScope, ProductCategory) {
         var vm = this;
        
         vm.insuranceProduct = entity;
         vm.clear = clear;
         vm.save = save;
         vm.childState = $state.current.name + '.dialog-find-company';
+        vm.insurancecompanies = InsuranceCompany.query();
+        vm.productcategories = ProductCategory.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

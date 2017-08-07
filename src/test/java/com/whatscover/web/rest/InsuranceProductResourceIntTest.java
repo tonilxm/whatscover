@@ -3,6 +3,7 @@ package com.whatscover.web.rest;
 import com.whatscover.WhatscoverApp;
 
 import com.whatscover.domain.InsuranceProduct;
+import com.whatscover.domain.ProductCategory;
 import com.whatscover.domain.InsuranceCompany;
 import com.whatscover.repository.InsuranceProductRepository;
 import com.whatscover.service.InsuranceProductPremiumRateService;
@@ -182,6 +183,11 @@ public class InsuranceProductResourceIntTest {
         em.persist(insuranceCompany);
         em.flush();
         insuranceProduct.setInsuranceCompany(insuranceCompany);
+        // Add required entity
+        ProductCategory productCategory = ProductCategoryResourceIntTest.createEntity(em);
+        em.persist(productCategory);
+        em.flush();
+        insuranceProduct.setProductCategory(productCategory);
         return insuranceProduct;
     }
 

@@ -35,7 +35,6 @@
         <table class="jh-table table table-striped">
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="code"><span data-translate="whatscoverApp.insuranceProduct.code">Code</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="name"><span data-translate="whatscoverApp.insuranceProduct.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="entryAgeLastBday"><span data-translate="whatscoverApp.insuranceProduct.entryAgeLastBday">Entry Age Last Bday</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -57,12 +56,12 @@
                     <th jh-sort-by="productWeightMedic"><span data-translate="whatscoverApp.insuranceProduct.productWeightMedic">Product Weight Medic</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="productWeightCancer"><span data-translate="whatscoverApp.insuranceProduct.productWeightCancer">Product Weight Cancer</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="insuranceCompanyName"><span data-translate="whatscoverApp.insuranceProduct.insuranceCompany">Insurance Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="productCategoryName"><span data-translate="whatscoverApp.insuranceProduct.productCategory">Product Category</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="insuranceProduct in vm.insuranceProducts track by insuranceProduct.id">
-                    <td><a ui-sref="insurance-product-detail({id:insuranceProduct.id})">{{insuranceProduct.id}}</a></td>
                     <td>{{insuranceProduct.code}}</td>
                     <td>{{insuranceProduct.name}}</td>
                     <td>{{insuranceProduct.entryAgeLastBday}}</td>
@@ -84,6 +83,7 @@
                     <td>{{insuranceProduct.productWeightMedic}}</td>
                     <td>{{insuranceProduct.productWeightCancer}}</td>
                     <td>{{insuranceProduct.insuranceCompanyName}}</td>
+                    <td>{{insuranceProduct.productCategoryName}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

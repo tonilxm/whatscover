@@ -7,12 +7,18 @@
         Added the constraints for entity InsuranceProduct.
     -->
     <changeSet id="20170714103724-2" author="jhipster">
-        
+        <validCheckSum>ANY</validCheckSum>
         <addForeignKeyConstraint baseColumnNames="insurance_company_id"
                                  baseTableName="insurance_product"
                                  constraintName="fk_insurance_product_insurance_company_id"
                                  referencedColumnNames="id"
                                  referencedTableName="insurance_company"/>
+                                 
+        <addForeignKeyConstraint baseColumnNames="product_category_id"
+                                 baseTableName="insurance_product"
+                                 constraintName="fk_insurance_product_product_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="product_category"/>
 
     </changeSet>
 </databaseChangeLog>

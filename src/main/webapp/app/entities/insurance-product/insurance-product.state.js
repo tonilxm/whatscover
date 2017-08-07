@@ -110,53 +110,6 @@
                 });
             }]
         })
-        .state('insurance-product.new', {
-            parent: 'insurance-product',
-            url: '/new',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/insurance-product/insurance-product-dialog.html',
-                    controller: 'InsuranceProductDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                code: null,
-                                name: null,
-                                entryAgeLastBday: null,
-                                gender: null,
-                                premiumTerm: null,
-                                policyTerm: null,
-                                premiumRate: null,
-                                sumAssuredDeath: null,
-                                sumAssuredTPD: null,
-                                sumAssuredADD: null,
-                                sumAssuredHospIncome: null,
-                                sumAssuredCI: null,
-                                sumAssuredMedic: null,
-                                sumAssuredCancer: null,
-                                productWeightDeath: null,
-                                productWeightPA: null,
-                                productWeightHospIncome: null,
-                                productWeightCI: null,
-                                productWeightMedic: null,
-                                productWeightCancer: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('insurance-product', null, { reload: 'insurance-product' });
-                }, function() {
-                    $state.go('insurance-product');
-                });
-            }]
-        })
         .state('insurance-product.edit', {
             parent: 'insurance-product',
             url: '/{id}/edit',
@@ -329,15 +282,28 @@
                 }
             }
         })       
-        .state(generateFindCompanyStateObj('insurance-product.registration.dialog-find-company', 'insurance-product.registration.general'))
-        .state(generateFindCompanyStateObj('insurance-product.edit.dialog-find-company', 'insurance-product.edit.general'));
+        .state(generateFindEntityStateObj('insurance-product.registration.dialog-find-company', 'insurance-product.registration.general',
+        		'/findCompany?page&sort&search', 'app/entities/common-ui/common-dialog-find-company.html', 'CommonDialogFindCompanyController',
+        		'insuranceProductCompanyUpdate', 'insuranceCompany'))
+        .state(generateFindEntityStateObj('insurance-product.edit.dialog-find-company', 'insurance-product.edit.general',
+        		'/findCompany?page&sort&search', 'app/entities/common-ui/common-dialog-find-company.html', 'CommonDialogFindCompanyController',
+        		'insuranceProductCompanyUpdate', 'insuranceCompany'))
+        .state(generateFindEntityStateObj('insurance-product.registration.dialog-find-product-category', 'insurance-product.registration.general',
+        		'/findProductCategory?page&sort&search', 'app/entities/common-ui/common-dialog-find-product-category.html', 'CommonDialogFindProductCategoryController',
+        		'insuranceProductCategoryUpdate', 'productCategory'))
+        .state(generateFindEntityStateObj('insurance-product.edit.dialog-find-product-category', 'insurance-product.edit.general',
+        		'/findProductCategory?page&sort&search', 'app/entities/common-ui/common-dialog-find-product-category.html', 'CommonDialogFindProductCategoryController',
+        		'insuranceProductCategoryUpdate', 'productCategory'));
     }
-
-    function generateFindCompanyStateObj(name, parent){
+    
+    /**
+     * generate find entity dialog state
+     */
+    function generateFindEntityStateObj(name, parent, url, templateUrl, controller, emitName, entityName){
     	var obj = {
 			name: name,
 			parent: parent,
-	        url: '/findCompany?page&sort&search',
+	        url: url,
 	        data: {
 	            authorities: ['ROLE_USER']
 	        },
@@ -348,15 +314,15 @@
 	        },
 	        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
 	        	 $uibModal.open({
-	                 templateUrl: 'app/entities/common-ui/common-dialog-find-company.html',
-	                 controller: 'CommonDialogFindCompanyController',
+	                 templateUrl: templateUrl,
+	                 controller: controller,
 	                 controllerAs: 'vm',
 	                 backdrop: 'static',
 	                 size: 'lg',
 	                 resolve: {
 	                     entity: null,
 	                     emitName: function(){
-	                    	 return 'insuranceProductCompanyUpdate';
+	                    	 return emitName;
 	                     },
 	                     pagingParams: ['PaginationUtil', function (PaginationUtil) {
 	                         return {
@@ -368,7 +334,7 @@
 	                         };
 	                     }],
 	                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-	                         $translatePartialLoader.addPart('insuranceCompany');
+	                         $translatePartialLoader.addPart(entityName);
 	                         $translatePartialLoader.addPart('global');
 	                         return $translate.refresh();
 	                     }]

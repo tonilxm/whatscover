@@ -72,6 +72,8 @@ public class AgentProfileResource {
     private final MailService mailService;
     
     private final UserService userService;
+    
+    private String directory = PropertiesReader.getPropertiesValue("directory");
  
     public AgentProfileResource(AgentProfileService agentProfileService, AgentProfileRepository agentProfileRepository, MailService mailService, UserService userService) {
         this.agentProfileService = agentProfileService;
@@ -147,7 +149,7 @@ public class AgentProfileResource {
             return createAgentProfile(agentProfileDTO);
         }
 		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
-		File files = new File(PropertiesReader.getPropertiesValue("directory"));
+		File files = new File(directory);
 		processImgUpload(agentProfileDTO, files);
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         return ResponseEntity.ok()
@@ -156,7 +158,7 @@ public class AgentProfileResource {
     }
 
 	protected void processImgUpload(AgentProfileDTO agentProfileDTO, File files) {
-		String directory = PropertiesReader.getPropertiesValue("directory");
+		
 		File oldFile = new File(directory + "\\test.JPG");
 		File newFile = new File(directory + "\\" + newFormatImg(agentProfileDTO));
 		renameFile(oldFile, newFile);
@@ -239,7 +241,6 @@ public class AgentProfileResource {
     @Timed
     public String handleFormUpload( @RequestParam(value="uploadFile") String uploadFile) throws IOException {
     	log.debug("REST request to Email AgentProfile : {}", uploadFile.length());
-    	String directory = PropertiesReader.getPropertiesValue("directory");
     	File files = new File(directory);
 		createDirectory(files);
 		wireBase64ToNewImg(uploadFile, directory + "\\test.JPG");

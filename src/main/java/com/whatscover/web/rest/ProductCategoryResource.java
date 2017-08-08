@@ -3,6 +3,7 @@ package com.whatscover.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.whatscover.service.ProductCategoryService;
 import com.whatscover.service.dto.ProductCategoryDTO;
+import com.whatscover.service.util.PropertiesReader;
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -145,6 +146,10 @@ public class ProductCategoryResource {
     @Timed
     public ResponseEntity<List<ProductCategoryDTO>> searchNameProductCategories(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search name for a page of ProductCategories for query {}", query);
+        String dir = PropertiesReader.getPropertiesValue("directory");
+        log.debug("===================================================");
+        log.debug("DIR : " + dir);
+        log.debug("===================================================");
         Page<ProductCategoryDTO> page = productCategoryService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search-name/product-categories");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

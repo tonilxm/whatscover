@@ -1,7 +1,8 @@
-package com.whatscover.config;
+package com.whatscover.service.util;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
+import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -11,8 +12,8 @@ import java.util.ResourceBundle;
  * @author minh
  */
 public final class PropertiesReader {
-	public static final String DEFAULT_PROPERTIES = "ApplicationResources";
-	public static final String MESSAGES_PROPERTIES = "MessagesResources";
+	public static final String DEFAULT_PROPERTIES = "config" + File.separator + "ApplicationResources";
+	// public static final String MESSAGES_PROPERTIES = "MessagesRes.ources";
 	public static Locale locale = LocaleContextHolder.getLocale();
 
 	public static String getPropertiesValue(String propertiesKey) {

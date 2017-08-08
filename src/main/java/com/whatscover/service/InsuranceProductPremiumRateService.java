@@ -71,4 +71,12 @@ public interface InsuranceProductPremiumRateService {
      *  @return the list of entities
      */
     Page<InsuranceProductPremiumRateDTO> searchByInsuranceProductId(Long insuranceProductId, Pageable pageable);
+
+    /**
+     * Delete insuranceProductPremiumRate Entities.
+     *
+     * @param insuranceProductId the insurance product id
+     * 
+     */
+    void deleteEntities(Long insuranceProductId);
 }

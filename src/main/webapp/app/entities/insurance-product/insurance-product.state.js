@@ -52,127 +52,60 @@
                 }]
             }
         })
-        .state('insurance-product-detail', {
-            parent: 'insurance-product',
-            url: '/insurance-product/{id}',
-            data: {
-                authorities: ['ROLE_USER'],
-                pageTitle: 'whatscoverApp.insuranceProduct.detail.title'
-            },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/insurance-product/insurance-product-detail.html',
-                    controller: 'InsuranceProductDetailController',
-                    controllerAs: 'vm'
-                }
-            },
-            resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('insuranceProduct');
-                    $translatePartialLoader.addPart('gender');
-                    return $translate.refresh();
-                }],
-                entity: ['$stateParams', 'InsuranceProduct', function($stateParams, InsuranceProduct) {
+        .state(generateProductManagementState('insurance-product-detail', 'insurance-product',
+        		'/insurance-product/{id}', ['$stateParams','InsuranceProduct', function($stateParams, InsuranceProduct) {
                     return InsuranceProduct.get({id : $stateParams.id}).$promise;
-                }],
-                previousState: ["$state", function ($state) {
-                    var currentStateData = {
-                        name: $state.current.name || 'insurance-product',
-                        params: $state.params,
-                        url: $state.href($state.current.name, $state.params)
-                    };
-                    return currentStateData;
-                }]
-            }
-        })
-        .state('insurance-product-detail.edit', {
-            parent: 'insurance-product-detail',
-            url: '/detail/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/insurance-product/insurance-product-dialog.html',
-                    controller: 'InsuranceProductDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['InsuranceProduct', function(InsuranceProduct) {
-                            return InsuranceProduct.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('^', {}, { reload: false });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
-        .state('insurance-product.edit', {
-            parent: 'insurance-product',
-            url: '/{id}/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            views: {
-                'content@': {
-                    template: '<tabs data="tabData" type="tabs"></tabs><div ui-view="view1"></div>',
-                    controller: 'InsuranceProductRegistrationController',
-                    controllerAs: 'vm'
-                }
-            },
-            resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('insuranceProduct');
-                    $translatePartialLoader.addPart('gender');
-                    $translatePartialLoader.addPart('insuranceProductPremiumRate');
-                    $translatePartialLoader.addPart('global');
-                    return $translate.refresh();
-                }],
-                entity: ['$stateParams','InsuranceProduct', function($stateParams, InsuranceProduct) {
+                }], true))
+        .state(generateProductManagementTabState('insurance-product-detail.general', 'insurance-product-detail',
+        		'/general', 'app/entities/insurance-product/insurance-product-registration.html'))
+        .state(generateProductManagementTabState('insurance-product-detail.premiumrate', 'insurance-product-detail',
+        		'/premiumrate', 'app/entities/insurance-product/premium-rate/premium-rates.html')) 
+        .state(generateProductManagementState('insurance-product.edit', 'insurance-product',
+        		'/{id}/edit', ['$stateParams','InsuranceProduct', function($stateParams, InsuranceProduct) {
                     return InsuranceProduct.get({id : $stateParams.id}).$promise;
-                }],
-                pagingParams: ['PaginationUtil', function (PaginationUtil) {
-                    return {
-                        page: PaginationUtil.parsePage('1'),
-                        sort: 'id,asc',
-                        predicate: PaginationUtil.parsePredicate('id,asc'),
-                        ascending: PaginationUtil.parseAscending('id,asc'),
-                        search: null
-                    };
-                }],
-                previousState: ["$state", function ($state) {
-                    var currentStateData = {
-                        name: $state.current.name || 'insurance-product',
-                        params: $state.params,
-                        url: $state.href($state.current.name, $state.params)
-                    };
-                    return currentStateData;
-                }]
-            }
-        })
-        .state('insurance-product.edit.general', {
-        	parent: 'insurance-product.edit',
-            url:         '/general',
-            views: {
-                "view1": {
-                    //controller: "InsuranceProductRegistrationController as vm",
-                    templateUrl: "app/entities/insurance-product/insurance-product-registration.html",
-                }
-            }
-        })
-        .state('insurance-product.edit.premiumrate', {
-        	parent: 'insurance-product.edit',
-            url:         '/premiumrate',
-            views: {
-                "view1": {
-                    //controller: "InsuranceProductRegistrationController as vm",
-                    templateUrl: "app/entities/insurance-product/premium-rate/premium-rates.html",
-                }
-            }
-        })       
+                }], false))
+        .state(generateProductManagementTabState('insurance-product.edit.general', 'insurance-product.edit',
+        		'/general', 'app/entities/insurance-product/insurance-product-registration.html'))
+        .state(generateProductManagementTabState('insurance-product.edit.premiumrate', 'insurance-product.edit',
+        		'/premiumrate', 'app/entities/insurance-product/premium-rate/premium-rates.html'))          
+        .state(generateProductManagementState('insurance-product.registration', 'insurance-product',
+        		'/registration', function (){
+					   return {
+				           code: null,
+				           name: null,
+				           shortDescription: null,
+				           longDescription: null,
+				           minEntryAgeLastBday: null,
+				           maxEntryAgeLastBday: null,
+				           minSumAssured: null,
+				           maxSumAssured: null,
+				           premUnit: null,
+				           prodWeightLife: null,
+				           prodWeightMedical: null,
+				           gender: null,
+				           productWeightPA: null,
+				           productWeightHospIncome: null,
+				           productWeightCI: null,
+				           productWeightCancer: null,
+				           id: null
+				       };
+				   }, false))
+		.state(generateProductManagementTabState('insurance-product.registration.general', 'insurance-product.registration',
+        		'/general', 'app/entities/insurance-product/insurance-product-registration.html'))
+        .state(generateProductManagementTabState('insurance-product.registration.premiumrate', 'insurance-product.registration',
+        		'/premiumrate', 'app/entities/insurance-product/premium-rate/premium-rates.html'))
+        .state(generateFindEntityStateObj('insurance-product.registration.dialog-find-company', 'insurance-product.registration.general',
+        		'/findCompany?page&sort&search', 'app/entities/common-ui/common-dialog-find-company.html', 'CommonDialogFindCompanyController',
+        		'insuranceProductCompanyUpdate', 'insuranceCompany'))
+        .state(generateFindEntityStateObj('insurance-product.edit.dialog-find-company', 'insurance-product.edit.general',
+        		'/findCompany?page&sort&search', 'app/entities/common-ui/common-dialog-find-company.html', 'CommonDialogFindCompanyController',
+        		'insuranceProductCompanyUpdate', 'insuranceCompany'))
+        .state(generateFindEntityStateObj('insurance-product.registration.dialog-find-product-category', 'insurance-product.registration.general',
+        		'/findProductCategory?page&sort&search', 'app/entities/common-ui/common-dialog-find-product-category.html', 'CommonDialogFindProductCategoryController',
+        		'insuranceProductCategoryUpdate', 'productCategory'))
+        .state(generateFindEntityStateObj('insurance-product.edit.dialog-find-product-category', 'insurance-product.edit.general',
+        		'/findProductCategory?page&sort&search', 'app/entities/common-ui/common-dialog-find-product-category.html', 'CommonDialogFindProductCategoryController',
+        		'insuranceProductCategoryUpdate', 'productCategory'))
         .state('insurance-product.delete', {
             parent: 'insurance-product',
             url: '/{id}/delete',
@@ -196,100 +129,7 @@
                     $state.go('^');
                 });
             }]
-        })
-        .state('insurance-product.registration', {
-            parent: 'insurance-product',
-            url: '/registration',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            views: {
-                'content@': {
-                    template: '<tabs data="tabData" type="tabs"></tabs><div ui-view="view1"></div>',
-                    controller: 'InsuranceProductRegistrationController',
-                    controllerAs: 'vm'
-                }
-            },
-            resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('insuranceProduct');
-                    $translatePartialLoader.addPart('gender');
-                    $translatePartialLoader.addPart('insuranceProductPremiumRate');
-                    $translatePartialLoader.addPart('global');
-                    return $translate.refresh();
-                }],
-                entity: function () {
-                    return {
-                        code: null,
-                        name: null,
-                        shortDescription: null,
-                        longDescription: null,
-                        minEntryAgeLastBday: null,
-                        maxEntryAgeLastBday: null,
-                        minSumAssured: null,
-                        maxSumAssured: null,
-                        premUnit: null,
-                        prodWeightLife: null,
-                        prodWeightMedical: null,
-                        gender: null,
-                        productWeightPA: null,
-                        productWeightHospIncome: null,
-                        productWeightCI: null,
-                        productWeightCancer: null,
-                        id: null
-                    };
-                },
-                pagingParams: ['PaginationUtil', function (PaginationUtil) {
-                    return {
-                        page: PaginationUtil.parsePage('1'),
-                        sort: 'id,asc',
-                        predicate: PaginationUtil.parsePredicate('id,asc'),
-                        ascending: PaginationUtil.parseAscending('id,asc'),
-                        search: null
-                    };
-                }],
-                previousState: ["$state", function ($state) {
-                    var currentStateData = {
-                        name: $state.current.name || 'insurance-product',
-                        params: $state.params,
-                        url: $state.href($state.current.name, $state.params)
-                    };
-                    return currentStateData;
-                }]
-            }
-        })
-        .state('insurance-product.registration.general', {
-        	parent: 'insurance-product.registration',
-            url:         '/general',
-            views: {
-                "view1": {
-                    //controller: "InsuranceProductRegistrationController as vm",
-                    templateUrl: "app/entities/insurance-product/insurance-product-registration.html",
-                }
-            }
-        })
-        .state('insurance-product.registration.premiumrate', {
-        	parent: 'insurance-product.registration',
-            url:         '/premiumrate',
-            views: {
-                "view1": {
-                    //controller: "InsuranceProductRegistrationController as vm",
-                    templateUrl: "app/entities/insurance-product/premium-rate/premium-rates.html",
-                }
-            }
-        })       
-        .state(generateFindEntityStateObj('insurance-product.registration.dialog-find-company', 'insurance-product.registration.general',
-        		'/findCompany?page&sort&search', 'app/entities/common-ui/common-dialog-find-company.html', 'CommonDialogFindCompanyController',
-        		'insuranceProductCompanyUpdate', 'insuranceCompany'))
-        .state(generateFindEntityStateObj('insurance-product.edit.dialog-find-company', 'insurance-product.edit.general',
-        		'/findCompany?page&sort&search', 'app/entities/common-ui/common-dialog-find-company.html', 'CommonDialogFindCompanyController',
-        		'insuranceProductCompanyUpdate', 'insuranceCompany'))
-        .state(generateFindEntityStateObj('insurance-product.registration.dialog-find-product-category', 'insurance-product.registration.general',
-        		'/findProductCategory?page&sort&search', 'app/entities/common-ui/common-dialog-find-product-category.html', 'CommonDialogFindProductCategoryController',
-        		'insuranceProductCategoryUpdate', 'productCategory'))
-        .state(generateFindEntityStateObj('insurance-product.edit.dialog-find-product-category', 'insurance-product.edit.general',
-        		'/findProductCategory?page&sort&search', 'app/entities/common-ui/common-dialog-find-product-category.html', 'CommonDialogFindProductCategoryController',
-        		'insuranceProductCategoryUpdate', 'productCategory'));
+        });
     }
     
     /**
@@ -341,6 +181,77 @@
 	                 $state.go('^');
 	             });
 	        }]
+    	};
+
+    	return obj;
+    }
+    
+    /**
+     * generate Product Management State
+     */
+    function generateProductManagementState(name, parent, url, entity, isReadOnly){
+    	var obj = {
+    			name: name,
+    			parent: parent,
+                url: url,
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                views: {
+                    'content@': {
+                        template: '<tabs data="tabData" type="tabs"></tabs><div ui-view="view1"></div>',
+                        controller: 'InsuranceProductRegistrationController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('insuranceProduct');
+                        $translatePartialLoader.addPart('gender');
+                        $translatePartialLoader.addPart('insuranceProductPremiumRate');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }],
+                    entity: entity,
+                    isReadOnly: function(){
+                    	return isReadOnly; 
+                    },
+                    pagingParams: ['PaginationUtil', function (PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage('1'),
+                            sort: 'id,asc',
+                            predicate: PaginationUtil.parsePredicate('id,asc'),
+                            ascending: PaginationUtil.parseAscending('id,asc'),
+                            search: null
+                        };
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'insurance-product',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+        	};
+
+        	return obj;
+    }
+    
+    /**
+     * generate Product Management Tab State
+     */
+    function generateProductManagementTabState(name, parent, url, templateUrl){
+    	var obj = {
+			name: name,
+			parent: parent,
+            url: url,
+            views: {
+                "view1": {
+                    templateUrl: templateUrl,
+                }
+            }
     	};
 
     	return obj;

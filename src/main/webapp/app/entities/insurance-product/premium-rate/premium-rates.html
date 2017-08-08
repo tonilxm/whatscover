@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ng-click="vm.addRow()" >
+                <button class="btn btn-primary" ng-click="vm.addRow()" ng-if="vm.isShowBtns">
                     <span class="glyphicon glyphicon-plus"></span>
                     <span class="hidden-xs-down"  data-translate="Add Row">
                         Add Row
@@ -31,24 +31,24 @@
             <tbody>
                 <tr ng-repeat="insuranceProductPremiumRate in vm.insuranceProductPremiumRates | filter:{ status: '!DELETE'} track by $index">
                     <td class="hidden">{{insuranceProductPremiumRate.id}}</td>
-                    <td><a e-required e-placeholder="This Field is Required" e-form="entryAgeForm" onbeforesave="vm.checkEmptyData($data)" e-clickable="true" editable-number="insuranceProductPremiumRate.entryAge" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.entryAge || 'whatscoverApp.insuranceProductPremiumRate.enter.entryAge'|translate }}</a></td>
-                    <td><a e-required e-placeholder="This Field is Required" e-form="maleRateForm" e-clickable="true" editable-number="insuranceProductPremiumRate.malePremiumRate" e-step="any" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.malePremiumRate || 'whatscoverApp.insuranceProductPremiumRate.enter.malePremiumRate'|translate}}</a></td>
-                    <td><a e-required e-placeholder="This Field is Required" e-form="femaleRateForm" e-clickable="true" editable-number="insuranceProductPremiumRate.femalePremiumRate" e-step="any" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.femalePremiumRate || 'whatscoverApp.insuranceProductPremiumRate.enter.femalePremiumRate'|translate}}</td>
-                    <td><a editable-text="insuranceProductPremiumRate.plan" e-max="5" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{insuranceProductPremiumRate.plan || 'whatscoverApp.insuranceProductPremiumRate.enter.plan'|translate}}</td>
+                    <td><a e-required edit-disabled="vm.isReadOnly" e-placeholder="This Field is Required" e-form="entryAgeForm" onbeforesave="vm.checkEmptyData($data)" e-clickable="true" editable-number="insuranceProductPremiumRate.entryAge" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.entryAge || 'whatscoverApp.insuranceProductPremiumRate.enter.entryAge'|translate }}</a></td>
+                    <td><a e-required edit-disabled="vm.isReadOnly" e-placeholder="This Field is Required" e-form="maleRateForm" e-clickable="true" editable-number="insuranceProductPremiumRate.malePremiumRate" e-step="any" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.malePremiumRate || 'whatscoverApp.insuranceProductPremiumRate.enter.malePremiumRate'|translate}}</a></td>
+                    <td><a e-required edit-disabled="vm.isReadOnly" e-placeholder="This Field is Required" e-form="femaleRateForm" e-clickable="true" editable-number="insuranceProductPremiumRate.femalePremiumRate" e-step="any" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.femalePremiumRate || 'whatscoverApp.insuranceProductPremiumRate.enter.femalePremiumRate'|translate}}</td>
+                    <td><a edit-disabled="vm.isReadOnly" editable-text="insuranceProductPremiumRate.plan" e-max="5" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{insuranceProductPremiumRate.plan || 'whatscoverApp.insuranceProductPremiumRate.enter.plan'|translate}}</td>
                     <td class="hidden">
                         <a ui-sref="insurance-product-detail({id:insuranceProductPremiumRate.insuranceProductId})">{{insuranceProductPremiumRate.insuranceProductId}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
-                            <button type="submit" ng-click="vm.removeRow(insuranceProductPremiumRate.id, insuranceProductPremiumRate.index)"
+                            <button type="submit" ng-click="vm.removeRow(insuranceProductPremiumRate.id, insuranceProductPremiumRate.index)" ng-if="vm.isShowBtns"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
                             </button>
                         </div>
-                        <button type="button" id="{{ 'buttonEntryAgeForm-' + insuranceProductPremiumRate.id + insuranceProductPremiumRate.index }}" class="btn btn-default hidden" ng-click="entryAgeForm.$show()"></button>
-						<button type="button" id="{{ 'buttonMaleRateForm-' + insuranceProductPremiumRate.id + insuranceProductPremiumRate.index }}" class="btn btn-default hidden" ng-click="maleRateForm.$show()"></button>
-						<button type="button" id="{{ 'buttonFemaleRateForm-' + insuranceProductPremiumRate.id + insuranceProductPremiumRate.index }}" class="btn btn-default hidden" ng-click="femaleRateForm.$show()"></button>
+                        <button type="button" id="{{ 'buttonEntryAgeForm-' + insuranceProductPremiumRate.id + insuranceProductPremiumRate.index }}" class="btn btn-default hidden" ng-click="entryAgeForm.$show()" ng-if="vm.isShowBtns"></button>
+						<button type="button" id="{{ 'buttonMaleRateForm-' + insuranceProductPremiumRate.id + insuranceProductPremiumRate.index }}" class="btn btn-default hidden" ng-click="maleRateForm.$show()" ng-if="vm.isShowBtns"></button>
+						<button type="button" id="{{ 'buttonFemaleRateForm-' + insuranceProductPremiumRate.id + insuranceProductPremiumRate.index }}" class="btn btn-default hidden" ng-click="femaleRateForm.$show()" ng-if="vm.isShowBtns"></button>
                     </td>
                 </tr>
             </tbody>

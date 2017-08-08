@@ -1,6 +1,8 @@
 package com.whatscover.web.rest.util;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -64,5 +66,54 @@ public final class PaginationUtil {
         link += "<" + generateUri(baseUrl, 0, page.getSize()) + "&query=" + escapedQuery + ">; rel=\"first\"";
         headers.add(HttpHeaders.LINK, link);
         return headers;
+    }
+    
+    /**
+     * generate default Pageable object
+     * @return
+     */
+    public static Pageable generateDefaultPageable() {
+    	return new Pageable() {
+			
+			@Override
+			public Pageable previousOrFirst() {
+				return null;
+			}
+			
+			@Override
+			public Pageable next() {
+				return null;
+			}
+			
+			@Override
+			public boolean hasPrevious() {
+				return false;
+			}
+			
+			@Override
+			public Sort getSort() {
+				return null;
+			}
+			
+			@Override
+			public int getPageSize() {
+				return 0;
+			}
+			
+			@Override
+			public int getPageNumber() {
+				return 0;
+			}
+			
+			@Override
+			public int getOffset() {
+				return 0;
+			}
+			
+			@Override
+			public Pageable first() {
+				return null;
+			}
+		};
     }
 }

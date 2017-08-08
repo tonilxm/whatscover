@@ -97,10 +97,6 @@ public class InsuranceProductResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
         
-        //InsuranceProductDTO result = insuranceProductService.save(insuranceProductDTO);
-        /*return ResponseEntity.created(new URI("/api/insurance-products/" + 100))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, "100"))
-            .body(new InsuranceProductDTO());*/
     }
     
     @PutMapping("/saveInsuranceProduct")
@@ -185,6 +181,7 @@ public class InsuranceProductResource {
     @Timed
     public ResponseEntity<Void> deleteInsuranceProduct(@PathVariable Long id) {
         log.debug("REST request to delete InsuranceProduct : {}", id);
+        insuranceProductPremiumRateService.deleteEntities(id);
         insuranceProductService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }

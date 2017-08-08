@@ -23,7 +23,6 @@ public class InsuranceProductPremiumRateSearchRepositoryImpl implements Insuranc
         List<InsuranceProductPremiumRate> searchResultList = entityManager.createQuery(searchSql, InsuranceProductPremiumRate.class)
             .setParameter("insuranceProductId", insuranceProductId)
             .setFirstResult((pageable.getPageSize() * pageable.getPageNumber()))
-            .setMaxResults(pageable.getPageSize())
             .getResultList();
 
         String totalRecordSql = "select count(*) from InsuranceProductPremiumRate pr where pr.insuranceProduct.id = :insuranceProductId";

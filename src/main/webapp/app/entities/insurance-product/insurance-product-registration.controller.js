@@ -5,13 +5,13 @@
         .module('whatscoverApp')
         .controller('InsuranceProductRegistrationController', InsuranceProductRegistrationController);
 
-    InsuranceProductRegistrationController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'InsuranceProduct', 'InsuranceCompany', '$state', '$rootScope', 'InsuranceProductPremiumRate', 'InsuranceProductPremiumRateSearch', 'AlertService', 'paginationConstants', 'pagingParams', 'ParseLinks', 'ProductCategory'];
+    InsuranceProductRegistrationController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'InsuranceProduct', 'InsuranceCompany', '$state', '$rootScope', 'InsuranceProductPremiumRate', 'InsuranceProductPremiumRateSearch', 'AlertService', 'paginationConstants', 'pagingParams', 'ParseLinks', 'ProductCategory', 'isReadOnly'];
 
-    function InsuranceProductRegistrationController ($timeout, $scope, $stateParams, entity, InsuranceProduct, InsuranceCompany, $state, $rootScope, InsuranceProductPremiumRate, InsuranceProductPremiumRateSearch, AlertService, paginationConstants, pagingParams, ParseLinks, ProductCategory) {
+    function InsuranceProductRegistrationController ($timeout, $scope, $stateParams, entity, InsuranceProduct, InsuranceCompany, $state, $rootScope, InsuranceProductPremiumRate, InsuranceProductPremiumRateSearch, AlertService, paginationConstants, pagingParams, ParseLinks, ProductCategory, isReadOnly) {
         var vm = this;
        
         vm.insuranceProduct = entity;
-        console.log(entity);
+        //console.log(entity);
         vm.insuranceProductPremiumRates = [];
         vm.clear = clear;
         vm.save = save;
@@ -34,6 +34,9 @@
         vm.checkEmptyData = checkEmptyData;
         
         vm.cancel = cancel;
+        vm.isReadOnly = isReadOnly;
+        vm.isShowBtns = !isReadOnly;
+        console.log("readonly : "+vm.isReadOnly+ " -- btns : "+vm.isShowBtns);
         
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -112,7 +115,7 @@
             $scope.go = function(state) {
               $state.go(state);
             };
-
+            console.log($state.current.parent);
             $scope.tabData   = [
               {
                 heading: '<i>General</i>',

@@ -14,7 +14,7 @@
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.code" for="field_code">Code</label>
             <input type="text" class="form-control" name="code" id="field_code"
-                    ng-model="vm.insuranceProduct.code"
+                    ng-model="vm.insuranceProduct.code" ng-readonly="vm.isReadOnly"
                     required ng-maxlength="100"/>
             <div ng-show="editForm.code.$invalid">
                 <p class="help-block"
@@ -30,7 +30,7 @@
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.insuranceProduct.name"
+                    ng-model="vm.insuranceProduct.name" ng-readonly="vm.isReadOnly"
                     required ng-maxlength="200"/>
             <div ng-show="editForm.name.$invalid">
                 <p class="help-block"
@@ -45,7 +45,7 @@
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.gender" for="field_gender">Gender</label>
-            <select class="form-control" name="gender" ng-model="vm.insuranceProduct.gender" id="field_gender">
+            <select class="form-control" name="gender" ng-disabled="vm.isReadOnly" ng-model="vm.insuranceProduct.gender" id="field_gender">
                 <option value="MALE" data-translate="whatscoverApp.Gender.MALE">MALE</option>
                 <option value="FEMALE" data-translate="whatscoverApp.Gender.FEMALE">FEMALE</option>
             </select>
@@ -53,12 +53,14 @@
         
         <div class="form-group">
             <label data-translate="whatscoverApp.insuranceProduct.productCategory" for="field_productCategory">Product Category</label>
-            <input type="text" class="form-control" id="field_productCategory" name="productCategory"
+            <div class="form-inline">
+            	<input type="text" class="form-control" id="field_productCategory" name="productCategory"
                     ng-bind="vm.insuranceProduct.productCategoryId" ng-value="vm.insuranceProduct.productCategoryName" readonly />
-            <button type="submit" ui-sref="{{vm.childStateProductCategory}}" class="btn btn-info btn-sm">
-                <span class="glyphicon glyphicon-eye-open"></span>
-                <span class="hidden-sm-down" data-translate="Find Product Category"></span>
-            </button>
+	            <button type="submit" ui-sref="{{vm.childStateProductCategory}}" class="btn btn-info btn-sm" ng-if="vm.isShowBtns">
+	                <span class="glyphicon glyphicon-eye-open"></span>
+	                <span class="hidden-sm-down" data-translate="Find Product Category"></span>
+	            </button>
+            </div>
         </div>
         <div ng-show="editForm.productCategory.$invalid">
             <p class="help-block"
@@ -69,12 +71,14 @@
         
         <div class="form-group">
             <label data-translate="whatscoverApp.insuranceProduct.insuranceCompany" for="field_insuranceCompany">Insurance Company</label>
-            <input type="text" class="form-control" id="field_insuranceCompany" name="insuranceCompany"
+            <div class="form-inline">
+            	<input type="text" class="form-control" id="field_insuranceCompany" name="insuranceCompany"
                     ng-bind="vm.insuranceProduct.insuranceCompanyId" ng-value="vm.insuranceProduct.insuranceCompanyName" readonly />
-            <button type="submit" ui-sref="{{vm.childStateCompany}}" class="btn btn-info btn-sm">
-                <span class="glyphicon glyphicon-eye-open"></span>
-                <span class="hidden-sm-down" data-translate="Find Company"></span>
-            </button>
+	            <button type="submit" ui-sref="{{vm.childStateCompany}}" class="btn btn-info btn-sm" ng-if="vm.isShowBtns">
+	                <span class="glyphicon glyphicon-eye-open"></span>
+	                <span class="hidden-sm-down" data-translate="Find Company"></span>
+	            </button>
+            </div>
         </div>
         <div ng-show="editForm.insuranceCompany.$invalid">
             <p class="help-block"
@@ -86,7 +90,7 @@
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.shortDescription" for="field_shortDescription">Short Description</label>
             <input type="text" class="form-control" name="shortDescription" id="field_shortDescription"
-                    ng-model="vm.insuranceProduct.shortDescription"
+                    ng-model="vm.insuranceProduct.shortDescription" ng-readonly="vm.isReadOnly"
                     ng-maxlength="250"/>
             <div ng-show="editForm.shortDescription.$invalid">
                 <p class="help-block"
@@ -98,7 +102,7 @@
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.longDescription" for="field_longDescription">Long Description</label>
             <input type="text" class="form-control" name="longDescription" id="field_longDescription"
-                    ng-model="vm.insuranceProduct.longDescription"
+                    ng-model="vm.insuranceProduct.longDescription" ng-readonly="vm.isReadOnly"
                     ng-maxlength="500"/>
             <div ng-show="editForm.longDescription.$invalid">
                 <p class="help-block"
@@ -111,78 +115,81 @@
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.minEntryAgeLastBday" for="field_minEntryAgeLastBday">Min Entry Age Last Bday</label>
             <input type="number" class="form-control" name="minEntryAgeLastBday" id="field_minEntryAgeLastBday"
-                    ng-model="vm.insuranceProduct.minEntryAgeLastBday"
+                    ng-model="vm.insuranceProduct.minEntryAgeLastBday" ng-readonly="vm.isReadOnly"
                     />
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.maxEntryAgeLastBday" for="field_maxEntryAgeLastBday">Max Entry Age Last Bday</label>
             <input type="number" class="form-control" name="maxEntryAgeLastBday" id="field_maxEntryAgeLastBday"
-                    ng-model="vm.insuranceProduct.maxEntryAgeLastBday"
+                    ng-model="vm.insuranceProduct.maxEntryAgeLastBday" ng-readonly="vm.isReadOnly"
                     />
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.minSumAssured" for="field_minSumAssured">Min Sum Assured</label>
             <input type="number" class="form-control" name="minSumAssured" id="field_minSumAssured"
-                    ng-model="vm.insuranceProduct.minSumAssured"
+                    ng-model="vm.insuranceProduct.minSumAssured" ng-readonly="vm.isReadOnly"
                     />
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.maxSumAssured" for="field_maxSumAssured">Max Sum Assured</label>
             <input type="number" class="form-control" name="maxSumAssured" id="field_maxSumAssured"
-                    ng-model="vm.insuranceProduct.maxSumAssured"
+                    ng-model="vm.insuranceProduct.maxSumAssured" ng-readonly="vm.isReadOnly"
                     />
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.premUnit" for="field_premUnit">Prem Unit</label>
             <input type="number" class="form-control" name="premUnit" id="field_premUnit"
-                    ng-model="vm.insuranceProduct.premUnit"
+                    ng-model="vm.insuranceProduct.premUnit" ng-readonly="vm.isReadOnly"
                     />
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.prodWeightLife" for="field_prodWeightLife">Prod Weight Life</label>
             <input type="number" class="form-control" name="prodWeightLife" id="field_prodWeightLife"
-                    ng-model="vm.insuranceProduct.prodWeightLife"
+                    ng-model="vm.insuranceProduct.prodWeightLife" ng-readonly="vm.isReadOnly"
                     />
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightCI" for="field_productWeightCI">Product Weight CI</label>
             <input type="number" class="form-control" name="productWeightCI" id="field_productWeightCI"
-                    ng-model="vm.insuranceProduct.productWeightCI"
+                    ng-model="vm.insuranceProduct.productWeightCI" ng-readonly="vm.isReadOnly"
                     />
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.prodWeightMedical" for="field_prodWeightMedical">Prod Weight Medical</label>
             <input type="number" class="form-control" name="prodWeightMedical" id="field_prodWeightMedical"
-                    ng-model="vm.insuranceProduct.prodWeightMedical"
+                    ng-model="vm.insuranceProduct.prodWeightMedical" ng-readonly="vm.isReadOnly"
                     />
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightCancer" for="field_productWeightCancer">Product Weight Cancer</label>
             <input type="number" class="form-control" name="productWeightCancer" id="field_productWeightCancer"
-                    ng-model="vm.insuranceProduct.productWeightCancer"
+                    ng-model="vm.insuranceProduct.productWeightCancer" ng-readonly="vm.isReadOnly"
                     />
         </div>
        
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightPA" for="field_productWeightPA">Product Weight PA</label>
             <input type="number" class="form-control" name="productWeightPA" id="field_productWeightPA"
-                    ng-model="vm.insuranceProduct.productWeightPA"
+                    ng-model="vm.insuranceProduct.productWeightPA" ng-readonly="vm.isReadOnly"
                     />
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="whatscoverApp.insuranceProduct.productWeightHospIncome" for="field_productWeightHospIncome">Product Weight Hosp Income</label>
             <input type="number" class="form-control" name="productWeightHospIncome" id="field_productWeightHospIncome"
-                    ng-model="vm.insuranceProduct.productWeightHospIncome"
+                    ng-model="vm.insuranceProduct.productWeightHospIncome" ng-readonly="vm.isReadOnly"
                     />
         </div>
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.cancel()">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.cancel()" ng-if="vm.isShowBtns">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary" ng-if="vm.isShowBtns">
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+        <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="vm.cancel()" ng-if="!vm.isShowBtns">
+            <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
         </button>
     </div>
 </form>

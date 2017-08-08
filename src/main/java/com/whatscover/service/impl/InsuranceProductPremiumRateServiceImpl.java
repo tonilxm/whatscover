@@ -17,6 +17,7 @@ import com.whatscover.repository.search.InsuranceProductPremiumRateSearchReposit
 import com.whatscover.service.InsuranceProductPremiumRateService;
 import com.whatscover.service.dto.InsuranceProductPremiumRateDTO;
 import com.whatscover.service.mapper.InsuranceProductPremiumRateMapper;
+import com.whatscover.web.rest.util.PaginationUtil;
 
 /**
  * Service Implementation for managing InsuranceProductPremiumRate.
@@ -143,5 +144,17 @@ public class InsuranceProductPremiumRateServiceImpl implements InsuranceProductP
 		log.debug("Request to search for a page of InsuranceProductPremiumRate by productid for query {}", insuranceProductId);
         Page<InsuranceProductPremiumRate> result = insuranceProductPremiumRateSearchRepository.searchByInsuranceProductId(insuranceProductId, pageable);
         return result.map(insuranceProductPremiumRateMapper::toDto);
+	}
+
+	/**
+	 * delete entities by insurance product id
+	 * @param : Long insuranceProductId
+	 */
+	@Override
+	public void deleteEntities(Long insuranceProductId) {
+		log.debug("Request to delete InsuranceProductPremiumRate entities by insurance product id : {}", insuranceProductId);
+		Page<InsuranceProductPremiumRate> result = insuranceProductPremiumRateSearchRepository.searchByInsuranceProductId(insuranceProductId, PaginationUtil.generateDefaultPageable());
+		insuranceProductPremiumRateRepository.delete(result.getContent());
+        insuranceProductPremiumRateSearchRepository.delete(result.getContent());
 	}
 }

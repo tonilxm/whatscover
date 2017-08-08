@@ -1,42 +1,5 @@
 package com.whatscover.web.rest;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-import javax.validation.Valid;
-
-import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.codahale.metrics.annotation.Timed;
 import com.whatscover.config.Constants;
 import com.whatscover.domain.User;
@@ -46,12 +9,30 @@ import com.whatscover.service.MailService;
 import com.whatscover.service.UserService;
 import com.whatscover.service.dto.AgentProfileDTO;
 import com.whatscover.service.exception.BusinessException;
+import com.whatscover.service.util.PropertiesReader;
 import com.whatscover.service.util.RandomUtil;
 import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
-
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing AgentProfile.
@@ -65,13 +46,15 @@ public class AgentProfileResource {
     private static final String ENTITY_NAME = "agentProfile";
 
     private final AgentProfileService agentProfileService;
-    
+
 	private final AgentProfileRepository agentProfileRepository;
-    
+
     private final MailService mailService;
-    
+
     private final UserService userService;
- 
+
+    //private String directory = PropertiesReader.getPropertiesValue("directory");
+
     public AgentProfileResource(AgentProfileService agentProfileService, AgentProfileRepository agentProfileRepository, MailService mailService, UserService userService) {
         this.agentProfileService = agentProfileService;
         this.agentProfileRepository = agentProfileRepository;
@@ -123,12 +106,12 @@ public class AgentProfileResource {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
 					"messages.error.accountexists", "This Account already created")).body(null);
         }
-        
+
         return ResponseEntity.created(new URI("/api/agent-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-    
+
     /**
      * PUT  /agent-profiles : Updates an existing agentProfile.
      *
@@ -147,7 +130,8 @@ public class AgentProfileResource {
         }
 		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
 
-		File files = new File(Constants.DEFAULT_SYSTEM_DIRECTORY);
+        String directory = PropertiesReader.getPropertiesValue("directory");
+        File files = new File(directory);
 		processImgUpload(agentProfileDTO, files);
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         return ResponseEntity.ok()
@@ -156,8 +140,9 @@ public class AgentProfileResource {
     }
 
 	protected void processImgUpload(AgentProfileDTO agentProfileDTO, File files) {
-		File oldFile = new File(Constants.DEFAULT_SYSTEM_DIRECTORY + "\\test.JPG");
-		File newFile = new File(Constants.DEFAULT_SYSTEM_DIRECTORY + "\\" + newFormatImg(agentProfileDTO));
+        String directory = PropertiesReader.getPropertiesValue("directory");
+		File oldFile = new File(directory + "\\test.JPG");
+		File newFile = new File(directory + "\\" + newFormatImg(agentProfileDTO));
 		renameFile(oldFile, newFile);
 		agentProfileDTO.setPhoto_dir(destination(files, newFormatImg(agentProfileDTO)));
 	}
@@ -213,7 +198,7 @@ public class AgentProfileResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/agent-profiles");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-    
+
     @PostMapping("/send-email-profiles")
     @Timed
     public ResponseEntity<AgentProfileDTO> getSendEmailAgentProfiles(@Valid @RequestBody AgentProfileDTO agentProfileDTO) {
@@ -233,14 +218,15 @@ public class AgentProfileResource {
         mailService.sendEmail(agentProfileDTO.getEmail(), Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, false, true);
         return ResponseEntity.ok().headers(HeaderUtil.createEntitySendEmailAlert(ENTITY_NAME, "Send Email Alert")).build();
     }
-    
+
     @PostMapping("/upload-file")
     @Timed
     public String handleFormUpload( @RequestParam(value="uploadFile") String uploadFile) throws IOException {
     	log.debug("REST request to Email AgentProfile : {}", uploadFile.length());
-    	File files = new File(Constants.DEFAULT_SYSTEM_DIRECTORY);
+        String directory = PropertiesReader.getPropertiesValue("directory");
+    	File files = new File(directory);
 		createDirectory(files);
-		wireBase64ToNewImg(uploadFile, Constants.DEFAULT_SYSTEM_DIRECTORY + "\\test.JPG");
+		wireBase64ToNewImg(uploadFile, directory + "\\test.JPG");
     	return "";
     }
 
@@ -249,7 +235,7 @@ public class AgentProfileResource {
     		String imageDataBytes = completeImageData.substring(completeImageData.indexOf(",")+1);
     		byte byteArray[] = new byte[(int)imageDataBytes.length()];
 
-    		FileOutputStream fos = new FileOutputStream(destination); 
+    		FileOutputStream fos = new FileOutputStream(destination);
     		byteArray = Base64.decodeBase64(imageDataBytes);
     		fos.write(byteArray);
     		fos.close();
@@ -257,7 +243,7 @@ public class AgentProfileResource {
         catch (Exception e) {
         	System.err.println(e.getMessage());
         }
-    	
+
     }
 
     /**

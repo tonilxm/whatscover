@@ -15,7 +15,8 @@ import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.codec.binary.Base64;
+import springfox.documentation.spring.web.json.Json;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,10 +25,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -52,6 +53,8 @@ public class AgentProfileResource {
     private final MailService mailService;
 
     private final UserService userService;
+    
+    private final String fileUploadDir = PropertiesReader.getPropertiesValue("directory");
 
     //private String directory = PropertiesReader.getPropertiesValue("directory");
 
@@ -128,62 +131,39 @@ public class AgentProfileResource {
         if (agentProfileDTO.getId() == null) {
             return createAgentProfile(agentProfileDTO);
         }
-		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
-
-        String directory = PropertiesReader.getPropertiesValue("directory");
-        File files = new File(directory);
-		processImgUpload(agentProfileDTO, files);
+		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), 
+				agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), 
+				Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, agentProfileDTO.getId().toString()))
             .body(result);
     }
-
-	protected void processImgUpload(AgentProfileDTO agentProfileDTO, File files) {
-        String directory = PropertiesReader.getPropertiesValue("directory");
-		File oldFile = new File(directory + "\\test.JPG");
-		File newFile = new File(directory + "\\" + newFormatImg(agentProfileDTO));
-		renameFile(oldFile, newFile);
-		agentProfileDTO.setPhoto_dir(destination(files, newFormatImg(agentProfileDTO)));
-	}
-
-	protected String destination(File files, String newFormatImg) {
-		StringBuilder destination = new StringBuilder();
-		destination.append(files.getPath()).append("\\").append(newFormatImg);
-
-		return destination.toString();
-	}
-
-	protected String newFormatImg(AgentProfileDTO agentProfileDTO) {
-		StringBuilder photo_dir = new StringBuilder();
-		photo_dir.append(agentProfileDTO.getUserId()).append("_").append(agentProfileDTO.getId()).append(".JPG");
-		return photo_dir.toString();
-	}
-
-	protected void createDirectory(File files) {
-		try {
-			if (!files.exists()) {
-				if (files.mkdirs()) {
-					System.out.println("Multiple directories are created!");
-				} else {
-					System.out.println("Failed to create multiple directories!");
-				}
-			}
-		} catch (Exception e) {
-			System.out.println("Cannot create multiple directories " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-	protected void renameFile(File oldFile, File newFile) {
-        if(oldFile.renameTo(newFile)){
-            System.out.println("File rename success");;
-        }else{
-        	newFile.delete();
-        	oldFile.renameTo(newFile);
-            System.out.println("File rename failed");
+    
+    @PostMapping(value = "/upload-file", consumes = "multipart/form-data", produces = "text/plain")
+    @Timed
+    public @ResponseBody String handleFormUpload( @RequestParam(value="files") MultipartFile[] uploadingFiles) throws IOException {
+    	log.debug("REST request to Email AgentProfile : {}", uploadingFiles.length);
+    	String filePath = "";
+    	for(MultipartFile uploadedFile : uploadingFiles) {
+            File file = new File(fileUploadDir + "/" + uploadedFile.getOriginalFilename());
+            filePath = file.getPath();
+            uploadedFile.transferTo(file);
         }
-	}
+    	return filePath;
+    }
+
+    /*@PostMapping("/upload-file")
+    @Timed
+    public String handleFormUpload( @RequestParam(value="uploadFile") String uploadFile) throws IOException {
+    	log.debug("REST request to Email AgentProfile : {}", uploadFile.length());
+        String directory = PropertiesReader.getPropertiesValue("directory");
+    	File files = new File(directory);
+		createDirectory(files);
+		wireBase64ToNewImg(uploadFile, directory + "\\test.JPG");
+    	return "";
+    }*/
+
     /**
      * GET  /agent-profiles : get all the agentProfiles.
      *
@@ -217,33 +197,6 @@ public class AgentProfileResource {
 		}
         mailService.sendEmail(agentProfileDTO.getEmail(), Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, Constants.AGENT_EMAIL_SUBJECT_REGISTRATION, false, true);
         return ResponseEntity.ok().headers(HeaderUtil.createEntitySendEmailAlert(ENTITY_NAME, "Send Email Alert")).build();
-    }
-
-    @PostMapping("/upload-file")
-    @Timed
-    public String handleFormUpload( @RequestParam(value="uploadFile") String uploadFile) throws IOException {
-    	log.debug("REST request to Email AgentProfile : {}", uploadFile.length());
-        String directory = PropertiesReader.getPropertiesValue("directory");
-    	File files = new File(directory);
-		createDirectory(files);
-		wireBase64ToNewImg(uploadFile, directory + "\\test.JPG");
-    	return "";
-    }
-
-    protected void wireBase64ToNewImg (String completeImageData, String destination) {
-    	try{
-    		String imageDataBytes = completeImageData.substring(completeImageData.indexOf(",")+1);
-    		byte byteArray[] = new byte[(int)imageDataBytes.length()];
-
-    		FileOutputStream fos = new FileOutputStream(destination);
-    		byteArray = Base64.decodeBase64(imageDataBytes);
-    		fos.write(byteArray);
-    		fos.close();
-        }
-        catch (Exception e) {
-        	System.err.println(e.getMessage());
-        }
-
     }
 
     /**

@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('AgentProfileDialogController', AgentProfileDialogController);
 
-    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$window', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency', 'AgentProfileSendEmail', 'Upload', '$state', '$rootScope'];
+    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$window', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency', 'AgentProfileSendEmail', 'UploadService', '$state', '$rootScope', '$sce'];
 
-    function AgentProfileDialogController ($timeout, $scope, $stateParams, $window, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency, AgentProfileSendEmail, Upload, $state, $rootScope) {
+    function AgentProfileDialogController ($timeout, $scope, $stateParams, $window, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency, AgentProfileSendEmail, UploadService, $state, $rootScope, $sce) {
         var vm = this;
 
         vm.agentProfile = entity;
@@ -16,11 +16,14 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.sendEmail = sendEmail;
-        vm.uploadFile = uploadFile;
-        vm.validateFileType = validateFileType;
+//        vm.uploadFile = uploadFile;
+//        vm.validateFileType = validateFileType;
         vm.users = User.query();
         vm.insuranceCompanyState = $state.current.name + '.dialog-find-company';
         vm.insuranceAgencyState = $state.current.name + '.dialog-find-agency';
+        vm.fileData = null;
+        vm.currentFile = vm.agentProfile.photo_dir;
+        vm.newFileName = '';
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -34,10 +37,75 @@
         function save () {
             vm.isSaving = true;
             if (vm.agentProfile.id !== null) {
-                AgentProfile.update(vm.agentProfile, onSaveSuccess, onSaveError);
+            	var filePath = '';            	
+            	if ($scope.nameFromFilePath(vm.currentFile) != vm.newFileName) {
+	            	UploadService.upload(vm.fileData).then(function (data) {
+	            		filePath = data;
+	                    // set file path here
+	                    vm.agentProfile.photo_dir = filePath;
+	                    AgentProfile.update(vm.agentProfile, onSaveSuccess, onSaveError);
+	                });
+            	}
+            	
+            	if (!filePath) {
+                    AgentProfile.update(vm.agentProfile, onSaveSuccess, onSaveError);
+            	}
             } else {
                 AgentProfile.save(vm.agentProfile, onSaveSuccess, onSaveError);
             }
+        }
+        
+        $scope.trustSrc = function(src) {
+	    	console.log('test ==>' + src);
+	        return $sce.trustAsResourceUrl(src);
+        }
+        
+        $scope.nameFromFilePath = function(filePath) {
+        	var idxSlash = filePath.lastIndexOf('\\') + 1,
+        	fileLength = filePath.length;
+        	
+            return vm.currentFile.substr(idxSlash, fileLength);
+        }
+
+        $scope.fileNameChanged = function(element){
+        	var fileSize = 0,
+        	file = document.getElementById("fileInput").files[0];
+        	
+        	if (file) {
+        		fileSize = file.size;
+        	}
+		
+		    var sOutput = fileSize + " bytes";
+		    // optional code for multiples approximation
+		    for (var aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = fileSize / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+		        sOutput = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + fileSize + " bytes)";
+		    }
+		    // end of optional code
+		
+		    document.getElementById("fileSize").innerHTML = sOutput;
+		    
+		    // Upload file
+		    var formData = new FormData();
+		    formData.append('files', file);
+		    vm.fileData = formData;
+		    vm.newFileName = file.name;
+		    
+		    // preview file
+		    previewFile();
+        }
+        
+        function previewFile() {
+            var preview = document.getElementById('previewImg'),
+            file = document.querySelector('input[type=file]').files[0],
+            reader  = new FileReader();
+
+            if (file) {
+              reader.readAsDataURL(file);
+            }
+            
+            reader.onload = function (event) {
+            	preview.src = event.target.result;
+            };
         }
 
         function onSaveSuccess (result) {
@@ -86,7 +154,7 @@
 			}
         }
 
-        function validateFileType(){
+        /*function validateFileType(){
             var fileName = document.getElementById("field_photo_dir").value;
             var idxDot = fileName.lastIndexOf(".") + 1;
             var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
@@ -95,14 +163,14 @@
             }else{
                 alert("Only jpg/jpeg and png files are allowed!");
             }   
-        }
+        }*/
         
-        function uploadFile(){
+        /*function uploadFile(){
             var fileinput = document.getElementById("browse");
             fileinput.click();
-        }
+        }*/
 
-        $scope.fileNameChanged = function(element){
+        /*$scope.fileNameChanged = function(element){
             document.getElementById("tmp_photo_dir").value =  document.getElementById("browse").value;
        	     var uploadForm = new FormData();
 
@@ -130,6 +198,6 @@
                  };
                  reader.readAsDataURL(photofile);
             });
-       }
+       }*/
     }
 })();

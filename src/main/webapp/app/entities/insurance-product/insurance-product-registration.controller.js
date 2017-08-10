@@ -36,10 +36,21 @@
         vm.cancel = cancel;
         vm.isReadOnly = isReadOnly;
         vm.isShowBtns = !isReadOnly;
-        console.log("readonly : "+vm.isReadOnly+ " -- btns : "+vm.isShowBtns);
+        //console.log($stateParams);
+        //console.log($state.current.params.activeTabs.isTab1);
+        vm.isTab1 = $state.current.params.activeTabs.isTab1;
+        vm.isTab2 = $state.current.params.activeTabs.isTab2;
+        //console.log("readonly : "+vm.isReadOnly+ " -- btns : "+vm.isShowBtns);
         
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
+            if(vm.isTab1){
+        		angular.element( document.querySelector( '#view-general' ) ).removeClass('hidden');
+        		angular.element( document.querySelector( '#view-premium-rate' ) ).addClass('hidden');
+        	}else{
+        		angular.element( document.querySelector( '#view-general' ) ).addClass('hidden');
+        		angular.element( document.querySelector( '#view-premium-rate' ) ).removeClass('hidden');
+        	}
         });
 
         function clear () {
@@ -196,8 +207,8 @@
         	  var newPremiumRate = {
     			  "id" : null,
     			  "entryAge" : null,
-    			  "malePremiumRate" : null,
-    			  "femalePremiumRate" : null,
+    			  "malePremiumRate" : 0,
+    			  "femalePremiumRate" : 0,
     			  "plan" : null,
     			  "insuranceProductId" : null,
     			  "status" : "NEW",
@@ -224,8 +235,6 @@
         	  if(id != null){
         		  vm.insuranceProductPremiumRates[vm.insuranceProductPremiumRates.findIndex(el => el.id === id)].status = "UPDATE";
         	  }
-        	  
-        	  console.log(vm.insuranceProductPremiumRates);
           };
           
           function checkEmptyData(data){

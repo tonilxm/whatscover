@@ -154,6 +154,10 @@ public class AgentProfileResource {
     	File oldFile = new File(fileUploadDir + "/" + TEMP_FILE_NAME);
 		File newFile = new File(photoDir);
 		
+		if(!oldFile.exists()) {
+			return "";
+		}
+		
 		return renameFile(oldFile, newFile);
 	}
     
@@ -162,10 +166,10 @@ public class AgentProfileResource {
     	
         if(oldFile.renameTo(newFile)) {
         	result = newFile.getPath();
-            System.out.println("File rename success");;
         } else {
         	newFile.delete();
         	oldFile.renameTo(newFile);
+        	result = newFile.getPath();
             System.out.println("File rename failed");
         }
         
@@ -174,7 +178,14 @@ public class AgentProfileResource {
     
     protected String getImageName(AgentProfileDTO agentProfileDTO) {
 		StringBuilder photo_dir = new StringBuilder();
-		photo_dir.append(agentProfileDTO.getUserId()).append("_").append(agentProfileDTO.getId()).append(".JPG");
+		photo_dir.append(fileUploadDir)
+				.append("\\")
+				.append(agentProfileDTO.getUserId())
+				.append("_")
+				.append(agentProfileDTO.getId())
+				.append("_")
+				.append(System.currentTimeMillis())
+				.append(".JPG");
 		return photo_dir.toString();
 	}
     
@@ -212,6 +223,10 @@ public class AgentProfileResource {
     		
     		if (dir.exists() && dir.isDirectory()) {
 	            File file = new File(fileUploadDir + "/" + TEMP_FILE_NAME);
+	            if(file.exists()) {
+	            	file.delete();
+	            }
+	            
 	            filePath = file.getPath();
 	            uploadedFile.transferTo(file);
     		}

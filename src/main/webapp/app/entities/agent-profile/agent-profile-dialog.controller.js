@@ -20,9 +20,10 @@
         vm.insuranceCompanyState = $state.current.name + '.dialog-find-company';
         vm.insuranceAgencyState = $state.current.name + '.dialog-find-agency';
         vm.fileData = null;
-        vm.currentFile = vm.agentProfile.photo_dir;
         vm.newFileName = '';
+        vm.currentFile = vm.agentProfile.photo_dir;
         vm.tempFileName = vm.agentProfile.photo_dir;
+        vm.uploadFile = uploadFile;
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -40,14 +41,13 @@
     			$http.get('api/load-file', {params: {"filePath": filePath}}).then(
 					function(data, status, headers) {
 						var image = $('#previewImg');
-//						image.src = 'data:image/jpeg;base64,' + data.data + '\'';
 						image.css({
 							'background-image': 'url(\'data:image/jpeg;base64,' + data.data + '\')',
-							'background-size' : 'cover'
+							'background-size' : '100px 100px'
 						});
-						
-//						document.getElementById("fileSize").innerHTML = image.size;
-//						document.getElementById("fileInput").innerHTML = 'url(\'data:image/jpeg;base64,' + data.data + '\')';
+
+						document.getElementById("fileName").innerHTML = nameFromFilePath(data.config.params.filePath);
+						document.getElementById("fileSize").innerHTML = getFileSize(data.data.length);
 	    			}).catch(function(error) {
 	    				console.log(error);
 	    			});            
@@ -62,12 +62,9 @@
             			(nameFromFilePath(vm.currentFile) != vm.newFileName && vm.newFileName)) {
 	            	UploadService.upload(vm.fileData).then(function (data) {
 	            		filePath = data;
-	                    vm.agentProfile.photo_dir = filePath;
 	                	AgentProfile.update(vm.agentProfile, onSaveSuccess, onSaveError);
 	                });
             	} else {
-            		// set file path here
-            		vm.agentProfile.photo_dir = '';
             		AgentProfile.update(vm.agentProfile, onSaveSuccess, onSaveError);
             	}
             	
@@ -85,14 +82,24 @@
 	            result = filePath.substr(idxSlash, fileLength);
         	}
         		
-    		return filePath;
+    		return result;
         }
-
+        
+        function uploadFile(){
+            var fileinput = document.getElementById("fileInput");
+            fileinput.click();
+        }
+        
         $scope.fileNameChanged = function(element){
         	var fileSize = 0,
         	file = document.getElementById("fileInput").files[0];
         	//set file size
-		    document.getElementById("fileSize").innerHTML = getFileSize(file);
+        	if (file) {
+        		fileSize = getFileSize(file.size);
+        	}
+        	
+        	document.getElementById("fileName").innerHTML = file.name;
+		    document.getElementById("fileSize").innerHTML = fileSize;
 		    
 		    // Upload file
 		    var formData = new FormData();
@@ -118,17 +125,17 @@
             };
         }
 
-        function getFileSize(file) {
+        function getFileSize(size) {
         	var fileSize = 0;
         	
-        	if (file) {
-        		fileSize = file.size;
+        	if(size > 0 && size != undefined) {
+        		fileSize = size;
         	}
-		
+        	
 		    var fileSizeStr = fileSize + " bytes";
 		    // optional code for multiples approximation
 		    for (var aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = fileSize / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
-		    	fileSizeStr = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + fileSize + " bytes)";
+		    	fileSizeStr = nApprox.toFixed(3) + " " + aMultiples[nMultiple];
 		    }
 		    
 		    return fileSizeStr;

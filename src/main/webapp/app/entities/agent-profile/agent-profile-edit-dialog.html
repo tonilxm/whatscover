@@ -99,12 +99,17 @@
             </div>
         </div>        
         <div class="form-group" enctype="multipart/form-data">
-       		<input type="image" id="previewImg" border="1" style="width: 100px; height: 100px;">
        		<p>
-       			<input id="fileInput" type="file" name="uploadingFiles"
-       				ng-model="imageSource" 
-       				onchange="angular.element(this).scope().fileNameChanged(this)">
-               	file size: <span id="fileSize">0</span>
+	       		<image id="previewImg" border="1" style="width: 100px; height: 100px;">
+	 			<input id="fileInput" type="file" name="uploadingFiles"
+	 				ng-model="imageSource" style="display: none" accept="image/jpeg"
+	 				onchange="angular.element(this).scope().fileNameChanged(this)">
+	 			<div><span id="fileName">file</span>
+	 			(sizes:<span id="fileSize">0</span>)</div>
+       		</p>
+           	<button type="button" class="btn btn-primary" ng-click="vm.uploadFile()">
+                <span class="hidden-sm-down" data-translate="Upload File"></span>
+            </button>
            	</p>
         </div>
         <div class="form-group">

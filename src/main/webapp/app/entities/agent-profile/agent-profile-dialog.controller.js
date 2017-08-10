@@ -5,9 +5,9 @@
         .module('whatscoverApp')
         .controller('AgentProfileDialogController', AgentProfileDialogController);
 
-    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$window', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency', 'AgentProfileSendEmail', 'UploadService', '$state', '$rootScope', '$sce'];
+    AgentProfileDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$window', '$q', 'entity', 'AgentProfile', 'User', 'InsuranceCompany', 'InsuranceAgency', 'AgentProfileSendEmail', 'UploadService', '$state', '$rootScope', '$http'];
 
-    function AgentProfileDialogController ($timeout, $scope, $stateParams, $window, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency, AgentProfileSendEmail, UploadService, $state, $rootScope, $sce) {
+    function AgentProfileDialogController ($timeout, $scope, $stateParams, $window, $q, entity, AgentProfile, User, InsuranceCompany, InsuranceAgency, AgentProfileSendEmail, UploadService, $state, $rootScope, $http) {
         var vm = this;
 
         vm.agentProfile = entity;
@@ -16,14 +16,13 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.sendEmail = sendEmail;
-//        vm.uploadFile = uploadFile;
-//        vm.validateFileType = validateFileType;
         vm.users = User.query();
         vm.insuranceCompanyState = $state.current.name + '.dialog-find-company';
         vm.insuranceAgencyState = $state.current.name + '.dialog-find-agency';
         vm.fileData = null;
         vm.currentFile = vm.agentProfile.photo_dir;
         vm.newFileName = '';
+        vm.tempFileName = vm.agentProfile.photo_dir;
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -33,56 +32,67 @@
             //$uibModalInstance.dismiss('cancel');
        	 	$state.go('agent-profile', {}, { reload: true});
         }
+        
+        $scope.init = function () {
+        	var filePath = vm.agentProfile.photo_dir;
+            
+        	if (filePath) {
+    			$http.get('api/load-file', {params: {"filePath": filePath}}).then(
+					function(data, status, headers) {
+						var image = $('#previewImg');
+//						image.src = 'data:image/jpeg;base64,' + data.data + '\'';
+						image.css({
+							'background-image': 'url(\'data:image/jpeg;base64,' + data.data + '\')',
+							'background-size' : 'cover'
+						});
+						
+//						document.getElementById("fileSize").innerHTML = image.size;
+//						document.getElementById("fileInput").innerHTML = 'url(\'data:image/jpeg;base64,' + data.data + '\')';
+	    			}).catch(function(error) {
+	    				console.log(error);
+	    			});            
+        	}
+        }
 
         function save () {
             vm.isSaving = true;
             if (vm.agentProfile.id !== null) {
-            	var filePath = '';            	
-            	if ($scope.nameFromFilePath(vm.currentFile) != vm.newFileName) {
+            	var filePath = '';
+            	if ((!vm.currentFile && vm.newFileName) || 
+            			(nameFromFilePath(vm.currentFile) != vm.newFileName && vm.newFileName)) {
 	            	UploadService.upload(vm.fileData).then(function (data) {
 	            		filePath = data;
-	                    // set file path here
 	                    vm.agentProfile.photo_dir = filePath;
-	                    AgentProfile.update(vm.agentProfile, onSaveSuccess, onSaveError);
+	                	AgentProfile.update(vm.agentProfile, onSaveSuccess, onSaveError);
 	                });
+            	} else {
+            		// set file path here
+            		vm.agentProfile.photo_dir = '';
+            		AgentProfile.update(vm.agentProfile, onSaveSuccess, onSaveError);
             	}
             	
-            	if (!filePath) {
-                    AgentProfile.update(vm.agentProfile, onSaveSuccess, onSaveError);
-            	}
             } else {
                 AgentProfile.save(vm.agentProfile, onSaveSuccess, onSaveError);
             }
         }
         
-        $scope.trustSrc = function(src) {
-	    	console.log('test ==>' + src);
-	        return $sce.trustAsResourceUrl(src);
-        }
+        function nameFromFilePath(filePath) {
+        	var result = filePath;
         
-        $scope.nameFromFilePath = function(filePath) {
-        	var idxSlash = filePath.lastIndexOf('\\') + 1,
-        	fileLength = filePath.length;
-        	
-            return vm.currentFile.substr(idxSlash, fileLength);
+        	if (filePath) {
+	        	var idxSlash = filePath.lastIndexOf('\\') + 1,
+	        	fileLength = filePath.length;	        	
+	            result = filePath.substr(idxSlash, fileLength);
+        	}
+        		
+    		return filePath;
         }
 
         $scope.fileNameChanged = function(element){
         	var fileSize = 0,
         	file = document.getElementById("fileInput").files[0];
-        	
-        	if (file) {
-        		fileSize = file.size;
-        	}
-		
-		    var sOutput = fileSize + " bytes";
-		    // optional code for multiples approximation
-		    for (var aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = fileSize / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
-		        sOutput = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + fileSize + " bytes)";
-		    }
-		    // end of optional code
-		
-		    document.getElementById("fileSize").innerHTML = sOutput;
+        	//set file size
+		    document.getElementById("fileSize").innerHTML = getFileSize(file);
 		    
 		    // Upload file
 		    var formData = new FormData();
@@ -90,22 +100,38 @@
 		    vm.fileData = formData;
 		    vm.newFileName = file.name;
 		    
-		    // preview file
-		    previewFile();
+		    // Preview file
+		    previewFile(file);
         }
         
-        function previewFile() {
-            var preview = document.getElementById('previewImg'),
-            file = document.querySelector('input[type=file]').files[0],
-            reader  = new FileReader();
+        function previewFile(file) {            
 
-            if (file) {
-              reader.readAsDataURL(file);
-            }
+            var preview = document.getElementById('previewImg');
+            var reader  = new FileReader();
             
+        	if (file) {	            
+	            reader.readAsDataURL(file);
+            }
+           
             reader.onload = function (event) {
             	preview.src = event.target.result;
             };
+        }
+
+        function getFileSize(file) {
+        	var fileSize = 0;
+        	
+        	if (file) {
+        		fileSize = file.size;
+        	}
+		
+		    var fileSizeStr = fileSize + " bytes";
+		    // optional code for multiples approximation
+		    for (var aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = fileSize / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+		    	fileSizeStr = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + fileSize + " bytes)";
+		    }
+		    
+		    return fileSizeStr;
         }
 
         function onSaveSuccess (result) {
@@ -153,51 +179,5 @@
 				AgentProfileSendEmail.email(vm.agentProfile, onSendEmailSuccess, onSendEmailError);
 			}
         }
-
-        /*function validateFileType(){
-            var fileName = document.getElementById("field_photo_dir").value;
-            var idxDot = fileName.lastIndexOf(".") + 1;
-            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-            if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
-                //TO DO
-            }else{
-                alert("Only jpg/jpeg and png files are allowed!");
-            }   
-        }*/
-        
-        /*function uploadFile(){
-            var fileinput = document.getElementById("browse");
-            fileinput.click();
-        }*/
-
-        /*$scope.fileNameChanged = function(element){
-            document.getElementById("tmp_photo_dir").value =  document.getElementById("browse").value;
-       	     var uploadForm = new FormData();
-
-       	     $scope.$apply(function(scope) {
-                 var photofile = element.files[0];
-                 var reader = new FileReader();
-                 reader.onload = function(e) {
-                	 var tempValue = $("#tmp_photo_dir").val().trim();
-                     var tempLength = tempValue.length;
-
-                     if(!tempLength < 1)
-                     {
-                     	var dIndex = tempValue.lastIndexOf(".");
-                         var fileName = tempValue.substring(dIndex, tempLength);
-                         if( fileName == '.jpg'){
-                         	var sIndex = tempValue.lastIndexOf('\\');
-                     		tempValue = tempValue.substr(sIndex + 1, tempLength);
-                             document.getElementById("field_photo_dir").value = tempValue;
-                             vm.agentProfile.photo_dir = tempValue;
-                             Upload.upload({uploadFile: event.target.result}, true, false);
-                         }else{
-                         	alert('Please upload correct File Name, File extension should be .jpg');
-                         }
-                     }
-                 };
-                 reader.readAsDataURL(photofile);
-            });
-       }*/
     }
 })();

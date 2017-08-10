@@ -1,3 +1,4 @@
+
 <div style="margin-top: 10px">
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
@@ -31,10 +32,10 @@
             <tbody>
                 <tr ng-repeat="insuranceProductPremiumRate in vm.insuranceProductPremiumRates | filter:{ status: '!DELETE'} track by $index">
                     <td class="hidden">{{insuranceProductPremiumRate.id}}</td>
-                    <td><a e-required edit-disabled="vm.isReadOnly" e-placeholder="This Field is Required" e-form="entryAgeForm" onbeforesave="vm.checkEmptyData($data)" e-clickable="true" editable-number="insuranceProductPremiumRate.entryAge" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.entryAge || 'whatscoverApp.insuranceProductPremiumRate.enter.entryAge'|translate }}</a></td>
-                    <td><a e-required edit-disabled="vm.isReadOnly" e-placeholder="This Field is Required" e-form="maleRateForm" e-clickable="true" editable-number="insuranceProductPremiumRate.malePremiumRate" e-step="any" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.malePremiumRate || 'whatscoverApp.insuranceProductPremiumRate.enter.malePremiumRate'|translate}}</a></td>
-                    <td><a e-required edit-disabled="vm.isReadOnly" e-placeholder="This Field is Required" e-form="femaleRateForm" e-clickable="true" editable-number="insuranceProductPremiumRate.femalePremiumRate" e-step="any" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{ insuranceProductPremiumRate.femalePremiumRate || 'whatscoverApp.insuranceProductPremiumRate.enter.femalePremiumRate'|translate}}</td>
-                    <td><a edit-disabled="vm.isReadOnly" editable-text="insuranceProductPremiumRate.plan" e-max="5" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)">{{insuranceProductPremiumRate.plan || 'whatscoverApp.insuranceProductPremiumRate.enter.plan'|translate}}</td>
+                    <td><a e-required edit-disabled="vm.isReadOnly" e-placeholder="This Field is Required" e-form="entryAgeForm" onbeforesave="vm.checkEmptyData($data)" e-clickable="true" editable-number="insuranceProductPremiumRate.entryAge" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)" buttons="no">{{ insuranceProductPremiumRate.entryAge || 'whatscoverApp.insuranceProductPremiumRate.enter.entryAge'|translate }}</a></td>
+                    <td><a e-required edit-disabled="vm.isReadOnly" e-placeholder="This Field is Required" e-form="maleRateForm" e-clickable="true" editable-number="insuranceProductPremiumRate.malePremiumRate" e-step="any" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)" buttons="no">{{ insuranceProductPremiumRate.malePremiumRate}}</a></td>
+                    <td><a e-required edit-disabled="vm.isReadOnly" e-placeholder="This Field is Required" e-form="femaleRateForm" e-clickable="true" editable-number="insuranceProductPremiumRate.femalePremiumRate" e-step="any" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)" buttons="no">{{ insuranceProductPremiumRate.femalePremiumRate}}</td>
+                    <td><a edit-disabled="vm.isReadOnly" editable-text="insuranceProductPremiumRate.plan" e-max="5" onaftersave="vm.onUpdateField(insuranceProductPremiumRate.id)" buttons="no">{{insuranceProductPremiumRate.plan || 'whatscoverApp.insuranceProductPremiumRate.enter.plan'|translate}}</td>
                     <td class="hidden">
                         <a ui-sref="insurance-product-detail({id:insuranceProductPremiumRate.insuranceProductId})">{{insuranceProductPremiumRate.insuranceProductId}}</a>
                     </td>
@@ -55,4 +56,16 @@
         </table>
     </div>
     <!-- </form> -->
+    
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.cancel()" ng-if="vm.isShowBtns">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="button" ng-click="vm.save()" ng-disabled="vm.editForm.$invalid || vm.isSaving" class="btn btn-primary" ng-if="vm.isShowBtns">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+        <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="vm.cancel()" ng-if="!vm.isShowBtns">
+            <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+        </button>
+    </div>
 </div>

@@ -57,17 +57,17 @@
                     return InsuranceProduct.get({id : $stateParams.id}).$promise;
                 }], true))
         .state(generateProductManagementTabState('insurance-product-detail.general', 'insurance-product-detail',
-        		'/general', 'app/entities/insurance-product/insurance-product-registration.html'))
+        		'/general', {isTab1 : true,isTab2 : false}))
         .state(generateProductManagementTabState('insurance-product-detail.premiumrate', 'insurance-product-detail',
-        		'/premiumrate', 'app/entities/insurance-product/premium-rate/premium-rates.html')) 
+        		'/premiumrate', {isTab1 : false,isTab2 : true})) 
         .state(generateProductManagementState('insurance-product.edit', 'insurance-product',
         		'/{id}/edit', ['$stateParams','InsuranceProduct', function($stateParams, InsuranceProduct) {
                     return InsuranceProduct.get({id : $stateParams.id}).$promise;
                 }], false))
         .state(generateProductManagementTabState('insurance-product.edit.general', 'insurance-product.edit',
-        		'/general', 'app/entities/insurance-product/insurance-product-registration.html'))
+        		'/general', {isTab1 : true,isTab2 : false}))
         .state(generateProductManagementTabState('insurance-product.edit.premiumrate', 'insurance-product.edit',
-        		'/premiumrate', 'app/entities/insurance-product/premium-rate/premium-rates.html'))          
+        		'/premiumrate', {isTab1 : false,isTab2 : true}))          
         .state(generateProductManagementState('insurance-product.registration', 'insurance-product',
         		'/registration', function (){
 					   return {
@@ -91,9 +91,9 @@
 				       };
 				   }, false))
 		.state(generateProductManagementTabState('insurance-product.registration.general', 'insurance-product.registration',
-        		'/general', 'app/entities/insurance-product/insurance-product-registration.html'))
+        		'/general', {isTab1 : true,isTab2 : false}))
         .state(generateProductManagementTabState('insurance-product.registration.premiumrate', 'insurance-product.registration',
-        		'/premiumrate', 'app/entities/insurance-product/premium-rate/premium-rates.html'))
+        		'/premiumrate', {isTab1 : false,isTab2 : true}))
         .state(generateFindEntityStateObj('insurance-product.registration.dialog-find-company', 'insurance-product.registration.general',
         		'/findCompany?page&sort&search', 'app/entities/common-ui/common-dialog-find-company.html', 'CommonDialogFindCompanyController',
         		'insuranceProductCompanyUpdate', 'insuranceCompany'))
@@ -199,7 +199,7 @@
                 },
                 views: {
                     'content@': {
-                        template: '<tabs data="tabData" type="tabs"></tabs><div ui-view="view1"></div>',
+                        template: '<tabs data="tabData" type="tabs"></tabs><div id="view-general"><div ui-view="view-general"></div></div><div id="view-premium-rate"><div ui-view="view-premium-rate"></div></div>',
                         controller: 'InsuranceProductRegistrationController',
                         controllerAs: 'vm'
                     }
@@ -242,16 +242,31 @@
     /**
      * generate Product Management Tab State
      */
-    function generateProductManagementTabState(name, parent, url, templateUrl){
+    function generateProductManagementTabState(name, parent, url, activeTabs){
     	var obj = {
 			name: name,
 			parent: parent,
             url: url,
+            params:{
+            	activeTabs : activeTabs
+            },
             views: {
-                "view1": {
-                    templateUrl: templateUrl,
+                "view-general": {
+                    templateUrl: 'app/entities/insurance-product/insurance-product-registration.html',
+                },
+                "view-premium-rate": {
+                    templateUrl: 'app/entities/insurance-product/premium-rate/premium-rates.html',
                 }
-            }
+            },
+            onEnter: ['$stateParams', function($stateParams) {
+	        	if($stateParams.activeTabs.isTab1){
+	        		angular.element( document.querySelector( '#view-general' ) ).removeClass('hidden');
+	        		angular.element( document.querySelector( '#view-premium-rate' ) ).addClass('hidden');
+	        	}else{
+	        		angular.element( document.querySelector( '#view-general' ) ).addClass('hidden');
+	        		angular.element( document.querySelector( '#view-premium-rate' ) ).removeClass('hidden');
+	        	}
+	        }]
     	};
 
     	return obj;

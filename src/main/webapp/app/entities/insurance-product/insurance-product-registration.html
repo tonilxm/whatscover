@@ -1,5 +1,5 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+<form name="vm.editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
 
     <div class="modal-header">
         <h4 class="modal-title" id="myInsuranceProductLabel" data-translate="whatscoverApp.insuranceProduct.home.createOrEditLabel">Create or edit a Insurance Product</h4>
@@ -16,13 +16,13 @@
             <input type="text" class="form-control" name="code" id="field_code"
                     ng-model="vm.insuranceProduct.code" ng-readonly="vm.isReadOnly"
                     required ng-maxlength="100"/>
-            <div ng-show="editForm.code.$invalid">
+            <div ng-show="vm.editForm.code.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.code.$error.required" data-translate="entity.validation.required">
+                    ng-show="vm.editForm.code.$error.required" data-translate="entity.validation.required">
                     This field is required.
                 </p>
                 <p class="help-block"
-                    ng-show="editForm.code.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    ng-show="vm.editForm.code.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
                     This field cannot be longer than 100 characters.
                 </p>
             </div>
@@ -32,13 +32,13 @@
             <input type="text" class="form-control" name="name" id="field_name"
                     ng-model="vm.insuranceProduct.name" ng-readonly="vm.isReadOnly"
                     required ng-maxlength="200"/>
-            <div ng-show="editForm.name.$invalid">
+            <div ng-show="vm.editForm.name.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    ng-show="vm.editForm.name.$error.required" data-translate="entity.validation.required">
                     This field is required.
                 </p>
                 <p class="help-block"
-                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                    ng-show="vm.editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
                     This field cannot be longer than 200 characters.
                 </p>
             </div>
@@ -62,9 +62,9 @@
 	            </button>
             </div>
         </div>
-        <div ng-show="editForm.productCategory.$invalid">
+        <div ng-show="vm.editForm.productCategory.$invalid">
             <p class="help-block"
-                ng-show="editForm.productCategory.$error.required" data-translate="entity.validation.required">
+                ng-show="vm.editForm.productCategory.$error.required" data-translate="entity.validation.required">
                 This field is required.
             </p>
         </div>
@@ -80,9 +80,9 @@
 	            </button>
             </div>
         </div>
-        <div ng-show="editForm.insuranceCompany.$invalid">
+        <div ng-show="vm.editForm.insuranceCompany.$invalid">
             <p class="help-block"
-                ng-show="editForm.insuranceCompany.$error.required" data-translate="entity.validation.required">
+                ng-show="vm.editForm.insuranceCompany.$error.required" data-translate="entity.validation.required">
                 This field is required.
             </p>
         </div>
@@ -92,9 +92,9 @@
             <input type="text" class="form-control" name="shortDescription" id="field_shortDescription"
                     ng-model="vm.insuranceProduct.shortDescription" ng-readonly="vm.isReadOnly"
                     ng-maxlength="250"/>
-            <div ng-show="editForm.shortDescription.$invalid">
+            <div ng-show="vm.editForm.shortDescription.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.shortDescription.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="250">
+                    ng-show="vm.editForm.shortDescription.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="250">
                     This field cannot be longer than 250 characters.
                 </p>
             </div>
@@ -104,9 +104,9 @@
             <input type="text" class="form-control" name="longDescription" id="field_longDescription"
                     ng-model="vm.insuranceProduct.longDescription" ng-readonly="vm.isReadOnly"
                     ng-maxlength="500"/>
-            <div ng-show="editForm.longDescription.$invalid">
+            <div ng-show="vm.editForm.longDescription.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.longDescription.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="500">
+                    ng-show="vm.editForm.longDescription.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="500">
                     This field cannot be longer than 500 characters.
                 </p>
             </div>
@@ -185,7 +185,7 @@
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.cancel()" ng-if="vm.isShowBtns">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary" ng-if="vm.isShowBtns">
+        <button type="submit" ng-disabled="vm.editForm.$invalid || vm.isSaving" class="btn btn-primary" ng-if="vm.isShowBtns">
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
         </button>
         <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="vm.cancel()" ng-if="!vm.isShowBtns">

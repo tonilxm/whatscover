@@ -4,32 +4,28 @@
         .module('whatscoverApp')
         .factory('UploadService', UploadService);
 
-//    Upload.$inject = ['$resource'];
     UploadService.$inject = ['$http'];
 
-//    function Upload ($resource) {
     function UploadService($http) {
-        var resourceUrl =  'api/upload-file';
-
+    	
         return {
-            'upload': function(data){
-            	return $http.post(resourceUrl, data, {
+            'upload': function(data) {
+            	return $http.post('api/upload-file', data, {
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
                 }).then(function(response) { 
                 	return response.data;	// Get file name from response data
-                });
-			}
+                });/*.success(function (response) {
+                	return response.data;
+                }).error(function (response) {
+                	//
+                	console.log(response);
+                });*/
+			}/*,
+        	'load': function(filePath) {
+        		 return $http.get('api/load-file', {params: {"filePath": filePath}})
+        		 			.then(function(data, status, headers) { return data.data; });
+        	}*/
         }
-        
-        /*return $resource(resourceUrl, {}, {
-            'upload': {
-                method: 'POST',
-                transformRequest: function (data) {
-                    return data;
-                }
-				method: 'POST', isArray: true
-			}
-        });*/
     }
 })();

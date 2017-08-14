@@ -15,10 +15,12 @@ import com.whatscover.web.rest.util.HeaderUtil;
 import com.whatscover.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
-import springfox.documentation.spring.web.json.Json;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +57,8 @@ public class AgentProfileResource {
     private final UserService userService;
     
     private final String fileUploadDir = PropertiesReader.getPropertiesValue("directory");
+    
+    private final String TEMP_FILE_NAME = "temporarilyUploadFile.jpg";
 
     //private String directory = PropertiesReader.getPropertiesValue("directory");
 
@@ -134,24 +138,116 @@ public class AgentProfileResource {
 		userService.updateUserByEmail(agentProfileDTO.getFirst_name(), 
 				agentProfileDTO.getLast_name(), agentProfileDTO.getEmail(), 
 				Constants.DEFAULT_LANG_KEY, agentProfileDTO.getPhoto_dir());
+		
+		String photoDir = getImageName(agentProfileDTO);
+		if (!processImgUpload(agentProfileDTO.getUserId(), photoDir).isEmpty()) {
+			agentProfileDTO.setPhoto_dir(photoDir);
+		}
+		
         AgentProfileDTO result = agentProfileService.save(agentProfileDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, agentProfileDTO.getId().toString()))
             .body(result);
     }
     
+    private String processImgUpload(Long userId, String photoDir) {
+    	File oldFile = new File(fileUploadDir + "/" + TEMP_FILE_NAME);
+		File newFile = new File(photoDir);
+		
+		if(!oldFile.exists()) {
+			return "";
+		}
+		
+		return renameFile(oldFile, newFile);
+	}
+    
+    private String renameFile(File oldFile, File newFile) {
+    	String result = "";
+    	
+        if(oldFile.renameTo(newFile)) {
+        	result = newFile.getPath();
+        } else {
+        	newFile.delete();
+        	oldFile.renameTo(newFile);
+        	result = newFile.getPath();
+            System.out.println("File rename failed");
+        }
+        
+        return result;
+	}
+    
+    protected String getImageName(AgentProfileDTO agentProfileDTO) {
+		StringBuilder photo_dir = new StringBuilder();
+		photo_dir.append(fileUploadDir)
+				.append("\\")
+				.append(agentProfileDTO.getUserId())
+				.append("_")
+				.append(agentProfileDTO.getId())
+				.append("_")
+				.append(System.currentTimeMillis())
+				.append(".JPG");
+		return photo_dir.toString();
+	}
+    
+    @GetMapping("/load-file")
+    @Timed
+    public ResponseEntity<byte[]> loadFile(@RequestParam(value="filePath") String filePath) {
+        log.debug("REST request to load image file");
+    	File file = new File(filePath); // a method that returns file for given ID
+        if (!file.exists()) { // handle FNF
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+        try {
+            FileSystemResource fileResource = new FileSystemResource(file);
+            byte[] base64Bytes = Base64.encodeBase64(IOUtils.toByteArray(fileResource.getInputStream()));
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("filename", fileResource.getFilename());
+            headers.add("Content-Type", "image/jpeg");
+
+            return ResponseEntity.ok().headers(headers).body(base64Bytes);
+        } catch (IOException e) {
+            log.error("Failed to download file ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    
     @PostMapping(value = "/upload-file", consumes = "multipart/form-data", produces = "text/plain")
     @Timed
-    public @ResponseBody String handleFormUpload( @RequestParam(value="files") MultipartFile[] uploadingFiles) throws IOException {
+    public @ResponseBody String uploadFile( @RequestParam(value="files") MultipartFile[] uploadingFiles) throws IOException {
     	log.debug("REST request to Email AgentProfile : {}", uploadingFiles.length);
     	String filePath = "";
     	for(MultipartFile uploadedFile : uploadingFiles) {
-            File file = new File(fileUploadDir + "/" + uploadedFile.getOriginalFilename());
-            filePath = file.getPath();
-            uploadedFile.transferTo(file);
+    		File dir = new File(fileUploadDir);
+    		createDirectory(dir);
+    		
+    		if (dir.exists() && dir.isDirectory()) {
+	            File file = new File(fileUploadDir + "/" + TEMP_FILE_NAME);
+	            if(file.exists()) {
+	            	file.delete();
+	            }
+	            
+	            filePath = file.getPath();
+	            uploadedFile.transferTo(file);
+    		}
         }
     	return filePath;
     }
+    
+	private void createDirectory(File files) {
+		try {
+			if (!files.exists()) {
+				if (files.mkdirs()) {
+					log.debug("Create Directory for UploadFile sucessfully: " + files.getPath());
+				} else {
+					log.debug("Can not create Directory for UploadFile: " + files.getPath());
+				}
+			}
+		} catch (Exception e) {
+			log.debug("Can not create Directory for UploadFile: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 
     /*@PostMapping("/upload-file")
     @Timed

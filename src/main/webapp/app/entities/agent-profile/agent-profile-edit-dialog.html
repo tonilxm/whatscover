@@ -1,5 +1,5 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" data-ng-init="init()" show-validation>
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
@@ -99,14 +99,17 @@
             </div>
         </div>        
         <div class="form-group" enctype="multipart/form-data">
-       		<input type="image" border="1" 
-       			ng-src="angular.element(this).scope().trustSrc(this)" 
-       			id="previewImg" weight="100" height="100" alt="Preview file">
        		<p>
-       			<input id="fileInput" type="file" name="uploadingFiles"
-       				ng-model="imageSource"
-       				onchange="angular.element(this).scope().fileNameChanged(this)">
-               	file size: <span id="fileSize">0</span>
+	       		<image id="previewImg" border="1" style="width: 100px; height: 100px;">
+	 			<input id="fileInput" type="file" name="uploadingFiles"
+	 				ng-model="imageSource" style="display: none" accept="image/jpeg"
+	 				onchange="angular.element(this).scope().fileNameChanged(this)">
+	 			<div><span id="fileName">file</span>
+	 			(sizes:<span id="fileSize">0</span>)</div>
+       		</p>
+           	<button type="button" class="btn btn-primary" ng-click="vm.uploadFile()">
+                <span class="hidden-sm-down" data-translate="Upload File"></span>
+            </button>
            	</p>
         </div>
         <div class="form-group">

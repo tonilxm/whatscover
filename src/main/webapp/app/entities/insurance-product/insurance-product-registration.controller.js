@@ -238,8 +238,8 @@
           };
           
           function checkEmptyData(data){
-        	  if (data === '' && data === null) {
-        	      return "Please fill the field";
+        	  if (data === '' || data === null || data === undefined ) {
+        	      return "Please fill out this field";
         	  }
           };
           

@@ -11,19 +11,14 @@
         var vm = this;
        
         vm.insuranceProduct = entity;
-        //console.log(entity);
         vm.insuranceProductPremiumRates = [];
-        vm.clear = clear;
         vm.save = save;
         vm.childStateCompany = $state.current.parent + '.dialog-find-company';
         vm.childStateProductCategory = $state.current.parent + '.dialog-find-product-category';
 
-        vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
-        vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.search = search;
         vm.searchQuery = pagingParams.search;
         vm.currentSearch = pagingParams.search;
         
@@ -36,11 +31,8 @@
         vm.cancel = cancel;
         vm.isReadOnly = isReadOnly;
         vm.isShowBtns = !isReadOnly;
-        //console.log($stateParams);
-        //console.log($state.current.params.activeTabs.isTab1);
         vm.isTab1 = $state.current.params.activeTabs.isTab1;
         vm.isTab2 = $state.current.params.activeTabs.isTab2;
-        //console.log("readonly : "+vm.isReadOnly+ " -- btns : "+vm.isShowBtns);
         
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -53,10 +45,9 @@
         	}
         });
 
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
-        }
-
+        /**
+         * save product
+         */
         function save () {
          	vm.isValid = true;
         	vm.insuranceProductPremiumRates.every(function(data){
@@ -88,7 +79,9 @@
                 }
         	}
         	
-        	
+        	/**
+        	 * trigger EForm submit for xeditable input on premiumrate pages
+        	 */
         	function triggerEForm(id, index, name){
         		vm.isValid = false;
         		$state.go($state.current.parent + '.premiumrate');
@@ -100,33 +93,48 @@
         	}
         }
 
+        /**
+         * on Save Product success callback
+         */
         function onSaveSuccess (result) {
             vm.isSaving = false;
             vm.cancel();
         }
 
+        /**
+         * On Save Product error callback
+         */
         function onSaveError () {
             vm.isSaving = false;
         }
         
+        /**
+         * listen to company choosed 
+         */
         var unsubscribeCompany = $rootScope.$on('whatscoverApp:insuranceProductCompanyUpdate', function(event, result) {
         	vm.insuranceProduct.insuranceCompanyId = result.id;
             vm.insuranceProduct.insuranceCompanyName = result.name;
         });
         $scope.$on('$destroy', unsubscribeCompany);
         
+        /**
+         * listen to product category choosed
+         */
         var unsubscribeProductCategory = $rootScope.$on('whatscoverApp:insuranceProductCategoryUpdate', function(event, result) {
         	vm.insuranceProduct.productCategoryId = result.id;
             vm.insuranceProduct.productCategoryName = result.name;
         });
         $scope.$on('$destroy', unsubscribeProductCategory);
 
+        /**
+         * init scope
+         */
         $scope.initialise = function() {
 
             $scope.go = function(state) {
               $state.go(state);
             };
-            console.log($state.current.parent);
+            
             $scope.tabData   = [
               {
                 heading: '<i>General</i>',
@@ -143,6 +151,9 @@
           
           loadInsuranceProductPremiumRate();
 
+          /**
+           * load insurance premium rates
+           */
           function loadInsuranceProductPremiumRate () {
         	  if(vm.insuranceProduct.id != null){
         		  InsuranceProductPremiumRateSearch.searchByProductId({
@@ -169,40 +180,10 @@
                   AlertService.error(error.data.message);
               }
           }
-
-          function loadPage(page) {
-              vm.page = page;
-              vm.transition();
-          }
           
-          function transition() {
-          	pagingParams.page = vm.page;
-          	pagingParams.sort = vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc');
-          	pagingParams.search = vm.currentSearch;
-          	loadInsuranceProductPremiumRate();
-          }
-
-          function search(searchQuery) {
-	          if (!searchQuery){
-	              return vm.clear();
-	          }
-	          vm.links = null;
-	          vm.page = 1;
-	          vm.predicate = '_score';
-	          vm.reverse = false;
-	          vm.currentSearch = searchQuery;
-	          vm.transition();
-          }
-
-          function clear() {
-              vm.links = null;
-              vm.page = 1;
-              vm.predicate = 'id';
-              vm.reverse = true;
-              vm.currentSearch = null;
-              vm.transition();
-          }
-          
+          /**
+           * add Premium Rate Row
+           */
           function addRow(){
         	  var newPremiumRate = {
     			  "id" : null,
@@ -221,28 +202,39 @@
         	  vm.insuranceProductPremiumRates.push(newPremiumRate);
           }
           
+          /**
+           * delete Premium Rate Row
+           */
           function removeRow(id, index){
         	  if(id != null){
         		  vm.insuranceProductPremiumRates[vm.insuranceProductPremiumRates.findIndex(el => el.id === id)].status = "DELETE";
         	  }else{
-        		  //console.log(index);
         		  vm.insuranceProductPremiumRates[index].status = "DELETE";
         	  }
         	  
           }
           
+          /**
+           * triggered when there is updates on premium rates field
+           */
           function onUpdateField(id){
         	  if(id != null){
         		  vm.insuranceProductPremiumRates[vm.insuranceProductPremiumRates.findIndex(el => el.id === id)].status = "UPDATE";
         	  }
           };
           
+          /**
+           * validation for xeditable input premium rate
+           */
           function checkEmptyData(data){
         	  if (data === '' || data === null || data === undefined ) {
         	      return "Please fill out this field";
         	  }
           };
           
+          /**
+           * back to parent state insurance-product
+           */
           function cancel(){
         	  $state.go('insurance-product');
           }

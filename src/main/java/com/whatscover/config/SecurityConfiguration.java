@@ -1,10 +1,9 @@
 package com.whatscover.config;
 
-import com.whatscover.security.*;
-import com.whatscover.security.jwt.*;
-
-import io.github.jhipster.security.*;
-
+import com.whatscover.security.AuthoritiesConstants;
+import com.whatscover.security.jwt.JWTConfigurer;
+import com.whatscover.security.jwt.TokenProvider;
+import io.github.jhipster.security.Http401UnauthorizedEntryPoint;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -78,7 +77,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/i18n/**")
             .antMatchers("/content/**")
             .antMatchers("/swagger-ui/index.html")
-            .antMatchers("/test/**");
+            .antMatchers("/test/**")
+            .antMatchers(HttpMethod.POST, "/api/customer-profiles");
     }
 
     @Override
@@ -110,7 +110,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/v2/api-docs/**").permitAll()
             .antMatchers("/swagger-resources/configuration/ui").permitAll()
             .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
-        .and()
+            .and()
             .apply(securityConfigurerAdapter());
 
     }

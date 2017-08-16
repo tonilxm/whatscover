@@ -7,9 +7,7 @@
                 "createOrEditLabel": "Agent Registration",
                 "EditLabel": "Edit Agent Profile",
                 "search": "Search for Agent Profile",
-                "searchByFirstName": "Search By First Name",
-                "searchByMiddleName": "Search By Middle Name",
-                "searchByLastName": "Search By Last Name",
+                "searchByName": "Search By Name",
                 "searchByCompanyName": "Search By Company Name",
                 "searchByAgentName": "Search By Agent Name"
             },

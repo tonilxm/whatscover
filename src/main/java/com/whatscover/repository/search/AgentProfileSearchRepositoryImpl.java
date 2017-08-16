@@ -27,11 +27,10 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
 
         String searchSql = "select ap from AgentProfile ap, InsuranceCompany ic, InsuranceAgency ia "
         		+ " where ic.id = ap.insurance_company_id and ia.id = ap.insurance_agency_id "
-        		+ " and ap.first_name like :firstName "
         		+ condQuery;
 
-        TypedQuery<AgentProfile> typeQueryList = entityManager.createQuery(searchSql, AgentProfile.class)
-                .setParameter("firstName", valueObj(queryData[0]));
+        TypedQuery<AgentProfile> typeQueryList = 
+        		entityManager.createQuery(searchSql, AgentProfile.class);
         
         typeQueryList = typeQueryList(queryData, typeQueryList);
     			
@@ -42,32 +41,28 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
 
         String totalRecordSql = "select count(*) from AgentProfile ap, InsuranceCompany ic, InsuranceAgency ia "
         		+ " where ic.id = ap.insurance_company_id and ia.id = ap.insurance_agency_id "
-        		+ " and ap.first_name like :firstName "
         		+ condQuery;
 
-        Query queryList = entityManager.createQuery(totalRecordSql).setParameter("firstName", valueObj(queryData[0]));
+        Query queryList = entityManager.createQuery(totalRecordSql);
 
         queryList = queryList(queryData, queryList);
 
         Long totalRecord =  (Long) queryList.getSingleResult();
 
-        Page<AgentProfile> result = new PageImpl(searchResultList, pageable, totalRecord);
-
-        return result;
+        return new PageImpl<AgentProfile>(searchResultList, pageable, totalRecord);
     }
     
 	protected String condQuery(String[] queryData) {
 		StringBuilder condQuery = new StringBuilder();
+		if (!checkEmpty(queryData[0])) {
+			condQuery.append(" and (ap.first_name like :firstName ");
+			condQuery.append(" or ap.middle_name like :middleName ");
+			condQuery.append(" or ap.last_name like :lastName) ");
+		}
 		if (!checkEmpty(queryData[1])) {
-			condQuery.append(" and ap.middle_name like :middleName ");
-		}
-		if (!checkEmpty(queryData[2])) {
-			condQuery.append(" and ap.last_name like :lastName ");
-		}
-		if (!checkEmpty(queryData[3])) {
 			condQuery.append(" and ic.name like :companyName ");
 		}
-		if (!checkEmpty(queryData[4])) {
+		if (!checkEmpty(queryData[2])) {
 			condQuery.append(" and ia.name like :agencyName ");
 		}
 		return condQuery.toString();
@@ -75,34 +70,33 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
 
 	protected TypedQuery<AgentProfile> typeQueryList(String[] queryData, TypedQuery<AgentProfile> typeQueryList) {
 		TypedQuery<AgentProfile> typeQueryListTmp = typeQueryList;
+		
+		if (!checkEmpty(queryData[0])) {
+			typeQueryListTmp = typeQueryListTmp.setParameter("firstName", valueObj(queryData[0]))
+					.setParameter("middleName", valueObj(queryData[0]))
+					.setParameter("lastName", valueObj(queryData[0]));
+		}
 		if (!checkEmpty(queryData[1])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("middleName", valueObj(queryData[1]));
+			typeQueryListTmp = typeQueryListTmp.setParameter("companyName", valueObj(queryData[1]));
 		}
 		if (!checkEmpty(queryData[2])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("lastName", valueObj(queryData[2]));
-		}
-		if (!checkEmpty(queryData[3])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("companyName", valueObj(queryData[3]));
-		}
-		if (!checkEmpty(queryData[4])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("agencyName", valueObj(queryData[4]));
+			typeQueryListTmp = typeQueryListTmp.setParameter("agencyName", valueObj(queryData[2]));
 		}
 		return typeQueryListTmp;
 	}
 
 	protected Query queryList(String[] queryData, Query queryList) {
 		Query queryListTmp = queryList;
+		if (!checkEmpty(queryData[0])) {
+			queryListTmp = queryListTmp.setParameter("firstName", valueObj(queryData[0]))
+					.setParameter("middleName", valueObj(queryData[0]))
+					.setParameter("lastName", valueObj(queryData[0]));
+		}
 		if (!checkEmpty(queryData[1])) {
-			queryListTmp = queryListTmp.setParameter("middleName", valueObj(queryData[1]));
+			queryListTmp = queryListTmp.setParameter("companyName", valueObj(queryData[1]));
 		}
 		if (!checkEmpty(queryData[2])) {
-			queryListTmp = queryListTmp.setParameter("lastName", valueObj(queryData[2]));
-		}
-		if (!checkEmpty(queryData[3])) {
-			queryListTmp = queryListTmp.setParameter("companyName", valueObj(queryData[3]));
-		}
-		if (!checkEmpty(queryData[4])) {
-			queryListTmp = queryListTmp.setParameter("agencyName", valueObj(queryData[4]));
+			queryListTmp = queryListTmp.setParameter("agencyName", valueObj(queryData[2]));
 		}
 		return queryListTmp;
 	}

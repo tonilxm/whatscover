@@ -32,7 +32,7 @@
         loadAll();
 
         function loadAll () {
-            if (vm.queryData && vm.queryData.length == 5) 
+            if (vm.queryData && vm.queryData.length == 3) 
             {
                 AgentProfileSearch.query({
                     queryData: vm.queryData,
@@ -88,27 +88,20 @@
                 search: vm.currentSearch
             });
         }
-        function pushData(searchQueryByFirstName, searchQueryByMiddleName,
-        		searchQueryByLastName, searchQueryByCompanyName, searchQueryByAgentName) 
+        function pushData(searchQueryByName, searchQueryByCompanyName, searchQueryByAgentName) 
         {
-        	if (!searchQueryByFirstName) { searchQueryByFirstName = ""; } 
-        	if (!searchQueryByMiddleName) { searchQueryByMiddleName = ""; }
-        	if (!searchQueryByLastName) { searchQueryByLastName = ""; } 
+        	if (!searchQueryByName) { searchQueryByName = ""; } 
         	if (!searchQueryByCompanyName) { searchQueryByCompanyName = ""; }
         	if (!searchQueryByAgentName) { searchQueryByAgentName = ""; } 
         	
         	vm.queryData = [];
-        	vm.queryData.push(searchQueryByFirstName, searchQueryByMiddleName, 
-        			searchQueryByLastName, searchQueryByCompanyName, searchQueryByAgentName);
+        	vm.queryData.push(searchQueryByName, searchQueryByCompanyName, searchQueryByAgentName);
     	}
         
 
 
-        function search (searchQueryByFirstName, searchQueryByMiddleName,
-        		searchQueryByLastName, searchQueryByCompanyName, searchQueryByAgentName) {
-            if (!searchQueryByFirstName && !searchQueryByMiddleName 
-            		&& !searchQueryByLastName && !searchQueryByCompanyName
-            		&& !searchQueryByAgentName){
+        function search (searchQueryByName, searchQueryByCompanyName, searchQueryByAgentName) {
+            if (!searchQueryByName && !searchQueryByCompanyName && !searchQueryByAgentName){
                 return vm.clear();
             } 
             vm.agentProfiles = [];
@@ -118,8 +111,7 @@
             vm.page = 0;
             vm.predicate = '_score';
             vm.reverse = false;
-            pushData(searchQueryByFirstName, searchQueryByMiddleName, searchQueryByLastName,
-            		searchQueryByCompanyName, searchQueryByAgentName);
+            pushData(searchQueryByName, searchQueryByCompanyName, searchQueryByAgentName);
 	    vm.transition();
             vm.loadAll();
         }

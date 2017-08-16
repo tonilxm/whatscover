@@ -151,7 +151,7 @@ public class AgentProfileResource {
     }
     
     private String processImgUpload(Long userId, String photoDir) {
-    	File oldFile = new File(fileUploadDir + "/" + TEMP_FILE_NAME);
+    	File oldFile = new File(fileUploadDir + File.separator + TEMP_FILE_NAME);
 		File newFile = new File(photoDir);
 		
 		if(!oldFile.exists()) {
@@ -179,7 +179,7 @@ public class AgentProfileResource {
     protected String getImageName(AgentProfileDTO agentProfileDTO) {
 		StringBuilder photo_dir = new StringBuilder();
 		photo_dir.append(fileUploadDir)
-				.append("\\")
+				.append(File.separator)
 				.append(agentProfileDTO.getUserId())
 				.append("_")
 				.append(agentProfileDTO.getId())
@@ -222,7 +222,7 @@ public class AgentProfileResource {
     		createDirectory(dir);
     		
     		if (dir.exists() && dir.isDirectory()) {
-	            File file = new File(fileUploadDir + "/" + TEMP_FILE_NAME);
+	            File file = new File(fileUploadDir + File.separator + TEMP_FILE_NAME);
 	            if(file.exists()) {
 	            	file.delete();
 	            }

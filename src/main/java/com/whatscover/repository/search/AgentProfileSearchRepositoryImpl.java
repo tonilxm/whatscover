@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.whatscover.config.Constants;
 import com.whatscover.domain.AgentProfile;
 import com.whatscover.repository.search.ext.AgentProfileSearchExtRepository;
 
@@ -55,9 +56,7 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
 	protected String condQuery(String[] queryData) {
 		StringBuilder condQuery = new StringBuilder();
 		if (!checkEmpty(queryData[0])) {
-			condQuery.append(" and (ap.first_name like :firstName ");
-			condQuery.append(" or ap.middle_name like :middleName ");
-			condQuery.append(" or ap.last_name like :lastName) ");
+			condQuery.append(" and concat(ap.first_name, ap.middle_name, ap.last_name) like :fullName ");
 		}
 		if (!checkEmpty(queryData[1])) {
 			condQuery.append(" and ic.name like :companyName ");
@@ -72,15 +71,13 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
 		TypedQuery<AgentProfile> typeQueryListTmp = typeQueryList;
 		
 		if (!checkEmpty(queryData[0])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("firstName", valueObj(queryData[0]))
-					.setParameter("middleName", valueObj(queryData[0]))
-					.setParameter("lastName", valueObj(queryData[0]));
+			typeQueryListTmp = typeQueryListTmp.setParameter("fullName", nameVal(queryData[0]));
 		}
 		if (!checkEmpty(queryData[1])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("companyName", valueObj(queryData[1]));
+			typeQueryListTmp = typeQueryListTmp.setParameter("companyName", paramVal(queryData[1]));
 		}
 		if (!checkEmpty(queryData[2])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("agencyName", valueObj(queryData[2]));
+			typeQueryListTmp = typeQueryListTmp.setParameter("agencyName", paramVal(queryData[2]));
 		}
 		return typeQueryListTmp;
 	}
@@ -88,22 +85,37 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
 	protected Query queryList(String[] queryData, Query queryList) {
 		Query queryListTmp = queryList;
 		if (!checkEmpty(queryData[0])) {
-			queryListTmp = queryListTmp.setParameter("firstName", valueObj(queryData[0]))
-					.setParameter("middleName", valueObj(queryData[0]))
-					.setParameter("lastName", valueObj(queryData[0]));
+			queryListTmp = queryListTmp.setParameter("fullName", nameVal(queryData[0]));
 		}
 		if (!checkEmpty(queryData[1])) {
-			queryListTmp = queryListTmp.setParameter("companyName", valueObj(queryData[1]));
+			queryListTmp = queryListTmp.setParameter("companyName", paramVal(queryData[1]));
 		}
 		if (!checkEmpty(queryData[2])) {
-			queryListTmp = queryListTmp.setParameter("agencyName", valueObj(queryData[2]));
+			queryListTmp = queryListTmp.setParameter("agencyName", paramVal(queryData[2]));
 		}
 		return queryListTmp;
 	}
 
-	protected String valueObj(String str) {
+	private String nameVal(String value) {
+		StringBuilder result = new StringBuilder();
+		String[] splitedStrs = value.split("\\s");
+		if (splitedStrs.length > 0) {
+			for (int i = 0; i < splitedStrs.length; i++) {
+				result.append(Constants.PERCENTAGE).append(splitedStrs[i]);
+				if (i == (splitedStrs.length - 1)) {
+					result.append(Constants.PERCENTAGE);
+				}
+			}
+		} else {
+			result.append(paramVal(value));
+		}
+		
+		return result.toString();
+	}
+	
+	protected String paramVal(String str) {
 		StringBuilder valueObj = new StringBuilder();
-		valueObj.append("%").append(str).append("%");
+		valueObj.append(Constants.PERCENTAGE).append(str).append(Constants.PERCENTAGE);
 		return valueObj.toString();
 		
 	}

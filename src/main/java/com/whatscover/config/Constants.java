@@ -28,4 +28,5 @@ public final class Constants {
     
     // INSURANCE AGENCY
     public static final String INSURANCE_AGENCY_NAME = "name";
+    public static final String PERCENTAGE = "%";
 }

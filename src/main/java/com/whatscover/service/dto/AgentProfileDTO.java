@@ -80,7 +80,7 @@ public class AgentProfileDTO implements Serializable {
     }
 
     public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+        this.first_name = changeNull2EmptyVal(first_name);
     }
 
     public String getMiddle_name() {
@@ -88,7 +88,7 @@ public class AgentProfileDTO implements Serializable {
     }
 
     public void setMiddle_name(String middle_name) {
-        this.middle_name = middle_name;
+        this.middle_name = changeNull2EmptyVal(middle_name);
     }
 
     public String getLast_name() {
@@ -96,7 +96,7 @@ public class AgentProfileDTO implements Serializable {
     }
 
     public void setLast_name(String last_name) {
-        this.last_name = last_name;
+        this.last_name = changeNull2EmptyVal(last_name);
     }
 
     public Gender getGender() {
@@ -193,6 +193,15 @@ public class AgentProfileDTO implements Serializable {
 
 	public void setInsuranceAgencyName(String insuranceAgencyName) {
 		this.insuranceAgencyName = insuranceAgencyName;
+	}
+	
+	private String changeNull2EmptyVal(String value) {
+		
+		if (value == null) {
+			return "";
+		} else {
+			return value;
+		}
 	}
 
     @Override

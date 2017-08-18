@@ -222,7 +222,7 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+            onEnter: ['$stateParams', '$state', '$uibModal', '$location', function($stateParams, $state, $uibModal, $location) {
                 $uibModal.open({
                     templateUrl: 'app/entities/agent-profile/agent-profile-delete-dialog.html',
                     controller: 'AgentProfileDeleteController',
@@ -234,7 +234,8 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('agent-profile', null, { reload: 'agent-profile' });
+//                    $state.go('agent-profile', null, { reload: 'agent-profile' });
+                	$location.go('/agent-profile');
                 }, function() {
                     $state.go('^');
                 });

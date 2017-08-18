@@ -235,7 +235,7 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+            onEnter: ['$stateParams', '$state', '$uibModal', '$location', function($stateParams, $state, $uibModal, $location) {
                 $uibModal.open({
                     templateUrl: 'app/entities/customer-profile/customer-profile-delete-dialog.html',
                     controller: 'CustomerProfileDeleteController',
@@ -247,7 +247,8 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('customer-profile', null, { reload: 'customer-profile' });
+//                    $state.go('customer-profile', null, { reload: 'customer-profile' });
+                	$location.url('/customer-profile');
                 }, function() {
                     $state.go('^');
                 });

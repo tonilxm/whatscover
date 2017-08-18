@@ -81,6 +81,7 @@
             vm.transition();
             loadAll();
         }
+        
         function transition() {
             $state.transitionTo($state.$current, {
                 page: vm.page,
@@ -88,8 +89,6 @@
                 search: vm.currentSearch
             });
         }
-        
-
 
         function search (searchQueryByName) {
             if (!searchQueryByName){

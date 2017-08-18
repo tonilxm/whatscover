@@ -238,7 +238,7 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+            onEnter: ['$stateParams', '$state', '$uibModal', '$location', function($stateParams, $state, $uibModal, $location) {
                 $uibModal.open({
                     templateUrl: 'app/entities/product-category/product-category-delete-dialog.html',
                     controller: 'ProductCategoryDeleteController',
@@ -250,7 +250,8 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('product-category', null, { reload: 'product-category' });
+//                    $state.go('product-category', null, { reload: 'product-category' });
+                	$location.url('/product-category');
                 }, function() {
                     $state.go('^');
                 });

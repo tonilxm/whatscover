@@ -170,7 +170,7 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+            onEnter: ['$stateParams', '$state', '$uibModal', '$location', function($stateParams, $state, $uibModal, $location) {
                 $uibModal.open({
                     templateUrl: 'app/entities/insurance-product-premium-rate/insurance-product-premium-rate-delete-dialog.html',
                     controller: 'InsuranceProductPremiumRateDeleteController',
@@ -182,7 +182,8 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('insurance-product-premium-rate', null, { reload: 'insurance-product-premium-rate' });
+//                    $state.go('insurance-product-premium-rate', null, { reload: 'insurance-product-premium-rate' });
+                	$location.url('/insurance-product-premium-rate');
                 }, function() {
                     $state.go('^');
                 });

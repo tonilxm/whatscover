@@ -214,7 +214,7 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+            onEnter: ['$stateParams', '$state', '$uibModal', '$location', function($stateParams, $state, $uibModal, $location) {
                 $uibModal.open({
                     templateUrl: 'app/entities/insurance-agency/insurance-agency-delete-dialog.html',
                     controller: 'InsuranceAgencyDeleteController',
@@ -226,7 +226,8 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('insurance-agency', null, { reload: 'insurance-agency' });
+//                    $state.go('insurance-agency', null, { reload: 'insurance-agency' });
+                	$location.url('/insurance-agency');
                 }, function() {
                     $state.go('^');
                 });

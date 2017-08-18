@@ -356,7 +356,7 @@ public class AgentProfileResource {
     @GetMapping("/_search-name/agent-profiles")
     @Timed
     public ResponseEntity<List<AgentProfileDTO>> searchAgentProfilesByName(
-    		@RequestParam(value="queryData") String[] queryData,
+    		@RequestParam(value="queryData") String queryData,
     		@ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of AgentProfiles for query {}", queryData.toString());
         Page<AgentProfileDTO> page = agentProfileService.searchByName(queryData, pageable);

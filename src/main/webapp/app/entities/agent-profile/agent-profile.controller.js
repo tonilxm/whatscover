@@ -12,7 +12,7 @@
         var vm = this;
 
         vm.agentProfiles = [];
-        vm.queryData = [];
+        vm.queryData = '';
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -32,7 +32,7 @@
         loadAll();
 
         function loadAll () {
-            if (vm.queryData && vm.queryData.length == 3) 
+            if (vm.queryData) 
             {
                 AgentProfileSearch.query({
                     queryData: vm.queryData,
@@ -88,20 +88,11 @@
                 search: vm.currentSearch
             });
         }
-        function pushData(searchQueryByName, searchQueryByCompanyName, searchQueryByAgentName) 
-        {
-        	if (!searchQueryByName) { searchQueryByName = ""; } 
-        	if (!searchQueryByCompanyName) { searchQueryByCompanyName = ""; }
-        	if (!searchQueryByAgentName) { searchQueryByAgentName = ""; } 
-        	
-        	vm.queryData = [];
-        	vm.queryData.push(searchQueryByName, searchQueryByCompanyName, searchQueryByAgentName);
-    	}
         
 
 
-        function search (searchQueryByName, searchQueryByCompanyName, searchQueryByAgentName) {
-            if (!searchQueryByName && !searchQueryByCompanyName && !searchQueryByAgentName){
+        function search (searchQueryByName) {
+            if (!searchQueryByName){
                 return vm.clear();
             } 
             vm.agentProfiles = [];
@@ -111,8 +102,8 @@
             vm.page = 0;
             vm.predicate = '_score';
             vm.reverse = false;
-            pushData(searchQueryByName, searchQueryByCompanyName, searchQueryByAgentName);
-	    vm.transition();
+            vm.queryData = searchQueryByName;
+            vm.transition();
             vm.loadAll();
         }
         function clear () {
@@ -123,7 +114,7 @@
             vm.page = 0;
             vm.predicate = 'id';
             vm.reverse = true;
-            vm.queryData = [];
+            vm.queryData = '';
             vm.loadAll();
         }
     }

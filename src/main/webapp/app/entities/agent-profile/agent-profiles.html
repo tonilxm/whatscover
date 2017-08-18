@@ -16,13 +16,9 @@
                     <div class="pull-right">        
                     	<div class="form-inline">      
 	                       	<input type="text" class="form-control" ng-model="vm.searchQueryByName" id="searchQueryByName"
-	                        	placeholder="{{ 'whatscoverApp.agentProfile.home.searchByName' | translate }}">
-	                       	<input type="text" class="form-control" ng-model="vm.searchQueryByCompanyName" id="searchQueryByCompanyName"
-	                        	placeholder="{{ 'whatscoverApp.agentProfile.home.searchByCompanyName' | translate }}">
-	                       	<input type="text" class="form-control" ng-model="vm.searchQueryByAgentName" id="searchQueryByAgentName"
-	                        	placeholder="{{ 'whatscoverApp.agentProfile.home.searchByAgentName' | translate }}">	
+	                        	placeholder="{{ 'whatscoverApp.agentProfile.home.searchByName' | translate }}">	
                         	<div class="pull-right">
-	                           <button class="btn btn-info" ng-click="vm.search(vm.searchQueryByName,vm.searchQueryByCompanyName,vm.searchQueryByAgentName)">
+	                           <button class="btn btn-info" ng-click="vm.search(vm.searchQueryByName)">
 	                               <span class="glyphicon glyphicon-search"></span>
 	                           </button>
 	                           <button class="btn btn-info" ng-click="vm.clear()">

@@ -77,6 +77,6 @@ public interface AgentProfileService {
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    Page<AgentProfileDTO> searchByName(String [] queryData, Pageable pageable);
+    Page<AgentProfileDTO> searchByName(String queryData, Pageable pageable);
 
 }

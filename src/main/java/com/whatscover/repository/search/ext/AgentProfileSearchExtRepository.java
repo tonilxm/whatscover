@@ -9,5 +9,5 @@ import org.springframework.data.domain.Pageable;
  * Created by minh on 02/08/2017.
  */
 public interface AgentProfileSearchExtRepository {
-    Page<AgentProfile> searchByName(String [] queryData, Pageable pageable);
+    Page<AgentProfile> searchByName(String queryData, Pageable pageable);
 }

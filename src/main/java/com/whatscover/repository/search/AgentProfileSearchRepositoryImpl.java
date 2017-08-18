@@ -23,78 +23,31 @@ public class AgentProfileSearchRepositoryImpl implements AgentProfileSearchExtRe
     private EntityManager entityManager;
     
     @Override
-    public Page<AgentProfile> searchByName(String []queryData, Pageable pageable) {
-    	String condQuery = condQuery(queryData);
+    public Page<AgentProfile> searchByName(String queryData, Pageable pageable) {
+    
+        String searchSql = "select ap from AgentProfile ap "
+        		+ " where concat(ap.first_name, ap.middle_name, ap.last_name) like :fullName";
 
-        String searchSql = "select ap from AgentProfile ap, InsuranceCompany ic, InsuranceAgency ia "
-        		+ " where ic.id = ap.insurance_company_id and ia.id = ap.insurance_agency_id "
-        		+ condQuery;
-
-        TypedQuery<AgentProfile> typeQueryList = 
-        		entityManager.createQuery(searchSql, AgentProfile.class);
-        
-        typeQueryList = typeQueryList(queryData, typeQueryList);
+        TypedQuery<AgentProfile> typeQueryList = entityManager
+        		.createQuery(searchSql, AgentProfile.class)
+        		.setParameter("fullName", nameVal(queryData));
     			
         List<AgentProfile> searchResultList = typeQueryList
             .setFirstResult((pageable.getPageSize() * pageable.getPageNumber()))
             .setMaxResults(pageable.getPageSize())
             .getResultList();
 
-        String totalRecordSql = "select count(*) from AgentProfile ap, InsuranceCompany ic, InsuranceAgency ia "
-        		+ " where ic.id = ap.insurance_company_id and ia.id = ap.insurance_agency_id "
-        		+ condQuery;
+        /*String totalRecordSql = "select count(*) from AgentProfile ap "
+        		+ " where concat(ap.first_name, ap.middle_name, ap.last_name) like :fullName";
 
-        Query queryList = entityManager.createQuery(totalRecordSql);
+        Query queryList = entityManager.createQuery(totalRecordSql)
+        		.setParameter("fullName", nameVal(queryData));
 
-        queryList = queryList(queryData, queryList);
-
-        Long totalRecord =  (Long) queryList.getSingleResult();
+        Long totalRecord =  (Long) queryList.getSingleResult();*/
+        Long totalRecord =  Long.valueOf(searchResultList.size());
 
         return new PageImpl<AgentProfile>(searchResultList, pageable, totalRecord);
     }
-    
-	protected String condQuery(String[] queryData) {
-		StringBuilder condQuery = new StringBuilder();
-		if (!checkEmpty(queryData[0])) {
-			condQuery.append(" and concat(ap.first_name, ap.middle_name, ap.last_name) like :fullName ");
-		}
-		if (!checkEmpty(queryData[1])) {
-			condQuery.append(" and ic.name like :companyName ");
-		}
-		if (!checkEmpty(queryData[2])) {
-			condQuery.append(" and ia.name like :agencyName ");
-		}
-		return condQuery.toString();
-	}
-
-	protected TypedQuery<AgentProfile> typeQueryList(String[] queryData, TypedQuery<AgentProfile> typeQueryList) {
-		TypedQuery<AgentProfile> typeQueryListTmp = typeQueryList;
-		
-		if (!checkEmpty(queryData[0])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("fullName", nameVal(queryData[0]));
-		}
-		if (!checkEmpty(queryData[1])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("companyName", paramVal(queryData[1]));
-		}
-		if (!checkEmpty(queryData[2])) {
-			typeQueryListTmp = typeQueryListTmp.setParameter("agencyName", paramVal(queryData[2]));
-		}
-		return typeQueryListTmp;
-	}
-
-	protected Query queryList(String[] queryData, Query queryList) {
-		Query queryListTmp = queryList;
-		if (!checkEmpty(queryData[0])) {
-			queryListTmp = queryListTmp.setParameter("fullName", nameVal(queryData[0]));
-		}
-		if (!checkEmpty(queryData[1])) {
-			queryListTmp = queryListTmp.setParameter("companyName", paramVal(queryData[1]));
-		}
-		if (!checkEmpty(queryData[2])) {
-			queryListTmp = queryListTmp.setParameter("agencyName", paramVal(queryData[2]));
-		}
-		return queryListTmp;
-	}
 
 	private String nameVal(String value) {
 		StringBuilder result = new StringBuilder();

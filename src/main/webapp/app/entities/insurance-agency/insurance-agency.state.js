@@ -11,7 +11,7 @@
         $stateProvider
         .state('insurance-agency', {
             parent: 'entity',
-            url: '/insurance-agency/?page&sort&search',
+            url: '/insurance-agency?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
                 pageTitle: 'whatscoverApp.insuranceAgency.home.title'

@@ -175,7 +175,7 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+            onEnter: ['$stateParams', '$state', '$uibModal', '$location', function($stateParams, $state, $uibModal, $location) {
                 $uibModal.open({
                     templateUrl: 'app/entities/appointment/appointment-delete-dialog.html',
                     controller: 'AppointmentDeleteController',
@@ -187,7 +187,8 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('appointment', null, { reload: 'appointment' });
+//                    $state.go('appointment', null, { reload: 'appointment' });
+                	$location.url('/appointment');
                 }, function() {
                     $state.go('^');
                 });

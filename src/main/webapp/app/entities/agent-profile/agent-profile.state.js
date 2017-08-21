@@ -235,7 +235,7 @@
                     }
                 }).result.then(function() {
 //                    $state.go('agent-profile', null, { reload: 'agent-profile' });
-                	$location.go('/agent-profile');
+                	$location.url('/agent-profile');
                 }, function() {
                     $state.go('^');
                 });

@@ -12,30 +12,23 @@
         var vm = this;
 
         vm.agentProfiles = [];
-        vm.queryData = '';
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.page = 0;
-        vm.links = {
-            last: 0
-        };
-        vm.predicate = 'id';
-        vm.reset = reset;
-        vm.reverse = true;
         vm.clear = clear;
-        vm.loadAll = loadAll;
         vm.search = search;
+        vm.loadAll = loadAll;
+        vm.queryData = pagingParams.search;
+        vm.currentSearch = pagingParams.search;
 
         loadAll();
 
         function loadAll () {
-            if (vm.queryData) 
-            {
+            if (pagingParams.search) {
                 AgentProfileSearch.query({
-                    queryData: vm.queryData,
+                	queryData: pagingParams.search,
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
                     sort: sort()
@@ -62,7 +55,7 @@
                 for (var i = 0; i < data.length; i++) {
                     vm.agentProfiles.push(data[i]);
                 }
-	    	vm.page = pagingParams.page;
+                vm.page = pagingParams.page;
             }
 
             function onError(error) {
@@ -70,16 +63,9 @@
             }
         }
 
-        function reset () {
-            vm.page = 0;
-            vm.agentProfiles = [];
-            loadAll();
-        }
-
         function loadPage(page) {
             vm.page = page;
             vm.transition();
-            loadAll();
         }
         
         function transition() {
@@ -90,31 +76,25 @@
             });
         }
 
-        function search (searchQueryByName) {
-            if (!searchQueryByName){
+        function search (queryData) {
+            if (!queryData){
                 return vm.clear();
             } 
-            vm.agentProfiles = [];
-            vm.links = {
-                last: 0
-            };
-            vm.page = 0;
+            vm.links = null;
+            vm.page = 1;
             vm.predicate = '_score';
             vm.reverse = false;
-            vm.queryData = searchQueryByName;
+            vm.currentSearch = queryData;
             vm.transition();
-            vm.loadAll();
         }
         function clear () {
-            vm.agentProfiles = [];
-            vm.links = {
-                last: 0
-            };
-            vm.page = 0;
+    		vm.agentProfiles = [];
+            vm.links = null;
+            vm.page = 1;
             vm.predicate = 'id';
             vm.reverse = true;
-            vm.queryData = '';
-            vm.loadAll();
+            vm.currentSearch = null;
+            vm.transition();
         }
     }
 })();

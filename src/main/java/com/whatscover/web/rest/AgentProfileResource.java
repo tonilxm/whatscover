@@ -218,7 +218,8 @@ public class AgentProfileResource {
         log.debug("REST request to load image file");
     	File file = new File(filePath); // a method that returns file for given ID
         if (!file.exists()) { // handle FNF
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.imageNotExist", "Image is not exist")).body(null);
         }
 
         try {
@@ -230,7 +231,8 @@ public class AgentProfileResource {
             return ResponseEntity.ok().headers(headers).body(base64Bytes);
         } catch (IOException e) {
             log.error("Failed to load file ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createMessageAlert(ENTITY_NAME,
+					"messages.error.imageNotExist", "Image is not exist")).body(null);
         }
     }
     

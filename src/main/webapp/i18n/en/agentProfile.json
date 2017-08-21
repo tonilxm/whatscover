@@ -41,7 +41,8 @@
                 	"agentemailformat": "Agent Email was wrong fortmat. Example: Correct email abc@gmail.com",
                 	"insuranceCompanyIdBlank": "You have to choose Insurance Company",
                 	"insuranceAgencyIdBlank": "You have to choose Insurance Agency",
-                	"accountexists": "This Account already created"
+                	"accountexists": "This Account already created",
+                	"imageNotExist": "Can not load image file"
             	}
             }
         }

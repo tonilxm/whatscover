@@ -48,9 +48,10 @@
 
 						document.getElementById("fileName").innerHTML = nameFromFilePath(data.config.params.filePath);
 						document.getElementById("fileSize").innerHTML = getFileSize(data.data.length);
-	    			}).catch(function(error) {
-	    				console.log(error);
-	    			});            
+	    			},
+	    			function (error) {
+	    				// nothing
+	    			});           
         	}
         }
 

@@ -26,11 +26,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -58,7 +64,7 @@ public class AgentProfileResource {
     
     private final String fileUploadDir = PropertiesReader.getPropertiesValue("directory");
     
-    private final String TEMP_FILE_NAME = "temporarilyUploadFile.jpg";
+    private final String TEMP_FILE_NAME = "whatsCoverTempUploadFile.jpg";
 
     //private String directory = PropertiesReader.getPropertiesValue("directory");
 
@@ -150,6 +156,13 @@ public class AgentProfileResource {
             .body(result);
     }
     
+    /**
+     * Rename upload image if file exist
+     *  
+     * @param userId
+     * @param photoDir
+     * @return
+     */
     private String processImgUpload(Long userId, String photoDir) {
     	File oldFile = new File(fileUploadDir + File.separator + TEMP_FILE_NAME);
 		File newFile = new File(photoDir);
@@ -161,6 +174,13 @@ public class AgentProfileResource {
 		return renameFile(oldFile, newFile);
 	}
     
+    /**
+     * Rename file depend on old/new File input
+     * 
+     * @param oldFile old File
+     * @param newFile new File
+     * @return
+     */
     private String renameFile(File oldFile, File newFile) {
     	String result = "";
     	
@@ -170,12 +190,17 @@ public class AgentProfileResource {
         	newFile.delete();
         	oldFile.renameTo(newFile);
         	result = newFile.getPath();
-            System.out.println("File rename failed");
         }
         
         return result;
 	}
     
+    /**
+     * Get upload image file name follow rule: <user_id>_<profile_id>.jpg
+     * 
+     * @param agentProfileDTO AgentProfileDTO
+     * @return
+     */
     protected String getImageName(AgentProfileDTO agentProfileDTO) {
 		StringBuilder photo_dir = new StringBuilder();
 		photo_dir.append(fileUploadDir)
@@ -183,8 +208,6 @@ public class AgentProfileResource {
 				.append(agentProfileDTO.getUserId())
 				.append("_")
 				.append(agentProfileDTO.getId())
-				.append("_")
-				.append(System.currentTimeMillis())
 				.append(".JPG");
 		return photo_dir.toString();
 	}
@@ -199,17 +222,36 @@ public class AgentProfileResource {
         }
 
         try {
-            FileSystemResource fileResource = new FileSystemResource(file);
-            byte[] base64Bytes = Base64.encodeBase64(IOUtils.toByteArray(fileResource.getInputStream()));
+            byte[] base64Bytes = Base64.encodeBase64(loadFileAsBytesArray(file));
             HttpHeaders headers = new HttpHeaders();
-            headers.add("filename", fileResource.getFilename());
+            headers.add("filename", file.getPath());
             headers.add("Content-Type", "image/jpeg");
 
             return ResponseEntity.ok().headers(headers).body(base64Bytes);
         } catch (IOException e) {
-            log.error("Failed to download file ", e);
+            log.error("Failed to load file ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+    
+    /**
+     * Load a file from file system and returns the byte array of the content.
+     *
+     * @param file file
+     * @return byte[]
+     * 
+     * @throws IOException 
+     */
+    private static byte[] loadFileAsBytesArray(File file) throws IOException {
+        int fileLen = (int) file.length();
+        byte[] bytes = new byte[fileLen];
+        
+        BufferedInputStream bufferIS = new BufferedInputStream(new FileInputStream(file));
+        bufferIS.read(bytes, 0, fileLen);
+        // Release file
+        bufferIS.close();
+        
+        return bytes;
     }
     
     @PostMapping(value = "/upload-file", consumes = "multipart/form-data", produces = "text/plain")
@@ -217,23 +259,37 @@ public class AgentProfileResource {
     public @ResponseBody String uploadFile( @RequestParam(value="files") MultipartFile[] uploadingFiles) throws IOException {
     	log.debug("REST request to Email AgentProfile : {}", uploadingFiles.length);
     	String filePath = "";
+    	File file;
+        FileOutputStream fileOS;
     	for(MultipartFile uploadedFile : uploadingFiles) {
     		File dir = new File(fileUploadDir);
     		createDirectory(dir);
     		
     		if (dir.exists() && dir.isDirectory()) {
-	            File file = new File(fileUploadDir + File.separator + TEMP_FILE_NAME);
-	            if(file.exists()) {
-	            	file.delete();
-	            }
-	            
-	            filePath = file.getPath();
-	            uploadedFile.transferTo(file);
+    			filePath = fileUploadDir + File.separator + TEMP_FILE_NAME;
+    			
+    			// Delete file if it was existed
+    			file = new File(filePath);
+    			if (file.exists()) {
+    				file.delete();
+					log.debug("Delete exist file: " + file.getPath());
+    			}
+    			
+    			// Read and release file
+	            fileOS = new FileOutputStream(filePath);
+	            fileOS.write(uploadedFile.getBytes());
+	            fileOS.close();
     		}
         }
+    	
     	return filePath;
     }
     
+    /**
+     * Create directory to upload file if it is not exist
+     * 
+     * @param files
+     */
 	private void createDirectory(File files) {
 		try {
 			if (!files.exists()) {
